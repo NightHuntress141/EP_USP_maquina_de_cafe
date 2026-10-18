@@ -1,0 +1,27 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Bytecode / cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Documentação gerada (a versão publicada em docs/ é versionada)
+*.html
+!docs/**
+
+# Bancos de dados locais
+*.db
+*.sqlite3
+
+# Editores / SO
+.idea/
+.vscode/
+.DS_Store
+
+# Variáveis de ambiente
+.env
