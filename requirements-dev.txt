@@ -1,0 +1,2 @@
+# Ferramentas de desenvolvimento (não necessárias em runtime/CI de testes)
+pdoc>=15,<17
