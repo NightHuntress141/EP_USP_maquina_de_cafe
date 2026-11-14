@@ -33,6 +33,9 @@
             <li>
                     <a class="function" href="#listar_produtos">listar_produtos</a>
             </li>
+            <li>
+                    <a class="function" href="#alterar_preco">alterar_preco</a>
+            </li>
     </ul>
 
 
@@ -59,11 +62,11 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 
                         <label class="view-source-button" for="mod-produto_service-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Contrato do serviço de produtos (cardápio).</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Contrato do serviço de produtos (cardápio).</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="sd">A implementação real das regras de negócio (RN10) é de responsabilidade dos</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="sd">demais integrantes. Este módulo define apenas a interface consumida pela API.</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">"""</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
@@ -71,7 +74,7 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    Regras envolvidas:</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        RN10 – o cardápio informa se cada bebida está disponível, isto é, se há</span>
@@ -83,11 +86,33 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 </span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
 </span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">    Raises:</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">    """</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"produto_service.listar_produtos ainda não foi implementado."</span><span class="p">)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.listar_produtos ainda não foi implementado.&quot;</span><span class="p">)</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"listar_produtos"</span><span class="p">]</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="k">def</span><span class="w"> </span><span class="nf">alterar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Altera o preço de uma bebida do cardápio.</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">        RN10 – o operador autenticado pode atualizar o preço de uma bebida</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">        existente; o novo preço deve ser maior que zero (validado pela API).</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">    Args:</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">        produto_id: Identificador da bebida.</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        preco: Novo preço em reais, já validado pela API.</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">    Returns:</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        Dicionário no formato aceito por</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        :class:`app.schemas.produto.ProdutoResponse`, com a bebida atualizada.</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">    Raises:</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="sd">        BebidaNaoEncontradaError: Se a bebida não existir no cardápio.</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.alterar_preco ainda não foi implementado.&quot;</span><span class="p">)</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;listar_produtos&quot;</span><span class="p">,</span> <span class="s2">&quot;alterar_preco&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -104,7 +129,7 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
     </div>
     <a class="headerlink" href="#listar_produtos"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="listar_produtos-13"><a href="#listar_produtos-13"><span class="linenos">13</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="listar_produtos-14"><a href="#listar_produtos-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="listar_produtos-14"><a href="#listar_produtos-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
 </span><span id="listar_produtos-15"><a href="#listar_produtos-15"><span class="linenos">15</span></a>
 </span><span id="listar_produtos-16"><a href="#listar_produtos-16"><span class="linenos">16</span></a><span class="sd">    Regras envolvidas:</span>
 </span><span id="listar_produtos-17"><a href="#listar_produtos-17"><span class="linenos">17</span></a><span class="sd">        RN10 – o cardápio informa se cada bebida está disponível, isto é, se há</span>
@@ -116,8 +141,8 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 </span><span id="listar_produtos-23"><a href="#listar_produtos-23"><span class="linenos">23</span></a>
 </span><span id="listar_produtos-24"><a href="#listar_produtos-24"><span class="linenos">24</span></a><span class="sd">    Raises:</span>
 </span><span id="listar_produtos-25"><a href="#listar_produtos-25"><span class="linenos">25</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="listar_produtos-26"><a href="#listar_produtos-26"><span class="linenos">26</span></a><span class="sd">    """</span>
-</span><span id="listar_produtos-27"><a href="#listar_produtos-27"><span class="linenos">27</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"produto_service.listar_produtos ainda não foi implementado."</span><span class="p">)</span>
+</span><span id="listar_produtos-26"><a href="#listar_produtos-26"><span class="linenos">26</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="listar_produtos-27"><a href="#listar_produtos-27"><span class="linenos">27</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.listar_produtos ainda não foi implementado.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -140,6 +165,73 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 <h6 id="raises">Raises:</h6>
 
 <ul>
+<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
+</ul>
+</div>
+
+
+                </section>
+                <section id="alterar_preco">
+                            <input id="alterar_preco-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">alterar_preco</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">preco</span><span class="p">:</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="alterar_preco-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#alterar_preco"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="alterar_preco-30"><a href="#alterar_preco-30"><span class="linenos">30</span></a><span class="k">def</span><span class="w"> </span><span class="nf">alterar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="alterar_preco-31"><a href="#alterar_preco-31"><span class="linenos">31</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Altera o preço de uma bebida do cardápio.</span>
+</span><span id="alterar_preco-32"><a href="#alterar_preco-32"><span class="linenos">32</span></a>
+</span><span id="alterar_preco-33"><a href="#alterar_preco-33"><span class="linenos">33</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="alterar_preco-34"><a href="#alterar_preco-34"><span class="linenos">34</span></a><span class="sd">        RN10 – o operador autenticado pode atualizar o preço de uma bebida</span>
+</span><span id="alterar_preco-35"><a href="#alterar_preco-35"><span class="linenos">35</span></a><span class="sd">        existente; o novo preço deve ser maior que zero (validado pela API).</span>
+</span><span id="alterar_preco-36"><a href="#alterar_preco-36"><span class="linenos">36</span></a>
+</span><span id="alterar_preco-37"><a href="#alterar_preco-37"><span class="linenos">37</span></a><span class="sd">    Args:</span>
+</span><span id="alterar_preco-38"><a href="#alterar_preco-38"><span class="linenos">38</span></a><span class="sd">        produto_id: Identificador da bebida.</span>
+</span><span id="alterar_preco-39"><a href="#alterar_preco-39"><span class="linenos">39</span></a><span class="sd">        preco: Novo preço em reais, já validado pela API.</span>
+</span><span id="alterar_preco-40"><a href="#alterar_preco-40"><span class="linenos">40</span></a>
+</span><span id="alterar_preco-41"><a href="#alterar_preco-41"><span class="linenos">41</span></a><span class="sd">    Returns:</span>
+</span><span id="alterar_preco-42"><a href="#alterar_preco-42"><span class="linenos">42</span></a><span class="sd">        Dicionário no formato aceito por</span>
+</span><span id="alterar_preco-43"><a href="#alterar_preco-43"><span class="linenos">43</span></a><span class="sd">        :class:`app.schemas.produto.ProdutoResponse`, com a bebida atualizada.</span>
+</span><span id="alterar_preco-44"><a href="#alterar_preco-44"><span class="linenos">44</span></a>
+</span><span id="alterar_preco-45"><a href="#alterar_preco-45"><span class="linenos">45</span></a><span class="sd">    Raises:</span>
+</span><span id="alterar_preco-46"><a href="#alterar_preco-46"><span class="linenos">46</span></a><span class="sd">        BebidaNaoEncontradaError: Se a bebida não existir no cardápio.</span>
+</span><span id="alterar_preco-47"><a href="#alterar_preco-47"><span class="linenos">47</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
+</span><span id="alterar_preco-48"><a href="#alterar_preco-48"><span class="linenos">48</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="alterar_preco-49"><a href="#alterar_preco-49"><span class="linenos">49</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.alterar_preco ainda não foi implementado.&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Altera o preço de uma bebida do cardápio.</p>
+
+<h6 id="regras-envolvidas">Regras envolvidas:</h6>
+
+<blockquote>
+  <p>RN10 – o operador autenticado pode atualizar o preço de uma bebida
+  existente; o novo preço deve ser maior que zero (validado pela API).</p>
+</blockquote>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>produto_id:</strong>  Identificador da bebida.</li>
+<li><strong>preco:</strong>  Novo preço em reais, já validado pela API.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Dicionário no formato aceito por
+  <code><a href="../schemas/produto.html#ProdutoResponse">app.schemas.produto.ProdutoResponse</a></code>, com a bebida atualizada.</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>BebidaNaoEncontradaError:</strong>  Se a bebida não existir no cardápio.</li>
 <li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
 </ul>
 </div>

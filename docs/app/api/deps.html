@@ -65,11 +65,11 @@ pronto para os endpoints de <code>/operador</code> da próxima rodada.</p>
 
                         <label class="view-source-button" for="mod-deps-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Dependências compartilhadas da camada de API.</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Dependências compartilhadas da camada de API.</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="sd">Concentra a autenticação do operador (RN11). Nesta entrega o módulo já fica</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="sd">pronto para os endpoints de ``/operador`` da próxima rodada.</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">"""</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
@@ -79,20 +79,20 @@ pronto para os endpoints de <code>/operador</code> da próxima rodada.</p>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPAuthorizationCredentials</span><span class="p">,</span> <span class="n">HTTPBearer</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="n">security</span> <span class="o">=</span> <span class="n">HTTPBearer</span><span class="p">(</span><span class="n">auto_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">"""Esquema de segurança Bearer.</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">&quot;&quot;&quot;Esquema de segurança Bearer.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">``auto_error=False`` permite devolver HTTP 401 (e não o 403 padrão) quando o</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">cabeçalho ``Authorization`` está ausente, mantendo o corpo de erro padronizado.</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">"""</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="n">TOKEN_PADRAO_DEV</span> <span class="o">=</span> <span class="s2">"senha_padrao_para_dev"</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">"""Token usado quando a variável de ambiente ``OPERATOR_TOKEN`` não está definida."""</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="n">TOKEN_PADRAO_DEV</span> <span class="o">=</span> <span class="s2">&quot;senha_padrao_para_dev&quot;</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">&quot;&quot;&quot;Token usado quando a variável de ambiente ``OPERATOR_TOKEN`` não está definida.&quot;&quot;&quot;</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_current_operator</span><span class="p">(</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="n">credentials</span><span class="p">:</span> <span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">security</span><span class="p">),</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="w">    </span><span class="sd">"""Valida o token do operador (RN11).</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Valida o token do operador (RN11).</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">    O token recebido no cabeçalho ``Authorization: Bearer &lt;token&gt;`` é comparado</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">    com a variável de ambiente ``OPERATOR_TOKEN``.</span>
@@ -105,18 +105,18 @@ pronto para os endpoints de <code>/operador</code> da próxima rodada.</p>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
 </span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">    Raises:</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        HTTPException: 401 caso o token esteja ausente ou seja inválido.</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">    """</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="n">token_esperado</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"OPERATOR_TOKEN"</span><span class="p">,</span> <span class="n">TOKEN_PADRAO_DEV</span><span class="p">)</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="n">token_esperado</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPERATOR_TOKEN&quot;</span><span class="p">,</span> <span class="n">TOKEN_PADRAO_DEV</span><span class="p">)</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>    <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">credentials</span><span class="o">.</span><span class="n">credentials</span> <span class="o">!=</span> <span class="n">token_esperado</span><span class="p">:</span>
 </span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">"Token ausente ou inválido."</span><span class="p">,</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"WWW-Authenticate"</span><span class="p">:</span> <span class="s2">"Bearer"</span><span class="p">},</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Token ausente ou inválido.&quot;</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">},</span>
 </span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>        <span class="p">)</span>
 </span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="k">return</span> <span class="n">credentials</span><span class="o">.</span><span class="n">credentials</span>
 </span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
 </span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"security"</span><span class="p">,</span> <span class="s2">"get_current_operator"</span><span class="p">,</span> <span class="s2">"TOKEN_PADRAO_DEV"</span><span class="p">]</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;security&quot;</span><span class="p">,</span> <span class="s2">&quot;get_current_operator&quot;</span><span class="p">,</span> <span class="s2">&quot;TOKEN_PADRAO_DEV&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -143,7 +143,7 @@ cabeçalho <code>Authorization</code> está ausente, mantendo o corpo de erro pa
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">get_current_operator</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">credentials</span><span class="p">:</span> <span class="n">fastapi</span><span class="o">.</span><span class="n">security</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">dependency</span><span class="o">=&lt;</span><span class="n">fastapi</span><span class="o">.</span><span class="n">security</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">HTTPBearer</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">use_cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+        <span class="name">get_current_operator</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">credentials</span><span class="p">:</span> <span class="n">fastapi</span><span class="o">.</span><span class="n">security</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">dependency</span><span class="o">=&lt;</span><span class="n">fastapi</span><span class="o">.</span><span class="n">security</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">HTTPBearer</span> <span class="nb">object</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">use_cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_concurrency</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
 
                 <label class="view-source-button" for="get_current_operator-view-source"><span>View Source</span></label>
 
@@ -152,7 +152,7 @@ cabeçalho <code>Authorization</code> está ausente, mantendo o corpo de erro pa
             <div class="pdoc-code codehilite"><pre><span></span><span id="get_current_operator-26"><a href="#get_current_operator-26"><span class="linenos">26</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_current_operator</span><span class="p">(</span>
 </span><span id="get_current_operator-27"><a href="#get_current_operator-27"><span class="linenos">27</span></a>    <span class="n">credentials</span><span class="p">:</span> <span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">security</span><span class="p">),</span>
 </span><span id="get_current_operator-28"><a href="#get_current_operator-28"><span class="linenos">28</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="get_current_operator-29"><a href="#get_current_operator-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">"""Valida o token do operador (RN11).</span>
+</span><span id="get_current_operator-29"><a href="#get_current_operator-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Valida o token do operador (RN11).</span>
 </span><span id="get_current_operator-30"><a href="#get_current_operator-30"><span class="linenos">30</span></a>
 </span><span id="get_current_operator-31"><a href="#get_current_operator-31"><span class="linenos">31</span></a><span class="sd">    O token recebido no cabeçalho ``Authorization: Bearer &lt;token&gt;`` é comparado</span>
 </span><span id="get_current_operator-32"><a href="#get_current_operator-32"><span class="linenos">32</span></a><span class="sd">    com a variável de ambiente ``OPERATOR_TOKEN``.</span>
@@ -165,13 +165,13 @@ cabeçalho <code>Authorization</code> está ausente, mantendo o corpo de erro pa
 </span><span id="get_current_operator-39"><a href="#get_current_operator-39"><span class="linenos">39</span></a>
 </span><span id="get_current_operator-40"><a href="#get_current_operator-40"><span class="linenos">40</span></a><span class="sd">    Raises:</span>
 </span><span id="get_current_operator-41"><a href="#get_current_operator-41"><span class="linenos">41</span></a><span class="sd">        HTTPException: 401 caso o token esteja ausente ou seja inválido.</span>
-</span><span id="get_current_operator-42"><a href="#get_current_operator-42"><span class="linenos">42</span></a><span class="sd">    """</span>
-</span><span id="get_current_operator-43"><a href="#get_current_operator-43"><span class="linenos">43</span></a>    <span class="n">token_esperado</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"OPERATOR_TOKEN"</span><span class="p">,</span> <span class="n">TOKEN_PADRAO_DEV</span><span class="p">)</span>
+</span><span id="get_current_operator-42"><a href="#get_current_operator-42"><span class="linenos">42</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="get_current_operator-43"><a href="#get_current_operator-43"><span class="linenos">43</span></a>    <span class="n">token_esperado</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPERATOR_TOKEN&quot;</span><span class="p">,</span> <span class="n">TOKEN_PADRAO_DEV</span><span class="p">)</span>
 </span><span id="get_current_operator-44"><a href="#get_current_operator-44"><span class="linenos">44</span></a>    <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">credentials</span><span class="o">.</span><span class="n">credentials</span> <span class="o">!=</span> <span class="n">token_esperado</span><span class="p">:</span>
 </span><span id="get_current_operator-45"><a href="#get_current_operator-45"><span class="linenos">45</span></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
 </span><span id="get_current_operator-46"><a href="#get_current_operator-46"><span class="linenos">46</span></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span>
-</span><span id="get_current_operator-47"><a href="#get_current_operator-47"><span class="linenos">47</span></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">"Token ausente ou inválido."</span><span class="p">,</span>
-</span><span id="get_current_operator-48"><a href="#get_current_operator-48"><span class="linenos">48</span></a>            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"WWW-Authenticate"</span><span class="p">:</span> <span class="s2">"Bearer"</span><span class="p">},</span>
+</span><span id="get_current_operator-47"><a href="#get_current_operator-47"><span class="linenos">47</span></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Token ausente ou inválido.&quot;</span><span class="p">,</span>
+</span><span id="get_current_operator-48"><a href="#get_current_operator-48"><span class="linenos">48</span></a>            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;WWW-Authenticate&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">},</span>
 </span><span id="get_current_operator-49"><a href="#get_current_operator-49"><span class="linenos">49</span></a>        <span class="p">)</span>
 </span><span id="get_current_operator-50"><a href="#get_current_operator-50"><span class="linenos">50</span></a>    <span class="k">return</span> <span class="n">credentials</span><span class="o">.</span><span class="n">credentials</span>
 </span></pre></div>

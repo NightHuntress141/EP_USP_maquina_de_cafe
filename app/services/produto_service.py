@@ -26,4 +26,26 @@ def listar_produtos() -> list[dict[str, Any]]:
     raise NotImplementedError("produto_service.listar_produtos ainda não foi implementado.")
 
 
-__all__ = ["listar_produtos"]
+def alterar_preco(produto_id: int, preco: float) -> dict[str, Any]:
+    """Altera o preço de uma bebida do cardápio.
+
+    Regras envolvidas:
+        RN10 – o operador autenticado pode atualizar o preço de uma bebida
+        existente; o novo preço deve ser maior que zero (validado pela API).
+
+    Args:
+        produto_id: Identificador da bebida.
+        preco: Novo preço em reais, já validado pela API.
+
+    Returns:
+        Dicionário no formato aceito por
+        :class:`app.schemas.produto.ProdutoResponse`, com a bebida atualizada.
+
+    Raises:
+        BebidaNaoEncontradaError: Se a bebida não existir no cardápio.
+        NotImplementedError: Enquanto a regra de negócio não for implementada.
+    """
+    raise NotImplementedError("produto_service.alterar_preco ainda não foi implementado.")
+
+
+__all__ = ["listar_produtos", "alterar_preco"]

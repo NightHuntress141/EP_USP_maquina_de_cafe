@@ -75,7 +75,7 @@ def cancelar_pedido(pedido_id: int) -> dict[str, Any]:
 
     Raises:
         PedidoNaoEncontradoError: Se o pedido não existir.
-        OperacaoInvalidaError: Se o pedido não estiver EM_PREPARO.
+        PedidoNaoCancelavelError: Se o pedido não estiver EM_PREPARO.
         NotImplementedError: Enquanto a regra de negócio não for implementada.
     """
     raise NotImplementedError("pedido_service.cancelar_pedido ainda não foi implementado.")
