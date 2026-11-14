@@ -93,6 +93,27 @@ class MaquinaIndisponivelError(BusinessError):
     erro = "MAQUINA_INDISPONIVEL"
 
 
+class CredenciaisInvalidasError(BusinessError):
+    """Usuário ou senha de operador inválidos (HTTP 401, RN11)."""
+
+    status_code = 401
+    erro = "NAO_AUTORIZADO"
+
+
+class PedidoNaoCancelavelError(BusinessError):
+    """Pedido não está mais em preparo e não pode ser cancelado (HTTP 409, RN05)."""
+
+    status_code = 409
+    erro = "PEDIDO_NAO_CANCELAVEL"
+
+
+class EstadoInvalidoError(BusinessError):
+    """Operação incompatível com o estado atual da máquina (HTTP 409)."""
+
+    status_code = 409
+    erro = "ESTADO_INVALIDO"
+
+
 __all__ = [
     "BusinessError",
     "OperacaoInvalidaError",
@@ -103,4 +124,7 @@ __all__ = [
     "MaquinaOcupadaError",
     "CapacidadeExcedidaError",
     "MaquinaIndisponivelError",
+    "CredenciaisInvalidasError",
+    "PedidoNaoCancelavelError",
+    "EstadoInvalidoError",
 ]

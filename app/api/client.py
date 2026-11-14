@@ -180,7 +180,7 @@ def consultar_pedido(pedido_id: int) -> dict[str, Any]:
     summary="Cancela um pedido em preparo",
     responses={
         **_erro(404, "Pedido inexistente.", "PEDIDO_NAO_ENCONTRADO", "Pedido não encontrado."),
-        **_erro(409, "Pedido não pode ser cancelado.", "DADOS_INVALIDOS", "Apenas pedidos em preparo podem ser cancelados."),
+        **_erro(409, "Pedido não pode ser cancelado.", "PEDIDO_NAO_CANCELAVEL", "Apenas pedidos em preparo podem ser cancelados."),
     },
 )
 def cancelar_pedido(pedido_id: int) -> dict[str, Any]:

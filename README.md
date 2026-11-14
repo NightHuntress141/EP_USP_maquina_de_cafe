@@ -6,12 +6,12 @@ Back-end de uma máquina de café automática desenvolvido em **Python + FastAPI
 A máquina física é apenas um cliente: toda a inteligência (cardápio, estoque,
 pagamento, preparo e manutenção) reside nesta API.
 
-> **Escopo atual desta entrega:** camada de **API (controllers)** do fluxo do
-> **cliente**, com schemas Pydantic, tratamento padronizado de erros, testes,
-> documentação e a estrutura de pastas do projeto. As regras de negócio e a
-> persistência (camadas de serviço e repositório) são de responsabilidade dos
-> demais integrantes e estão representadas aqui por *stubs* com a assinatura dos
-> métodos.
+> **Escopo atual desta entrega:** camada de **API (controllers)** dos fluxos do
+> **cliente** e do **operador**, com schemas Pydantic, autenticação Bearer,
+> tratamento padronizado de erros, testes, documentação e a estrutura de pastas
+> do projeto. As regras de negócio e a persistência (camadas de serviço e
+> repositório) são de responsabilidade dos demais integrantes e estão
+> representadas aqui por *stubs* com a assinatura dos métodos.
 
 ## Arquitetura em camadas
 
@@ -20,23 +20,31 @@ app/
 ├── main.py            # FastAPI, CORS e handlers globais de erro
 ├── api/
 │   ├── deps.py        # Dependência de autenticação do operador (RN11)
-│   └── client.py      # Endpoints do fluxo do cliente
+│   ├── client.py      # Endpoints do fluxo do cliente
+│   └── operator.py    # Endpoints do fluxo do operador
 ├── schemas/           # DTOs Pydantic de entrada e saída
 │   ├── credito.py
 │   ├── erro.py
+│   ├── estoque.py
+│   ├── operador.py
 │   ├── pedido.py
 │   ├── produto.py
+│   ├── relatorio.py
 │   └── status.py
 ├── services/          # Contrato das regras de negócio (stubs)
 │   ├── credito_service.py
+│   ├── estoque_service.py
+│   ├── operador_service.py
 │   ├── pedido_service.py
 │   ├── produto_service.py
+│   ├── relatorio_service.py
 │   └── status_service.py
 └── core/
     └── exceptions.py  # Exceções de negócio customizadas
 tests/
 ├── conftest.py
-└── test_api_client.py
+├── test_api_client.py
+└── test_api_operator.py
 ```
 
 A camada de **API** apenas valida entradas (Pydantic), delega aos **serviços** e
@@ -55,6 +63,23 @@ controllers.
 | GET | `/pedidos/{pedido_id}` | Consulta o status de um pedido | 200 |
 | POST | `/pedidos/{pedido_id}/cancelar` | Cancela um pedido em preparo (RN05) | 200 |
 
+## Endpoints do operador (implementados)
+
+Exceto o login, todas as rotas exigem `Authorization: Bearer <token>`.
+
+| Método | Rota | Autenticação | Descrição | Sucesso |
+|---|---|---|---|---|
+| POST | `/operador/login` | pública | Autentica o operador e devolve o token (RN11) | 200 |
+| GET | `/operador/estoque` | Bearer | Consulta níveis e capacidades dos reservatórios (RN09) | 200 |
+| POST | `/operador/estoque/reabastecer` | Bearer | Reabastece um reservatório (RN09) | 200 |
+| PUT | `/operador/produtos/{produto_id}/preco` | Bearer | Altera o preço de uma bebida (RN10) | 200 |
+| POST | `/operador/manutencao` | Bearer | Entra ou sai do modo de manutenção (RN08) | 200 |
+| POST | `/operador/limpeza` | Bearer | Registra a limpeza e zera o contador (RN07) | 200 |
+| GET | `/operador/relatorio` | Bearer | Relatório de vendas por período (RN12) | 200 |
+
+O relatório recebe `inicio` e `fim` como *query parameters* no formato ISO 8601;
+períodos com `inicio > fim` são recusados com HTTP 400.
+
 ## Tratamento padronizado de erros
 
 O corpo de erro segue o formato `{"erro": SLUG, "mensagem": "..."}`:
@@ -65,9 +90,11 @@ O corpo de erro segue o formato `{"erro": SLUG, "mensagem": "..."}`:
 | Crédito insuficiente | 402 | `CREDITO_INSUFICIENTE` |
 | Bebida/pedido inexistente | 404 | `BEBIDA_NAO_ENCONTRADA` / `PEDIDO_NAO_ENCONTRADO` |
 | Estoque/copo insuficiente ou máquina ocupada | 409 | `ESTOQUE_INSUFICIENTE` / `MAQUINA_OCUPADA` |
+| Pedido que não está mais em preparo | 409 | `PEDIDO_NAO_CANCELAVEL` |
+| Operação incompatível com o estado da máquina | 409 | `ESTADO_INVALIDO` |
 | Reabastecimento acima da capacidade | 422 | `CAPACIDADE_EXCEDIDA` |
 | Máquina em manutenção ou aguardando limpeza | 503 | `MAQUINA_INDISPONIVEL` |
-| Operador sem token válido | 401 | `NAO_AUTORIZADO` |
+| Operador sem token válido ou credenciais inválidas | 401 | `NAO_AUTORIZADO` |
 
 O mapeamento é centralizado nos *exception handlers* de `app/main.py`.
 
@@ -146,14 +173,28 @@ README (via `.. include::` na docstring do pacote `app`).
 
 Depois, abra [`docs/index.html`](docs/index.html) no navegador.
 
-> O módulo `app.api.operator` será incluído automaticamente quando os endpoints
-> de operador forem implementados na próxima rodada.
-
 ## Autenticação do operador (RN11)
 
-Os endpoints de operador usarão autenticação `Bearer`. O token é comparado com a
-variável de ambiente `OPERATOR_TOKEN` (padrão de desenvolvimento:
-`senha_padrao_para_dev`). A dependência já está pronta em `app/api/deps.py`.
+O `POST /operador/login` é **público**: recebe `usuario` e `senha`, compara com as
+variáveis de ambiente `OPERATOR_USER` e `OPERATOR_PASSWORD` e devolve o token de
+`OPERATOR_TOKEN` no corpo `{"token": "...", "tipo": "bearer"}`.
+
+Todos os demais endpoints de `/operador` são **protegidos** e exigem o cabeçalho:
+
+```http
+Authorization: Bearer <token>
+```
+
+| Variável | Padrão de desenvolvimento |
+|---|---|
+| `OPERATOR_USER` | `operador` |
+| `OPERATOR_PASSWORD` | `senha_padrao_para_dev` |
+| `OPERATOR_TOKEN` | `senha_padrao_para_dev` |
+
+A validação do token é feita pela dependência `get_current_operator` em
+`app/api/deps.py`. No Swagger (`/docs`), use o botão **Authorize** e informe o
+token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
+retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`.
 
 ## Decisões técnicas
 
