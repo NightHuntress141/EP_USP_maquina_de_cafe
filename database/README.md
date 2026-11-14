@@ -28,12 +28,22 @@ preservando IDs, nomes, tempos de preparo, receitas e referências em pedidos.
 Valores sem representação exata em centavos são recusados, sem arredondamento.
 Índices/triggers personalizados ou colunas extras exigem migração manual.
 A transação reverte tudo se houver falha; repetir após sucesso é permitido.
-Os registros históricos de preco_cobrado não são alterados: seu uso será
-tratado junto à implementação de pedidos/relatórios.
+Os registros históricos de preco_cobrado não são alterados: o relatório os
+consome em centavos inteiros, sem depender do preço atual do produto.
 
-COPOS exige quantidade atual inteira, tanto em bancos novos como migrados.
-A unidade de trabalho ativa foreign_keys, serializa escritas com BEGIN IMMEDIATE
-e não cria arquivo vazio quando o caminho do banco estiver incorreto.
+COPOS exige quantidade atual inteira, tanto em bancos novos como migrados. O
+mesmo vale para os demais insumos no reabastecimento atual: o serviço recusa
+frações em vez de depender da afinidade de tipo do SQLite. Uma precisão menor que
+a unidade exigirá migração explícita e representação em unidades menores.
+
+O relatório usa pedido.criado_em como instante da venda porque o schema não
+possui finalizado_em. Pedidos concluídos são filtrados por status e período com
+datas normalizadas em UTC; os valores históricos de preco_cobrado são somados em
+centavos inteiros, sem alterar os registros existentes.
+
+A unidade de trabalho ativa foreign_keys, serializa escritas com BEGIN IMMEDIATE,
+usa uma transação de leitura dedicada (mode=ro) para consultas/relatórios e não
+cria arquivo vazio quando o caminho do banco estiver incorreto.
 
 Os SQLs enviados pelo grupo foram adaptados somente para preço exato em centavos
 e integridade de COPOS. Bancos locais continuam ignorados pelo Git.

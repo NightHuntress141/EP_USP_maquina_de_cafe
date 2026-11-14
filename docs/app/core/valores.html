@@ -65,7 +65,7 @@
 
                         <label class="view-source-button" for="mod-valores-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Validação compartilhada de identificadores e valores monetários."""</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Validação compartilhada de identificadores e valores monetários.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span><span class="p">,</span> <span class="n">InvalidOperation</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
@@ -74,24 +74,24 @@
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="k">def</span><span class="w"> </span><span class="nf">validar_id</span><span class="p">(</span><span class="n">identificador</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="w">    </span><span class="sd">"""Exige um identificador positivo representável pelo SQLite.</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exige um identificador positivo representável pelo SQLite.</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="sd">    Args:</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">        identificador: Identificador recebido pelo serviço.</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    Raises:</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        ValueError: Se o valor não for um inteiro positivo suportado.</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    """</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="k">if</span> <span class="p">(</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="nb">isinstance</span><span class="p">(</span><span class="n">identificador</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>        <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">identificador</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>        <span class="ow">or</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">identificador</span> <span class="o">&lt;=</span> <span class="n">ID_MAXIMO</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="p">):</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Identificador fora da faixa permitida."</span><span class="p">)</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Identificador fora da faixa permitida.&quot;</span><span class="p">)</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="k">def</span><span class="w"> </span><span class="nf">para_centavos</span><span class="p">(</span><span class="n">valor</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="w">    </span><span class="sd">"""Converte reais em centavos sem arredondar valores inválidos.</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Converte reais em centavos sem arredondar valores inválidos.</span>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">    Args:</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">        valor: Valor positivo com no máximo duas casas decimais.</span>
@@ -101,17 +101,17 @@
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">    Raises:</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        ValueError: Se o valor não for finito, positivo ou representável.</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">    """</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="k">try</span><span class="p">:</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>        <span class="n">decimal</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">valor</span><span class="p">))</span>
 </span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">decimal</span><span class="o">.</span><span class="n">is_finite</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">decimal</span> <span class="o">&lt;=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">PRECO_MAXIMO_CENTAVOS</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">:</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço deve estar entre R$ 0,01 e R$ 99.999.999,99."</span><span class="p">)</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>        <span class="n">quantizado</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.01"</span><span class="p">))</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço deve estar entre R$ 0,01 e R$ 99.999.999,99.&quot;</span><span class="p">)</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>        <span class="n">quantizado</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;0.01&quot;</span><span class="p">))</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="k">if</span> <span class="n">decimal</span> <span class="o">!=</span> <span class="n">quantizado</span><span class="p">:</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço deve ter no máximo duas casas decimais."</span><span class="p">)</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço deve ter no máximo duas casas decimais.&quot;</span><span class="p">)</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">quantizado</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
 </span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="k">except</span> <span class="p">(</span><span class="n">InvalidOperation</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço inválido."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço inválido.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 </span></pre></div>
 
 
@@ -121,11 +121,11 @@
             <span class="name">ID_MAXIMO</span>        =
 <span class="default_value">9223372036854775807</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ID_MAXIMO"></a>
-
-
+    
+    
 
                 </section>
                 <section id="PRECO_MAXIMO_CENTAVOS">
@@ -133,17 +133,17 @@
             <span class="name">PRECO_MAXIMO_CENTAVOS</span>        =
 <span class="default_value">9999999999</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PRECO_MAXIMO_CENTAVOS"></a>
-
-
+    
+    
 
                 </section>
                 <section id="validar_id">
                             <input id="validar_id-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-
+            
         <span class="def">def</span>
         <span class="name">validar_id</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">identificador</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
@@ -152,20 +152,20 @@
     </div>
     <a class="headerlink" href="#validar_id"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="validar_id-10"><a href="#validar_id-10"><span class="linenos">10</span></a><span class="k">def</span><span class="w"> </span><span class="nf">validar_id</span><span class="p">(</span><span class="n">identificador</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="validar_id-11"><a href="#validar_id-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">"""Exige um identificador positivo representável pelo SQLite.</span>
+</span><span id="validar_id-11"><a href="#validar_id-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exige um identificador positivo representável pelo SQLite.</span>
 </span><span id="validar_id-12"><a href="#validar_id-12"><span class="linenos">12</span></a>
 </span><span id="validar_id-13"><a href="#validar_id-13"><span class="linenos">13</span></a><span class="sd">    Args:</span>
 </span><span id="validar_id-14"><a href="#validar_id-14"><span class="linenos">14</span></a><span class="sd">        identificador: Identificador recebido pelo serviço.</span>
 </span><span id="validar_id-15"><a href="#validar_id-15"><span class="linenos">15</span></a>
 </span><span id="validar_id-16"><a href="#validar_id-16"><span class="linenos">16</span></a><span class="sd">    Raises:</span>
 </span><span id="validar_id-17"><a href="#validar_id-17"><span class="linenos">17</span></a><span class="sd">        ValueError: Se o valor não for um inteiro positivo suportado.</span>
-</span><span id="validar_id-18"><a href="#validar_id-18"><span class="linenos">18</span></a><span class="sd">    """</span>
+</span><span id="validar_id-18"><a href="#validar_id-18"><span class="linenos">18</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="validar_id-19"><a href="#validar_id-19"><span class="linenos">19</span></a>    <span class="k">if</span> <span class="p">(</span>
 </span><span id="validar_id-20"><a href="#validar_id-20"><span class="linenos">20</span></a>        <span class="nb">isinstance</span><span class="p">(</span><span class="n">identificador</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
 </span><span id="validar_id-21"><a href="#validar_id-21"><span class="linenos">21</span></a>        <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">identificador</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 </span><span id="validar_id-22"><a href="#validar_id-22"><span class="linenos">22</span></a>        <span class="ow">or</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">identificador</span> <span class="o">&lt;=</span> <span class="n">ID_MAXIMO</span>
 </span><span id="validar_id-23"><a href="#validar_id-23"><span class="linenos">23</span></a>    <span class="p">):</span>
-</span><span id="validar_id-24"><a href="#validar_id-24"><span class="linenos">24</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Identificador fora da faixa permitida."</span><span class="p">)</span>
+</span><span id="validar_id-24"><a href="#validar_id-24"><span class="linenos">24</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Identificador fora da faixa permitida.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -189,7 +189,7 @@
                 <section id="para_centavos">
                             <input id="para_centavos-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-
+            
         <span class="def">def</span>
         <span class="name">para_centavos</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">valor</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
 
@@ -198,7 +198,7 @@
     </div>
     <a class="headerlink" href="#para_centavos"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="para_centavos-27"><a href="#para_centavos-27"><span class="linenos">27</span></a><span class="k">def</span><span class="w"> </span><span class="nf">para_centavos</span><span class="p">(</span><span class="n">valor</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span id="para_centavos-28"><a href="#para_centavos-28"><span class="linenos">28</span></a><span class="w">    </span><span class="sd">"""Converte reais em centavos sem arredondar valores inválidos.</span>
+</span><span id="para_centavos-28"><a href="#para_centavos-28"><span class="linenos">28</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Converte reais em centavos sem arredondar valores inválidos.</span>
 </span><span id="para_centavos-29"><a href="#para_centavos-29"><span class="linenos">29</span></a>
 </span><span id="para_centavos-30"><a href="#para_centavos-30"><span class="linenos">30</span></a><span class="sd">    Args:</span>
 </span><span id="para_centavos-31"><a href="#para_centavos-31"><span class="linenos">31</span></a><span class="sd">        valor: Valor positivo com no máximo duas casas decimais.</span>
@@ -208,17 +208,17 @@
 </span><span id="para_centavos-35"><a href="#para_centavos-35"><span class="linenos">35</span></a>
 </span><span id="para_centavos-36"><a href="#para_centavos-36"><span class="linenos">36</span></a><span class="sd">    Raises:</span>
 </span><span id="para_centavos-37"><a href="#para_centavos-37"><span class="linenos">37</span></a><span class="sd">        ValueError: Se o valor não for finito, positivo ou representável.</span>
-</span><span id="para_centavos-38"><a href="#para_centavos-38"><span class="linenos">38</span></a><span class="sd">    """</span>
+</span><span id="para_centavos-38"><a href="#para_centavos-38"><span class="linenos">38</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="para_centavos-39"><a href="#para_centavos-39"><span class="linenos">39</span></a>    <span class="k">try</span><span class="p">:</span>
 </span><span id="para_centavos-40"><a href="#para_centavos-40"><span class="linenos">40</span></a>        <span class="n">decimal</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">valor</span><span class="p">))</span>
 </span><span id="para_centavos-41"><a href="#para_centavos-41"><span class="linenos">41</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">decimal</span><span class="o">.</span><span class="n">is_finite</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">decimal</span> <span class="o">&lt;=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">PRECO_MAXIMO_CENTAVOS</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">:</span>
-</span><span id="para_centavos-42"><a href="#para_centavos-42"><span class="linenos">42</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço deve estar entre R$ 0,01 e R$ 99.999.999,99."</span><span class="p">)</span>
-</span><span id="para_centavos-43"><a href="#para_centavos-43"><span class="linenos">43</span></a>        <span class="n">quantizado</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.01"</span><span class="p">))</span>
+</span><span id="para_centavos-42"><a href="#para_centavos-42"><span class="linenos">42</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço deve estar entre R$ 0,01 e R$ 99.999.999,99.&quot;</span><span class="p">)</span>
+</span><span id="para_centavos-43"><a href="#para_centavos-43"><span class="linenos">43</span></a>        <span class="n">quantizado</span> <span class="o">=</span> <span class="n">decimal</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;0.01&quot;</span><span class="p">))</span>
 </span><span id="para_centavos-44"><a href="#para_centavos-44"><span class="linenos">44</span></a>        <span class="k">if</span> <span class="n">decimal</span> <span class="o">!=</span> <span class="n">quantizado</span><span class="p">:</span>
-</span><span id="para_centavos-45"><a href="#para_centavos-45"><span class="linenos">45</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço deve ter no máximo duas casas decimais."</span><span class="p">)</span>
+</span><span id="para_centavos-45"><a href="#para_centavos-45"><span class="linenos">45</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço deve ter no máximo duas casas decimais.&quot;</span><span class="p">)</span>
 </span><span id="para_centavos-46"><a href="#para_centavos-46"><span class="linenos">46</span></a>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">quantizado</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
 </span><span id="para_centavos-47"><a href="#para_centavos-47"><span class="linenos">47</span></a>    <span class="k">except</span> <span class="p">(</span><span class="n">InvalidOperation</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-</span><span id="para_centavos-48"><a href="#para_centavos-48"><span class="linenos">48</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Preço inválido."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+</span><span id="para_centavos-48"><a href="#para_centavos-48"><span class="linenos">48</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Preço inválido.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 </span></pre></div>
 
 

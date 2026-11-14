@@ -128,11 +128,19 @@ class BancoIndisponivelError(BusinessError):
     erro = "BANCO_INDISPONIVEL"
 
 
+class ConfiguracaoIndisponivelError(BusinessError):
+    """Configuração obrigatória ausente, sem expor os valores esperados (HTTP 503)."""
+
+    status_code = 503
+    erro = "SERVICO_INDISPONIVEL"
+
+
 __all__ = [
     "BancoIndisponivelError",
     "BebidaNaoEncontradaError",
     "BusinessError",
     "CapacidadeExcedidaError",
+    "ConfiguracaoIndisponivelError",
     "CredenciaisInvalidasError",
     "CreditoInsuficienteError",
     "EstadoInvalidoError",

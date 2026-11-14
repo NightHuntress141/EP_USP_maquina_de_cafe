@@ -59,7 +59,7 @@
 
                         <label class="view-source-button" for="mod-produto_service-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Serviço de produtos: alteração de preço e contrato de consulta do cardápio."""</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;Serviço de produtos: alteração de preço e contrato de consulta do cardápio.&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
@@ -73,7 +73,7 @@
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    Regras envolvidas:</span>
 </span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">        RN10 – o cardápio informa se cada bebida está disponível, isto é, se há</span>
@@ -85,12 +85,12 @@
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">    Raises:</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">    """</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"produto_service.listar_produtos ainda não foi implementado."</span><span class="p">)</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.listar_produtos ainda não foi implementado.&quot;</span><span class="p">)</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="k">def</span><span class="w"> </span><span class="nf">alterar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProdutoAtualizado</span><span class="p">:</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="w">    </span><span class="sd">"""Atualiza o preço de uma bebida existente do cardápio (RN10).</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Atualiza o preço de uma bebida existente do cardápio (RN10).</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">    Args:</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        produto_id: Identificador positivo representável pelo banco.</span>
@@ -102,7 +102,7 @@
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">    Raises:</span>
 </span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        OperacaoInvalidaError: Se o ID ou o preço não respeitarem os limites.</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">        BebidaNaoEncontradaError: Se a bebida não estiver cadastrada.</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">    """</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>    <span class="k">try</span><span class="p">:</span>
 </span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>        <span class="n">validar_id</span><span class="p">(</span><span class="n">produto_id</span><span class="p">)</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>        <span class="n">centavos</span> <span class="o">=</span> <span class="n">para_centavos</span><span class="p">(</span><span class="n">preco</span><span class="p">)</span>
@@ -111,13 +111,13 @@
 </span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>    <span class="k">with</span> <span class="n">transacao</span><span class="p">()</span> <span class="k">as</span> <span class="n">repositorio</span><span class="p">:</span>
 </span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>        <span class="n">produto</span> <span class="o">=</span> <span class="n">repositorio</span><span class="o">.</span><span class="n">obter_produto</span><span class="p">(</span><span class="n">produto_id</span><span class="p">)</span>
 </span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>        <span class="k">if</span> <span class="n">produto</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>            <span class="k">raise</span> <span class="n">BebidaNaoEncontradaError</span><span class="p">(</span><span class="s2">"Bebida não encontrada no cardápio."</span><span class="p">)</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>            <span class="k">raise</span> <span class="n">BebidaNaoEncontradaError</span><span class="p">(</span><span class="s2">&quot;Bebida não encontrada no cardápio.&quot;</span><span class="p">)</span>
 </span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>        <span class="n">repositorio</span><span class="o">.</span><span class="n">atualizar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">centavos</span><span class="p">)</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>        <span class="n">produto</span><span class="p">[</span><span class="s2">"preco"</span><span class="p">]</span> <span class="o">=</span> <span class="n">centavos</span> <span class="o">/</span> <span class="mi">100</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>        <span class="n">produto</span><span class="p">[</span><span class="s2">&quot;preco&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">centavos</span> <span class="o">/</span> <span class="mi">100</span>
 </span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>        <span class="k">return</span> <span class="n">produto</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>
 </span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"alterar_preco"</span><span class="p">,</span> <span class="s2">"listar_produtos"</span><span class="p">]</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alterar_preco&quot;</span><span class="p">,</span> <span class="s2">&quot;listar_produtos&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -125,7 +125,7 @@
                 <section id="alterar_preco">
                             <input id="alterar_preco-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-
+            
         <span class="def">def</span>
         <span class="name">alterar_preco</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">preco</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span></span><span class="return-annotation">) -> <span class="n"><a href="../core/modelos.html#ProdutoAtualizado">app.core.modelos.ProdutoAtualizado</a></span>:</span></span>
 
@@ -134,7 +134,7 @@
     </div>
     <a class="headerlink" href="#alterar_preco"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="alterar_preco-32"><a href="#alterar_preco-32"><span class="linenos">32</span></a><span class="k">def</span><span class="w"> </span><span class="nf">alterar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProdutoAtualizado</span><span class="p">:</span>
-</span><span id="alterar_preco-33"><a href="#alterar_preco-33"><span class="linenos">33</span></a><span class="w">    </span><span class="sd">"""Atualiza o preço de uma bebida existente do cardápio (RN10).</span>
+</span><span id="alterar_preco-33"><a href="#alterar_preco-33"><span class="linenos">33</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Atualiza o preço de uma bebida existente do cardápio (RN10).</span>
 </span><span id="alterar_preco-34"><a href="#alterar_preco-34"><span class="linenos">34</span></a>
 </span><span id="alterar_preco-35"><a href="#alterar_preco-35"><span class="linenos">35</span></a><span class="sd">    Args:</span>
 </span><span id="alterar_preco-36"><a href="#alterar_preco-36"><span class="linenos">36</span></a><span class="sd">        produto_id: Identificador positivo representável pelo banco.</span>
@@ -146,7 +146,7 @@
 </span><span id="alterar_preco-42"><a href="#alterar_preco-42"><span class="linenos">42</span></a><span class="sd">    Raises:</span>
 </span><span id="alterar_preco-43"><a href="#alterar_preco-43"><span class="linenos">43</span></a><span class="sd">        OperacaoInvalidaError: Se o ID ou o preço não respeitarem os limites.</span>
 </span><span id="alterar_preco-44"><a href="#alterar_preco-44"><span class="linenos">44</span></a><span class="sd">        BebidaNaoEncontradaError: Se a bebida não estiver cadastrada.</span>
-</span><span id="alterar_preco-45"><a href="#alterar_preco-45"><span class="linenos">45</span></a><span class="sd">    """</span>
+</span><span id="alterar_preco-45"><a href="#alterar_preco-45"><span class="linenos">45</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="alterar_preco-46"><a href="#alterar_preco-46"><span class="linenos">46</span></a>    <span class="k">try</span><span class="p">:</span>
 </span><span id="alterar_preco-47"><a href="#alterar_preco-47"><span class="linenos">47</span></a>        <span class="n">validar_id</span><span class="p">(</span><span class="n">produto_id</span><span class="p">)</span>
 </span><span id="alterar_preco-48"><a href="#alterar_preco-48"><span class="linenos">48</span></a>        <span class="n">centavos</span> <span class="o">=</span> <span class="n">para_centavos</span><span class="p">(</span><span class="n">preco</span><span class="p">)</span>
@@ -155,9 +155,9 @@
 </span><span id="alterar_preco-51"><a href="#alterar_preco-51"><span class="linenos">51</span></a>    <span class="k">with</span> <span class="n">transacao</span><span class="p">()</span> <span class="k">as</span> <span class="n">repositorio</span><span class="p">:</span>
 </span><span id="alterar_preco-52"><a href="#alterar_preco-52"><span class="linenos">52</span></a>        <span class="n">produto</span> <span class="o">=</span> <span class="n">repositorio</span><span class="o">.</span><span class="n">obter_produto</span><span class="p">(</span><span class="n">produto_id</span><span class="p">)</span>
 </span><span id="alterar_preco-53"><a href="#alterar_preco-53"><span class="linenos">53</span></a>        <span class="k">if</span> <span class="n">produto</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="alterar_preco-54"><a href="#alterar_preco-54"><span class="linenos">54</span></a>            <span class="k">raise</span> <span class="n">BebidaNaoEncontradaError</span><span class="p">(</span><span class="s2">"Bebida não encontrada no cardápio."</span><span class="p">)</span>
+</span><span id="alterar_preco-54"><a href="#alterar_preco-54"><span class="linenos">54</span></a>            <span class="k">raise</span> <span class="n">BebidaNaoEncontradaError</span><span class="p">(</span><span class="s2">&quot;Bebida não encontrada no cardápio.&quot;</span><span class="p">)</span>
 </span><span id="alterar_preco-55"><a href="#alterar_preco-55"><span class="linenos">55</span></a>        <span class="n">repositorio</span><span class="o">.</span><span class="n">atualizar_preco</span><span class="p">(</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">centavos</span><span class="p">)</span>
-</span><span id="alterar_preco-56"><a href="#alterar_preco-56"><span class="linenos">56</span></a>        <span class="n">produto</span><span class="p">[</span><span class="s2">"preco"</span><span class="p">]</span> <span class="o">=</span> <span class="n">centavos</span> <span class="o">/</span> <span class="mi">100</span>
+</span><span id="alterar_preco-56"><a href="#alterar_preco-56"><span class="linenos">56</span></a>        <span class="n">produto</span><span class="p">[</span><span class="s2">&quot;preco&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">centavos</span> <span class="o">/</span> <span class="mi">100</span>
 </span><span id="alterar_preco-57"><a href="#alterar_preco-57"><span class="linenos">57</span></a>        <span class="k">return</span> <span class="n">produto</span>
 </span></pre></div>
 
@@ -190,7 +190,7 @@
                 <section id="listar_produtos">
                             <input id="listar_produtos-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-
+            
         <span class="def">def</span>
         <span class="name">listar_produtos</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span>:</span></span>
 
@@ -199,7 +199,7 @@
     </div>
     <a class="headerlink" href="#listar_produtos"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="listar_produtos-15"><a href="#listar_produtos-15"><span class="linenos">15</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="listar_produtos-16"><a href="#listar_produtos-16"><span class="linenos">16</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="listar_produtos-16"><a href="#listar_produtos-16"><span class="linenos">16</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio completo com preço, tempo de preparo e disponibilidade.</span>
 </span><span id="listar_produtos-17"><a href="#listar_produtos-17"><span class="linenos">17</span></a>
 </span><span id="listar_produtos-18"><a href="#listar_produtos-18"><span class="linenos">18</span></a><span class="sd">    Regras envolvidas:</span>
 </span><span id="listar_produtos-19"><a href="#listar_produtos-19"><span class="linenos">19</span></a><span class="sd">        RN10 – o cardápio informa se cada bebida está disponível, isto é, se há</span>
@@ -211,8 +211,8 @@
 </span><span id="listar_produtos-25"><a href="#listar_produtos-25"><span class="linenos">25</span></a>
 </span><span id="listar_produtos-26"><a href="#listar_produtos-26"><span class="linenos">26</span></a><span class="sd">    Raises:</span>
 </span><span id="listar_produtos-27"><a href="#listar_produtos-27"><span class="linenos">27</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="listar_produtos-28"><a href="#listar_produtos-28"><span class="linenos">28</span></a><span class="sd">    """</span>
-</span><span id="listar_produtos-29"><a href="#listar_produtos-29"><span class="linenos">29</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"produto_service.listar_produtos ainda não foi implementado."</span><span class="p">)</span>
+</span><span id="listar_produtos-28"><a href="#listar_produtos-28"><span class="linenos">28</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="listar_produtos-29"><a href="#listar_produtos-29"><span class="linenos">29</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;produto_service.listar_produtos ainda não foi implementado.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 

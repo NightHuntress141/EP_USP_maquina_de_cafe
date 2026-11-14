@@ -6,10 +6,11 @@ Back-end de uma máquina de café automática desenvolvido em **Python + FastAPI
 A máquina física é apenas um cliente: toda a inteligência (cardápio, estoque,
 pagamento, preparo e manutenção) reside nesta API.
 
-> **Escopo atual:** controllers de cliente e operador, mais serviços reais de
-> alteração de preço, manutenção e limpeza com SQLite. Os demais serviços são
-> contratos (`NotImplementedError`) e suas rotas ainda não funcionam sem mocks.
-> A aplicação não deve ser apresentada como um backend completo.
+> **Escopo atual:** controllers de cliente e operador, com serviços reais de
+> alteração de preço, manutenção, limpeza, estoque, relatório e login do
+> operador usando SQLite. Os serviços de cliente (crédito, pedidos, listagem de
+> produtos e status) continuam como contratos (`NotImplementedError`). A
+> aplicação não deve ser apresentada como um backend completo.
 
 ## Arquitetura em camadas
 
@@ -43,7 +44,10 @@ app/
 tests/
 ├── conftest.py
 ├── test_api_client.py
-└── test_api_operator.py
+├── test_api_operator.py
+├── test_regressoes.py
+├── test_services_operador.py
+└── test_servicos_estoque_relatorio.py
 ```
 
 A camada de **API** apenas valida entradas (Pydantic), delega aos **serviços** e
@@ -94,6 +98,9 @@ O corpo de erro segue o formato `{"erro": SLUG, "mensagem": "..."}`:
 | Reabastecimento acima da capacidade | 422 | `CAPACIDADE_EXCEDIDA` |
 | Máquina em manutenção ou aguardando limpeza | 503 | `MAQUINA_INDISPONIVEL` |
 | Operador sem token válido ou credenciais inválidas | 401 | `NAO_AUTORIZADO` |
+| Autenticação do operador não configurada | 503 | `SERVICO_INDISPONIVEL` |
+| Banco ausente, não inicializado ou temporariamente bloqueado | 503 | `BANCO_INDISPONIVEL` |
+| Falha interna de persistência | 500 | `ERRO_INTERNO` |
 
 O mapeamento é centralizado nos *exception handlers* de `app/main.py`.
 
@@ -108,6 +115,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # 3. Configurar autenticação e inicializar um banco novo
+export OPERATOR_USER="operador"
+export OPERATOR_PASSWORD="$(python -c 'import secrets; print(secrets.token_urlsafe(24))')"
 export OPERATOR_TOKEN="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
 python -m app.repositories.database init
 
@@ -190,18 +199,19 @@ Todos os demais endpoints de `/operador` são **protegidos** e exigem o cabeçal
 Authorization: Bearer <token>
 ```
 
-| Variável | Padrão de desenvolvimento |
+| Variável | Configuração |
 |---|---|
-| `OPERATOR_USER` | definir ao implementar login |
-| `OPERATOR_PASSWORD` | definir ao implementar login, sem senha pública |
-| `OPERATOR_TOKEN` | obrigatório, sem padrão |
+| `OPERATOR_USER` | usuário do operador, obrigatório e sem padrão público |
+| `OPERATOR_PASSWORD` | senha do operador, obrigatória e sem padrão público |
+| `OPERATOR_TOKEN` | segredo Bearer obrigatório, sem padrão público |
 
 A validação do token é feita pela dependência `get_current_operator` em
 `app/api/deps.py`. No Swagger (`/docs`), use o botão **Authorize** e informe o
 token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
-retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`. A API recusa iniciar sem
-`OPERATOR_TOKEN` ou com banco não inicializado/migrado. O login ainda é um
-contrato pendente; por enquanto configure o Bearer diretamente.
+retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`. A API recusa iniciar sem as três
+variáveis de autenticação ou com banco não inicializado/migrado. O login compara
+usuário e senha com `secrets.compare_digest` e devolve exatamente o
+`OPERATOR_TOKEN` aceito pelo Bearer.
 
 ## Decisões técnicas
 
@@ -243,12 +253,22 @@ persistência são registrados no servidor e devolvidos sem SQL/caminhos interno
   exponha a API somente por HTTPS.
 
 A limpeza exige MANUTENCAO e mantém esse estado. SAIR devolve PRONTA se o contador
-for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. Reabastecimento de
-COPOS aceita somente unidades inteiras; os demais insumos preservam suas unidades.
+for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. O alerta de estoque
+usa `quantidade_atual <= nivel_alerta`. O reabastecimento preserva as unidades do
+seed (ml, g e un); como o schema atual declara quantidades inteiras e não há
+migração acordada para unidades menores, frações são recusadas pelo serviço em
+vez de truncadas ou arredondadas silenciosamente.
 
-Os testes incluem HTTP com banco real, rollback de limpeza, concorrência,
-migração com referências e validação de configuração. Não substituem teste de
-implantação nem a implementação das regras de crédito, pedido e estoque pendentes.
+O relatório de vendas usa `pedido.criado_em` como instante da venda, pois o
+schema não possui `finalizado_em`; uma conclusão real exigirá coluna/migração e
+integração com o serviço de pedidos. Datas sem fuso são interpretadas como UTC e
+as comparações são feitas em UTC. O faturamento usa o `preco_cobrado` histórico,
+acumulado em centavos inteiros com Decimal, sem `SUM` de floats.
+
+Os testes incluem HTTP com banco real, rollback, concorrência de reabastecimento,
+migração com referências, estoque, relatório, login e validação de configuração.
+Não substituem teste de implantação nem a implementação das regras de crédito,
+pedido, listagem de produtos e status do cliente.
 
 ### Verificações de desenvolvimento
 

@@ -105,6 +105,135 @@
                 </ul>
 
             </li>
+            <li>
+                    <a class="class" href="#Ingrediente">Ingrediente</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#Ingrediente.__init__">Ingrediente</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.id">id</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.codigo">codigo</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.unidade">unidade</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.quantidade_atual">quantidade_atual</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.capacidade_maxima">capacidade_maxima</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Ingrediente.nivel_alerta">nivel_alerta</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#PedidoConcluido">PedidoConcluido</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#PedidoConcluido.__init__">PedidoConcluido</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#PedidoConcluido.pedido_id">pedido_id</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#PedidoConcluido.produto_id">produto_id</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#PedidoConcluido.nome">nome</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#PedidoConcluido.preco_cobrado">preco_cobrado</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#PedidoConcluido.criado_em">criado_em</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#ItemEstoque">ItemEstoque</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#ItemEstoque.item">item</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.atual">atual</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.capacidade">capacidade</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.nivel_baixo">nivel_baixo</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#ResultadoEstoque">ResultadoEstoque</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#ResultadoEstoque.reservatorios">reservatorios</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#ResultadoReabastecimento">ResultadoReabastecimento</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#ResultadoReabastecimento.item">item</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#VendaPorBebida">VendaPorBebida</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#VendaPorBebida.produto_id">produto_id</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#VendaPorBebida.nome">nome</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#VendaPorBebida.quantidade">quantidade</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#VendaPorBebida.faturamento">faturamento</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#ResultadoRelatorio">ResultadoRelatorio</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#ResultadoRelatorio.inicio">inicio</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ResultadoRelatorio.fim">fim</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ResultadoRelatorio.total_pedidos">total_pedidos</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ResultadoRelatorio.faturamento_total">faturamento_total</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ResultadoRelatorio.por_bebida">por_bebida</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#normalizar_utc">normalizar_utc</a>
+            </li>
     </ul>
 
 
@@ -128,51 +257,147 @@
 
                         <label class="view-source-button" for="mod-modelos-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Tipos de domínio independentes de HTTP e de SQLite."""</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="w">    </span><span class="sd">"""Estados operacionais permitidos para a máquina."""</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">"PRONTA"</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">"PREPARANDO"</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">"AGUARDANDO_LIMPEZA"</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">"MANUTENCAO"</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Maquina</span><span class="p">:</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="w">    </span><span class="sd">"""Estado e contador persistidos da máquina única."""</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoAtualizado</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="w">    </span><span class="sd">"""Dados públicos da bebida após uma alteração de preço."""</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoManutencao</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="w">    </span><span class="sd">"""Estado operacional resultante de uma transição."""</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoLimpeza</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">"""Estado e contador após o registro da limpeza."""</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Tipos de domínio independentes de HTTP e de SQLite.&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estados operacionais permitidos para a máquina.&quot;&quot;&quot;</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">&quot;PRONTA&quot;</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">&quot;PREPARANDO&quot;</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">&quot;AGUARDANDO_LIMPEZA&quot;</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">&quot;MANUTENCAO&quot;</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Maquina</span><span class="p">:</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado e contador persistidos da máquina única.&quot;&quot;&quot;</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoAtualizado</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Dados públicos da bebida após uma alteração de preço.&quot;&quot;&quot;</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoManutencao</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado operacional resultante de uma transição.&quot;&quot;&quot;</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoLimpeza</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado e contador após o registro da limpeza.&quot;&quot;&quot;</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Ingrediente</span><span class="p">:</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório ou insumo com os limites persistidos.</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        id: Identificador do ingrediente.</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        codigo: Código interno em maiúsculas (AGUA, CAFE etc.).</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        unidade: Unidade do seed (ml, g ou un), sem conversão implícita.</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        quantidade_atual: Quantidade disponível na unidade do insumo.</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        capacidade_maxima: Capacidade máxima na mesma unidade.</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        nivel_alerta: Limite a partir do qual o nível é considerado baixo.</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">codigo</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="n">unidade</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="n">quantidade_atual</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="n">capacidade_maxima</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">nivel_alerta</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoConcluido</span><span class="p">:</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Pedido concluído usado na consolidação do relatório (RN12).</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        produto_id: Identificador da bebida vendida.</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        nome: Nome da bebida no momento da consulta.</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        preco_cobrado: Preço histórico em reais, sem depender do preço atual.</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        criado_em: Instante de criação usado como referência temporal da venda.</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="n">preco_cobrado</span><span class="p">:</span> <span class="n">Decimal</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="n">criado_em</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação pública de um reservatório no contrato da API.&quot;&quot;&quot;</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>    <span class="n">item</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoEstoque</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo devolvido ao operador.&quot;&quot;&quot;</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoReabastecimento</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.&quot;&quot;&quot;</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VendaPorBebida</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consolidado de uma bebida no relatório.&quot;&quot;&quot;</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="n">faturamento</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoRelatorio</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Relatório consolidado de vendas do período.&quot;&quot;&quot;</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="n">faturamento_total</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="k">def</span><span class="w"> </span><span class="nf">normalizar_utc</span><span class="p">(</span><span class="n">valor</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpreta datas sem fuso como UTC e converte as demais para UTC.</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">    Args:</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        valor: Data/hora recebida ou persistida.</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">    Returns:</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="sd">        Data/hora com fuso UTC, própria para comparação consistente.</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>    <span class="k">if</span> <span class="n">valor</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="k">return</span> <span class="n">valor</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="k">return</span> <span class="n">valor</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -180,7 +405,7 @@
                 <section id="EstadoMaquina">
                             <input id="EstadoMaquina-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">EstadoMaquina</span><wbr>(<span class="base">builtins.str</span>, <span class="base">enum.Enum</span>):
 
@@ -188,13 +413,13 @@
 
     </div>
     <a class="headerlink" href="#EstadoMaquina"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EstadoMaquina-9"><a href="#EstadoMaquina-9"><span class="linenos"> 9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="EstadoMaquina-10"><a href="#EstadoMaquina-10"><span class="linenos">10</span></a><span class="w">    </span><span class="sd">"""Estados operacionais permitidos para a máquina."""</span>
-</span><span id="EstadoMaquina-11"><a href="#EstadoMaquina-11"><span class="linenos">11</span></a>
-</span><span id="EstadoMaquina-12"><a href="#EstadoMaquina-12"><span class="linenos">12</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">"PRONTA"</span>
-</span><span id="EstadoMaquina-13"><a href="#EstadoMaquina-13"><span class="linenos">13</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">"PREPARANDO"</span>
-</span><span id="EstadoMaquina-14"><a href="#EstadoMaquina-14"><span class="linenos">14</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">"AGUARDANDO_LIMPEZA"</span>
-</span><span id="EstadoMaquina-15"><a href="#EstadoMaquina-15"><span class="linenos">15</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">"MANUTENCAO"</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EstadoMaquina-11"><a href="#EstadoMaquina-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="EstadoMaquina-12"><a href="#EstadoMaquina-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estados operacionais permitidos para a máquina.&quot;&quot;&quot;</span>
+</span><span id="EstadoMaquina-13"><a href="#EstadoMaquina-13"><span class="linenos">13</span></a>
+</span><span id="EstadoMaquina-14"><a href="#EstadoMaquina-14"><span class="linenos">14</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">&quot;PRONTA&quot;</span>
+</span><span id="EstadoMaquina-15"><a href="#EstadoMaquina-15"><span class="linenos">15</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">&quot;PREPARANDO&quot;</span>
+</span><span id="EstadoMaquina-16"><a href="#EstadoMaquina-16"><span class="linenos">16</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">&quot;AGUARDANDO_LIMPEZA&quot;</span>
+</span><span id="EstadoMaquina-17"><a href="#EstadoMaquina-17"><span class="linenos">17</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">&quot;MANUTENCAO&quot;</span>
 </span></pre></div>
 
 
@@ -207,11 +432,11 @@
             <span class="name">PRONTA</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.PRONTA">EstadoMaquina.PRONTA</a>: &#39;PRONTA&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#EstadoMaquina.PRONTA"></a>
-
-
+    
+    
 
                             </div>
                             <div id="EstadoMaquina.PREPARANDO" class="classattr">
@@ -219,11 +444,11 @@
             <span class="name">PREPARANDO</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.PREPARANDO">EstadoMaquina.PREPARANDO</a>: &#39;PREPARANDO&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#EstadoMaquina.PREPARANDO"></a>
-
-
+    
+    
 
                             </div>
                             <div id="EstadoMaquina.AGUARDANDO_LIMPEZA" class="classattr">
@@ -231,11 +456,11 @@
             <span class="name">AGUARDANDO_LIMPEZA</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.AGUARDANDO_LIMPEZA">EstadoMaquina.AGUARDANDO_LIMPEZA</a>: &#39;AGUARDANDO_LIMPEZA&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#EstadoMaquina.AGUARDANDO_LIMPEZA"></a>
-
-
+    
+    
 
                             </div>
                             <div id="EstadoMaquina.MANUTENCAO" class="classattr">
@@ -243,11 +468,11 @@
             <span class="name">MANUTENCAO</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.MANUTENCAO">EstadoMaquina.MANUTENCAO</a>: &#39;MANUTENCAO&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#EstadoMaquina.MANUTENCAO"></a>
-
-
+    
+    
 
                             </div>
                 </section>
@@ -263,12 +488,12 @@
 
     </div>
     <a class="headerlink" href="#Maquina"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Maquina-18"><a href="#Maquina-18"><span class="linenos">18</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="Maquina-19"><a href="#Maquina-19"><span class="linenos">19</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Maquina</span><span class="p">:</span>
-</span><span id="Maquina-20"><a href="#Maquina-20"><span class="linenos">20</span></a><span class="w">    </span><span class="sd">"""Estado e contador persistidos da máquina única."""</span>
-</span><span id="Maquina-21"><a href="#Maquina-21"><span class="linenos">21</span></a>
-</span><span id="Maquina-22"><a href="#Maquina-22"><span class="linenos">22</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
-</span><span id="Maquina-23"><a href="#Maquina-23"><span class="linenos">23</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Maquina-20"><a href="#Maquina-20"><span class="linenos">20</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="Maquina-21"><a href="#Maquina-21"><span class="linenos">21</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Maquina</span><span class="p">:</span>
+</span><span id="Maquina-22"><a href="#Maquina-22"><span class="linenos">22</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado e contador persistidos da máquina única.&quot;&quot;&quot;</span>
+</span><span id="Maquina-23"><a href="#Maquina-23"><span class="linenos">23</span></a>
+</span><span id="Maquina-24"><a href="#Maquina-24"><span class="linenos">24</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+</span><span id="Maquina-25"><a href="#Maquina-25"><span class="linenos">25</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
 </span></pre></div>
 
 
@@ -278,43 +503,43 @@
 
                             <div id="Maquina.__init__" class="classattr">
                                 <div class="attr function">
-
+            
         <span class="name">Maquina</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">estado</span><span class="p">:</span> <span class="n"><a href="#EstadoMaquina">EstadoMaquina</a></span>, </span><span class="param"><span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span></span>)</span>
 
-
+        
     </div>
     <a class="headerlink" href="#Maquina.__init__"></a>
-
-
+    
+    
 
                             </div>
                             <div id="Maquina.estado" class="classattr">
                                 <div class="attr variable">
             <span class="name">estado</span><span class="annotation">: <a href="#EstadoMaquina">EstadoMaquina</a></span>
 
-
+        
     </div>
     <a class="headerlink" href="#Maquina.estado"></a>
-
-
+    
+    
 
                             </div>
                             <div id="Maquina.preparos_desde_limpeza" class="classattr">
                                 <div class="attr variable">
             <span class="name">preparos_desde_limpeza</span><span class="annotation">: int</span>
 
-
+        
     </div>
     <a class="headerlink" href="#Maquina.preparos_desde_limpeza"></a>
-
-
+    
+    
 
                             </div>
                 </section>
                 <section id="ProdutoAtualizado">
                             <input id="ProdutoAtualizado-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">ProdutoAtualizado</span><wbr>(<span class="base">typing.TypedDict</span>):
 
@@ -322,14 +547,14 @@
 
     </div>
     <a class="headerlink" href="#ProdutoAtualizado"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProdutoAtualizado-26"><a href="#ProdutoAtualizado-26"><span class="linenos">26</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoAtualizado</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="ProdutoAtualizado-27"><a href="#ProdutoAtualizado-27"><span class="linenos">27</span></a><span class="w">    </span><span class="sd">"""Dados públicos da bebida após uma alteração de preço."""</span>
-</span><span id="ProdutoAtualizado-28"><a href="#ProdutoAtualizado-28"><span class="linenos">28</span></a>
-</span><span id="ProdutoAtualizado-29"><a href="#ProdutoAtualizado-29"><span class="linenos">29</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="ProdutoAtualizado-30"><a href="#ProdutoAtualizado-30"><span class="linenos">30</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
-</span><span id="ProdutoAtualizado-31"><a href="#ProdutoAtualizado-31"><span class="linenos">31</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span>
-</span><span id="ProdutoAtualizado-32"><a href="#ProdutoAtualizado-32"><span class="linenos">32</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span>
-</span><span id="ProdutoAtualizado-33"><a href="#ProdutoAtualizado-33"><span class="linenos">33</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProdutoAtualizado-28"><a href="#ProdutoAtualizado-28"><span class="linenos">28</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoAtualizado</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ProdutoAtualizado-29"><a href="#ProdutoAtualizado-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Dados públicos da bebida após uma alteração de preço.&quot;&quot;&quot;</span>
+</span><span id="ProdutoAtualizado-30"><a href="#ProdutoAtualizado-30"><span class="linenos">30</span></a>
+</span><span id="ProdutoAtualizado-31"><a href="#ProdutoAtualizado-31"><span class="linenos">31</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="ProdutoAtualizado-32"><a href="#ProdutoAtualizado-32"><span class="linenos">32</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="ProdutoAtualizado-33"><a href="#ProdutoAtualizado-33"><span class="linenos">33</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="ProdutoAtualizado-34"><a href="#ProdutoAtualizado-34"><span class="linenos">34</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="ProdutoAtualizado-35"><a href="#ProdutoAtualizado-35"><span class="linenos">35</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span>
 </span></pre></div>
 
 
@@ -341,62 +566,62 @@
                                 <div class="attr variable">
             <span class="name">id</span><span class="annotation">: int</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ProdutoAtualizado.id"></a>
-
-
+    
+    
 
                             </div>
                             <div id="ProdutoAtualizado.nome" class="classattr">
                                 <div class="attr variable">
             <span class="name">nome</span><span class="annotation">: str</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ProdutoAtualizado.nome"></a>
-
-
+    
+    
 
                             </div>
                             <div id="ProdutoAtualizado.preco" class="classattr">
                                 <div class="attr variable">
             <span class="name">preco</span><span class="annotation">: float</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ProdutoAtualizado.preco"></a>
-
-
+    
+    
 
                             </div>
                             <div id="ProdutoAtualizado.tempo_preparo" class="classattr">
                                 <div class="attr variable">
             <span class="name">tempo_preparo</span><span class="annotation">: int</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ProdutoAtualizado.tempo_preparo"></a>
-
-
+    
+    
 
                             </div>
                             <div id="ProdutoAtualizado.disponivel" class="classattr">
                                 <div class="attr variable">
             <span class="name">disponivel</span><span class="annotation">: bool</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ProdutoAtualizado.disponivel"></a>
-
-
+    
+    
 
                             </div>
                 </section>
                 <section id="ResultadoManutencao">
                             <input id="ResultadoManutencao-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">ResultadoManutencao</span><wbr>(<span class="base">typing.TypedDict</span>):
 
@@ -404,10 +629,10 @@
 
     </div>
     <a class="headerlink" href="#ResultadoManutencao"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoManutencao-36"><a href="#ResultadoManutencao-36"><span class="linenos">36</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoManutencao</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="ResultadoManutencao-37"><a href="#ResultadoManutencao-37"><span class="linenos">37</span></a><span class="w">    </span><span class="sd">"""Estado operacional resultante de uma transição."""</span>
-</span><span id="ResultadoManutencao-38"><a href="#ResultadoManutencao-38"><span class="linenos">38</span></a>
-</span><span id="ResultadoManutencao-39"><a href="#ResultadoManutencao-39"><span class="linenos">39</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoManutencao-38"><a href="#ResultadoManutencao-38"><span class="linenos">38</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoManutencao</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ResultadoManutencao-39"><a href="#ResultadoManutencao-39"><span class="linenos">39</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado operacional resultante de uma transição.&quot;&quot;&quot;</span>
+</span><span id="ResultadoManutencao-40"><a href="#ResultadoManutencao-40"><span class="linenos">40</span></a>
+</span><span id="ResultadoManutencao-41"><a href="#ResultadoManutencao-41"><span class="linenos">41</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
 </span></pre></div>
 
 
@@ -419,18 +644,18 @@
                                 <div class="attr variable">
             <span class="name">estado</span><span class="annotation">: <a href="#EstadoMaquina">EstadoMaquina</a></span>
 
-
+        
     </div>
     <a class="headerlink" href="#ResultadoManutencao.estado"></a>
-
-
+    
+    
 
                             </div>
                 </section>
                 <section id="ResultadoLimpeza">
                             <input id="ResultadoLimpeza-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">ResultadoLimpeza</span><wbr>(<span class="base">typing.TypedDict</span>):
 
@@ -438,11 +663,11 @@
 
     </div>
     <a class="headerlink" href="#ResultadoLimpeza"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoLimpeza-42"><a href="#ResultadoLimpeza-42"><span class="linenos">42</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoLimpeza</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-</span><span id="ResultadoLimpeza-43"><a href="#ResultadoLimpeza-43"><span class="linenos">43</span></a><span class="w">    </span><span class="sd">"""Estado e contador após o registro da limpeza."""</span>
-</span><span id="ResultadoLimpeza-44"><a href="#ResultadoLimpeza-44"><span class="linenos">44</span></a>
-</span><span id="ResultadoLimpeza-45"><a href="#ResultadoLimpeza-45"><span class="linenos">45</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
-</span><span id="ResultadoLimpeza-46"><a href="#ResultadoLimpeza-46"><span class="linenos">46</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoLimpeza-44"><a href="#ResultadoLimpeza-44"><span class="linenos">44</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoLimpeza</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ResultadoLimpeza-45"><a href="#ResultadoLimpeza-45"><span class="linenos">45</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado e contador após o registro da limpeza.&quot;&quot;&quot;</span>
+</span><span id="ResultadoLimpeza-46"><a href="#ResultadoLimpeza-46"><span class="linenos">46</span></a>
+</span><span id="ResultadoLimpeza-47"><a href="#ResultadoLimpeza-47"><span class="linenos">47</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span>
+</span><span id="ResultadoLimpeza-48"><a href="#ResultadoLimpeza-48"><span class="linenos">48</span></a>    <span class="n">preparos_desde_limpeza</span><span class="p">:</span> <span class="nb">int</span>
 </span></pre></div>
 
 
@@ -454,24 +679,599 @@
                                 <div class="attr variable">
             <span class="name">estado</span><span class="annotation">: <a href="#EstadoMaquina">EstadoMaquina</a></span>
 
-
+        
     </div>
     <a class="headerlink" href="#ResultadoLimpeza.estado"></a>
-
-
+    
+    
 
                             </div>
                             <div id="ResultadoLimpeza.preparos_desde_limpeza" class="classattr">
                                 <div class="attr variable">
             <span class="name">preparos_desde_limpeza</span><span class="annotation">: int</span>
 
-
+        
     </div>
     <a class="headerlink" href="#ResultadoLimpeza.preparos_desde_limpeza"></a>
-
-
+    
+    
 
                             </div>
+                </section>
+                <section id="Ingrediente">
+                            <input id="Ingrediente-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">Ingrediente</span>:
+
+                <label class="view-source-button" for="Ingrediente-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#Ingrediente"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Ingrediente-51"><a href="#Ingrediente-51"><span class="linenos">51</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="Ingrediente-52"><a href="#Ingrediente-52"><span class="linenos">52</span></a><span class="k">class</span><span class="w"> </span><span class="nc">Ingrediente</span><span class="p">:</span>
+</span><span id="Ingrediente-53"><a href="#Ingrediente-53"><span class="linenos">53</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório ou insumo com os limites persistidos.</span>
+</span><span id="Ingrediente-54"><a href="#Ingrediente-54"><span class="linenos">54</span></a>
+</span><span id="Ingrediente-55"><a href="#Ingrediente-55"><span class="linenos">55</span></a><span class="sd">    Attributes:</span>
+</span><span id="Ingrediente-56"><a href="#Ingrediente-56"><span class="linenos">56</span></a><span class="sd">        id: Identificador do ingrediente.</span>
+</span><span id="Ingrediente-57"><a href="#Ingrediente-57"><span class="linenos">57</span></a><span class="sd">        codigo: Código interno em maiúsculas (AGUA, CAFE etc.).</span>
+</span><span id="Ingrediente-58"><a href="#Ingrediente-58"><span class="linenos">58</span></a><span class="sd">        unidade: Unidade do seed (ml, g ou un), sem conversão implícita.</span>
+</span><span id="Ingrediente-59"><a href="#Ingrediente-59"><span class="linenos">59</span></a><span class="sd">        quantidade_atual: Quantidade disponível na unidade do insumo.</span>
+</span><span id="Ingrediente-60"><a href="#Ingrediente-60"><span class="linenos">60</span></a><span class="sd">        capacidade_maxima: Capacidade máxima na mesma unidade.</span>
+</span><span id="Ingrediente-61"><a href="#Ingrediente-61"><span class="linenos">61</span></a><span class="sd">        nivel_alerta: Limite a partir do qual o nível é considerado baixo.</span>
+</span><span id="Ingrediente-62"><a href="#Ingrediente-62"><span class="linenos">62</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="Ingrediente-63"><a href="#Ingrediente-63"><span class="linenos">63</span></a>
+</span><span id="Ingrediente-64"><a href="#Ingrediente-64"><span class="linenos">64</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="Ingrediente-65"><a href="#Ingrediente-65"><span class="linenos">65</span></a>    <span class="n">codigo</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="Ingrediente-66"><a href="#Ingrediente-66"><span class="linenos">66</span></a>    <span class="n">unidade</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="Ingrediente-67"><a href="#Ingrediente-67"><span class="linenos">67</span></a>    <span class="n">quantidade_atual</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="Ingrediente-68"><a href="#Ingrediente-68"><span class="linenos">68</span></a>    <span class="n">capacidade_maxima</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="Ingrediente-69"><a href="#Ingrediente-69"><span class="linenos">69</span></a>    <span class="n">nivel_alerta</span><span class="p">:</span> <span class="nb">int</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Reservatório ou insumo com os limites persistidos.</p>
+
+<h6 id="attributes">Attributes:</h6>
+
+<ul>
+<li><strong>id:</strong>  Identificador do ingrediente.</li>
+<li><strong>codigo:</strong>  Código interno em maiúsculas (AGUA, CAFE etc.).</li>
+<li><strong>unidade:</strong>  Unidade do seed (ml, g ou un), sem conversão implícita.</li>
+<li><strong>quantidade_atual:</strong>  Quantidade disponível na unidade do insumo.</li>
+<li><strong>capacidade_maxima:</strong>  Capacidade máxima na mesma unidade.</li>
+<li><strong>nivel_alerta:</strong>  Limite a partir do qual o nível é considerado baixo.</li>
+</ul>
+</div>
+
+
+                            <div id="Ingrediente.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">Ingrediente</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">codigo</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">unidade</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">quantidade_atual</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">capacidade_maxima</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">nivel_alerta</span><span class="p">:</span> <span class="nb">int</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.id" class="classattr">
+                                <div class="attr variable">
+            <span class="name">id</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.id"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.codigo" class="classattr">
+                                <div class="attr variable">
+            <span class="name">codigo</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.codigo"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.unidade" class="classattr">
+                                <div class="attr variable">
+            <span class="name">unidade</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.unidade"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.quantidade_atual" class="classattr">
+                                <div class="attr variable">
+            <span class="name">quantidade_atual</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.quantidade_atual"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.capacidade_maxima" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capacidade_maxima</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.capacidade_maxima"></a>
+    
+    
+
+                            </div>
+                            <div id="Ingrediente.nivel_alerta" class="classattr">
+                                <div class="attr variable">
+            <span class="name">nivel_alerta</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#Ingrediente.nivel_alerta"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="PedidoConcluido">
+                            <input id="PedidoConcluido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+                    <div class="decorator decorator-dataclass">@dataclass(frozen=True)</div>
+
+    <span class="def">class</span>
+    <span class="name">PedidoConcluido</span>:
+
+                <label class="view-source-button" for="PedidoConcluido-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#PedidoConcluido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PedidoConcluido-72"><a href="#PedidoConcluido-72"><span class="linenos">72</span></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="PedidoConcluido-73"><a href="#PedidoConcluido-73"><span class="linenos">73</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoConcluido</span><span class="p">:</span>
+</span><span id="PedidoConcluido-74"><a href="#PedidoConcluido-74"><span class="linenos">74</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Pedido concluído usado na consolidação do relatório (RN12).</span>
+</span><span id="PedidoConcluido-75"><a href="#PedidoConcluido-75"><span class="linenos">75</span></a>
+</span><span id="PedidoConcluido-76"><a href="#PedidoConcluido-76"><span class="linenos">76</span></a><span class="sd">    Attributes:</span>
+</span><span id="PedidoConcluido-77"><a href="#PedidoConcluido-77"><span class="linenos">77</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="PedidoConcluido-78"><a href="#PedidoConcluido-78"><span class="linenos">78</span></a><span class="sd">        produto_id: Identificador da bebida vendida.</span>
+</span><span id="PedidoConcluido-79"><a href="#PedidoConcluido-79"><span class="linenos">79</span></a><span class="sd">        nome: Nome da bebida no momento da consulta.</span>
+</span><span id="PedidoConcluido-80"><a href="#PedidoConcluido-80"><span class="linenos">80</span></a><span class="sd">        preco_cobrado: Preço histórico em reais, sem depender do preço atual.</span>
+</span><span id="PedidoConcluido-81"><a href="#PedidoConcluido-81"><span class="linenos">81</span></a><span class="sd">        criado_em: Instante de criação usado como referência temporal da venda.</span>
+</span><span id="PedidoConcluido-82"><a href="#PedidoConcluido-82"><span class="linenos">82</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="PedidoConcluido-83"><a href="#PedidoConcluido-83"><span class="linenos">83</span></a>
+</span><span id="PedidoConcluido-84"><a href="#PedidoConcluido-84"><span class="linenos">84</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="PedidoConcluido-85"><a href="#PedidoConcluido-85"><span class="linenos">85</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="PedidoConcluido-86"><a href="#PedidoConcluido-86"><span class="linenos">86</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="PedidoConcluido-87"><a href="#PedidoConcluido-87"><span class="linenos">87</span></a>    <span class="n">preco_cobrado</span><span class="p">:</span> <span class="n">Decimal</span>
+</span><span id="PedidoConcluido-88"><a href="#PedidoConcluido-88"><span class="linenos">88</span></a>    <span class="n">criado_em</span><span class="p">:</span> <span class="n">datetime</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Pedido concluído usado na consolidação do relatório (RN12).</p>
+
+<h6 id="attributes">Attributes:</h6>
+
+<ul>
+<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
+<li><strong>produto_id:</strong>  Identificador da bebida vendida.</li>
+<li><strong>nome:</strong>  Nome da bebida no momento da consulta.</li>
+<li><strong>preco_cobrado:</strong>  Preço histórico em reais, sem depender do preço atual.</li>
+<li><strong>criado_em:</strong>  Instante de criação usado como referência temporal da venda.</li>
+</ul>
+</div>
+
+
+                            <div id="PedidoConcluido.__init__" class="classattr">
+                                <div class="attr function">
+            
+        <span class="name">PedidoConcluido</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">preco_cobrado</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span>,</span><span class="param">	<span class="n">criado_em</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span></span>)</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.__init__"></a>
+    
+    
+
+                            </div>
+                            <div id="PedidoConcluido.pedido_id" class="classattr">
+                                <div class="attr variable">
+            <span class="name">pedido_id</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.pedido_id"></a>
+    
+    
+
+                            </div>
+                            <div id="PedidoConcluido.produto_id" class="classattr">
+                                <div class="attr variable">
+            <span class="name">produto_id</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.produto_id"></a>
+    
+    
+
+                            </div>
+                            <div id="PedidoConcluido.nome" class="classattr">
+                                <div class="attr variable">
+            <span class="name">nome</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.nome"></a>
+    
+    
+
+                            </div>
+                            <div id="PedidoConcluido.preco_cobrado" class="classattr">
+                                <div class="attr variable">
+            <span class="name">preco_cobrado</span><span class="annotation">: decimal.Decimal</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.preco_cobrado"></a>
+    
+    
+
+                            </div>
+                            <div id="PedidoConcluido.criado_em" class="classattr">
+                                <div class="attr variable">
+            <span class="name">criado_em</span><span class="annotation">: datetime.datetime</span>
+
+        
+    </div>
+    <a class="headerlink" href="#PedidoConcluido.criado_em"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="ItemEstoque">
+                            <input id="ItemEstoque-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ItemEstoque</span><wbr>(<span class="base">typing.TypedDict</span>):
+
+                <label class="view-source-button" for="ItemEstoque-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ItemEstoque"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ItemEstoque-91"><a href="#ItemEstoque-91"><span class="linenos">91</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ItemEstoque-92"><a href="#ItemEstoque-92"><span class="linenos">92</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação pública de um reservatório no contrato da API.&quot;&quot;&quot;</span>
+</span><span id="ItemEstoque-93"><a href="#ItemEstoque-93"><span class="linenos">93</span></a>
+</span><span id="ItemEstoque-94"><a href="#ItemEstoque-94"><span class="linenos">94</span></a>    <span class="n">item</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="ItemEstoque-95"><a href="#ItemEstoque-95"><span class="linenos">95</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="ItemEstoque-96"><a href="#ItemEstoque-96"><span class="linenos">96</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="ItemEstoque-97"><a href="#ItemEstoque-97"><span class="linenos">97</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Situação pública de um reservatório no contrato da API.</p>
+</div>
+
+
+                            <div id="ItemEstoque.item" class="classattr">
+                                <div class="attr variable">
+            <span class="name">item</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.item"></a>
+    
+    
+
+                            </div>
+                            <div id="ItemEstoque.atual" class="classattr">
+                                <div class="attr variable">
+            <span class="name">atual</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.atual"></a>
+    
+    
+
+                            </div>
+                            <div id="ItemEstoque.capacidade" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capacidade</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.capacidade"></a>
+    
+    
+
+                            </div>
+                            <div id="ItemEstoque.nivel_baixo" class="classattr">
+                                <div class="attr variable">
+            <span class="name">nivel_baixo</span><span class="annotation">: bool</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.nivel_baixo"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="ResultadoEstoque">
+                            <input id="ResultadoEstoque-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ResultadoEstoque</span><wbr>(<span class="base">typing.TypedDict</span>):
+
+                <label class="view-source-button" for="ResultadoEstoque-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ResultadoEstoque"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoEstoque-100"><a href="#ResultadoEstoque-100"><span class="linenos">100</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoEstoque</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ResultadoEstoque-101"><a href="#ResultadoEstoque-101"><span class="linenos">101</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo devolvido ao operador.&quot;&quot;&quot;</span>
+</span><span id="ResultadoEstoque-102"><a href="#ResultadoEstoque-102"><span class="linenos">102</span></a>
+</span><span id="ResultadoEstoque-103"><a href="#ResultadoEstoque-103"><span class="linenos">103</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Estoque completo devolvido ao operador.</p>
+</div>
+
+
+                            <div id="ResultadoEstoque.reservatorios" class="classattr">
+                                <div class="attr variable">
+            <span class="name">reservatorios</span><span class="annotation">: list[<a href="#ItemEstoque">ItemEstoque</a>]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoEstoque.reservatorios"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="ResultadoReabastecimento">
+                            <input id="ResultadoReabastecimento-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ResultadoReabastecimento</span><wbr>(<span class="base">typing.TypedDict</span>):
+
+                <label class="view-source-button" for="ResultadoReabastecimento-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ResultadoReabastecimento"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoReabastecimento-106"><a href="#ResultadoReabastecimento-106"><span class="linenos">106</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoReabastecimento</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ResultadoReabastecimento-107"><a href="#ResultadoReabastecimento-107"><span class="linenos">107</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.&quot;&quot;&quot;</span>
+</span><span id="ResultadoReabastecimento-108"><a href="#ResultadoReabastecimento-108"><span class="linenos">108</span></a>
+</span><span id="ResultadoReabastecimento-109"><a href="#ResultadoReabastecimento-109"><span class="linenos">109</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Reservatório atualizado após o reabastecimento.</p>
+</div>
+
+
+                            <div id="ResultadoReabastecimento.item" class="classattr">
+                                <div class="attr variable">
+            <span class="name">item</span><span class="annotation">: <a href="#ItemEstoque">ItemEstoque</a></span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoReabastecimento.item"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="VendaPorBebida">
+                            <input id="VendaPorBebida-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">VendaPorBebida</span><wbr>(<span class="base">typing.TypedDict</span>):
+
+                <label class="view-source-button" for="VendaPorBebida-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#VendaPorBebida"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="VendaPorBebida-112"><a href="#VendaPorBebida-112"><span class="linenos">112</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VendaPorBebida</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="VendaPorBebida-113"><a href="#VendaPorBebida-113"><span class="linenos">113</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consolidado de uma bebida no relatório.&quot;&quot;&quot;</span>
+</span><span id="VendaPorBebida-114"><a href="#VendaPorBebida-114"><span class="linenos">114</span></a>
+</span><span id="VendaPorBebida-115"><a href="#VendaPorBebida-115"><span class="linenos">115</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="VendaPorBebida-116"><a href="#VendaPorBebida-116"><span class="linenos">116</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="VendaPorBebida-117"><a href="#VendaPorBebida-117"><span class="linenos">117</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="VendaPorBebida-118"><a href="#VendaPorBebida-118"><span class="linenos">118</span></a>    <span class="n">faturamento</span><span class="p">:</span> <span class="nb">float</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Consolidado de uma bebida no relatório.</p>
+</div>
+
+
+                            <div id="VendaPorBebida.produto_id" class="classattr">
+                                <div class="attr variable">
+            <span class="name">produto_id</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VendaPorBebida.produto_id"></a>
+    
+    
+
+                            </div>
+                            <div id="VendaPorBebida.nome" class="classattr">
+                                <div class="attr variable">
+            <span class="name">nome</span><span class="annotation">: str</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VendaPorBebida.nome"></a>
+    
+    
+
+                            </div>
+                            <div id="VendaPorBebida.quantidade" class="classattr">
+                                <div class="attr variable">
+            <span class="name">quantidade</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VendaPorBebida.quantidade"></a>
+    
+    
+
+                            </div>
+                            <div id="VendaPorBebida.faturamento" class="classattr">
+                                <div class="attr variable">
+            <span class="name">faturamento</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#VendaPorBebida.faturamento"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="ResultadoRelatorio">
+                            <input id="ResultadoRelatorio-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ResultadoRelatorio</span><wbr>(<span class="base">typing.TypedDict</span>):
+
+                <label class="view-source-button" for="ResultadoRelatorio-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ResultadoRelatorio-121"><a href="#ResultadoRelatorio-121"><span class="linenos">121</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultadoRelatorio</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+</span><span id="ResultadoRelatorio-122"><a href="#ResultadoRelatorio-122"><span class="linenos">122</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Relatório consolidado de vendas do período.&quot;&quot;&quot;</span>
+</span><span id="ResultadoRelatorio-123"><a href="#ResultadoRelatorio-123"><span class="linenos">123</span></a>
+</span><span id="ResultadoRelatorio-124"><a href="#ResultadoRelatorio-124"><span class="linenos">124</span></a>    <span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="ResultadoRelatorio-125"><a href="#ResultadoRelatorio-125"><span class="linenos">125</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span>
+</span><span id="ResultadoRelatorio-126"><a href="#ResultadoRelatorio-126"><span class="linenos">126</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="ResultadoRelatorio-127"><a href="#ResultadoRelatorio-127"><span class="linenos">127</span></a>    <span class="n">faturamento_total</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="ResultadoRelatorio-128"><a href="#ResultadoRelatorio-128"><span class="linenos">128</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Relatório consolidado de vendas do período.</p>
+</div>
+
+
+                            <div id="ResultadoRelatorio.inicio" class="classattr">
+                                <div class="attr variable">
+            <span class="name">inicio</span><span class="annotation">: datetime.datetime</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio.inicio"></a>
+    
+    
+
+                            </div>
+                            <div id="ResultadoRelatorio.fim" class="classattr">
+                                <div class="attr variable">
+            <span class="name">fim</span><span class="annotation">: datetime.datetime</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio.fim"></a>
+    
+    
+
+                            </div>
+                            <div id="ResultadoRelatorio.total_pedidos" class="classattr">
+                                <div class="attr variable">
+            <span class="name">total_pedidos</span><span class="annotation">: int</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio.total_pedidos"></a>
+    
+    
+
+                            </div>
+                            <div id="ResultadoRelatorio.faturamento_total" class="classattr">
+                                <div class="attr variable">
+            <span class="name">faturamento_total</span><span class="annotation">: float</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio.faturamento_total"></a>
+    
+    
+
+                            </div>
+                            <div id="ResultadoRelatorio.por_bebida" class="classattr">
+                                <div class="attr variable">
+            <span class="name">por_bebida</span><span class="annotation">: list[<a href="#VendaPorBebida">VendaPorBebida</a>]</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ResultadoRelatorio.por_bebida"></a>
+    
+    
+
+                            </div>
+                </section>
+                <section id="normalizar_utc">
+                            <input id="normalizar_utc-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">normalizar_utc</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">valor</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span></span><span class="return-annotation">) -> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>:</span></span>
+
+                <label class="view-source-button" for="normalizar_utc-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#normalizar_utc"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="normalizar_utc-131"><a href="#normalizar_utc-131"><span class="linenos">131</span></a><span class="k">def</span><span class="w"> </span><span class="nf">normalizar_utc</span><span class="p">(</span><span class="n">valor</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
+</span><span id="normalizar_utc-132"><a href="#normalizar_utc-132"><span class="linenos">132</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Interpreta datas sem fuso como UTC e converte as demais para UTC.</span>
+</span><span id="normalizar_utc-133"><a href="#normalizar_utc-133"><span class="linenos">133</span></a>
+</span><span id="normalizar_utc-134"><a href="#normalizar_utc-134"><span class="linenos">134</span></a><span class="sd">    Args:</span>
+</span><span id="normalizar_utc-135"><a href="#normalizar_utc-135"><span class="linenos">135</span></a><span class="sd">        valor: Data/hora recebida ou persistida.</span>
+</span><span id="normalizar_utc-136"><a href="#normalizar_utc-136"><span class="linenos">136</span></a>
+</span><span id="normalizar_utc-137"><a href="#normalizar_utc-137"><span class="linenos">137</span></a><span class="sd">    Returns:</span>
+</span><span id="normalizar_utc-138"><a href="#normalizar_utc-138"><span class="linenos">138</span></a><span class="sd">        Data/hora com fuso UTC, própria para comparação consistente.</span>
+</span><span id="normalizar_utc-139"><a href="#normalizar_utc-139"><span class="linenos">139</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="normalizar_utc-140"><a href="#normalizar_utc-140"><span class="linenos">140</span></a>    <span class="k">if</span> <span class="n">valor</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="normalizar_utc-141"><a href="#normalizar_utc-141"><span class="linenos">141</span></a>        <span class="k">return</span> <span class="n">valor</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span id="normalizar_utc-142"><a href="#normalizar_utc-142"><span class="linenos">142</span></a>    <span class="k">return</span> <span class="n">valor</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Interpreta datas sem fuso como UTC e converte as demais para UTC.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>valor:</strong>  Data/hora recebida ou persistida.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Data/hora com fuso UTC, própria para comparação consistente.</p>
+</blockquote>
+</div>
+
+
                 </section>
     </main>
 <script>

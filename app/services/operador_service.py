@@ -1,8 +1,16 @@
-"""Serviços de manutenção e limpeza e contrato de autenticação do operador."""
+"""Serviços de autenticação, manutenção e limpeza do operador."""
 
 from __future__ import annotations
 
-from app.core.exceptions import EstadoInvalidoError, OperacaoInvalidaError
+from secrets import compare_digest
+
+from app.core.config import credenciais_operador, token_operador
+from app.core.exceptions import (
+    ConfiguracaoIndisponivelError,
+    CredenciaisInvalidasError,
+    EstadoInvalidoError,
+    OperacaoInvalidaError,
+)
 from app.core.modelos import EstadoMaquina, ResultadoLimpeza, ResultadoManutencao
 from app.repositories.operador_repository import transacao
 
@@ -24,9 +32,20 @@ def autenticar(usuario: str, senha: str) -> str:
 
     Raises:
         CredenciaisInvalidasError: Se usuário ou senha não conferirem.
-        NotImplementedError: Enquanto a regra de negócio não for implementada.
+        ConfiguracaoIndisponivelError: Se as variáveis de autenticação estiverem ausentes.
     """
-    raise NotImplementedError("operador_service.autenticar ainda não foi implementado.")
+    if not isinstance(usuario, str) or not isinstance(senha, str) or not usuario or not senha:
+        raise CredenciaisInvalidasError("Usuário ou senha inválidos.")
+    try:
+        usuario_configurado, senha_configurada = credenciais_operador()
+        token = token_operador()
+    except RuntimeError as exc:
+        raise ConfiguracaoIndisponivelError("Autenticação do operador não configurada.") from exc
+    usuario_ok = compare_digest(usuario.encode("utf-8"), usuario_configurado.encode("utf-8"))
+    senha_ok = compare_digest(senha.encode("utf-8"), senha_configurada.encode("utf-8"))
+    if not (usuario_ok and senha_ok):
+        raise CredenciaisInvalidasError("Usuário ou senha inválidos.")
+    return token
 
 
 def alterar_manutencao(acao: str) -> ResultadoManutencao:

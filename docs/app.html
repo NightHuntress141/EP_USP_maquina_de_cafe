@@ -80,10 +80,11 @@ A máquina física é apenas um cliente: toda a inteligência (cardápio, estoqu
 pagamento, preparo e manutenção) reside nesta API.</p>
 
 <blockquote>
-  <p><strong>Escopo atual:</strong> controllers de cliente e operador, mais serviços reais de
-  alteração de preço, manutenção e limpeza com SQLite. Os demais serviços são
-  contratos (<code>NotImplementedError</code>) e suas rotas ainda não funcionam sem mocks.
-  A aplicação não deve ser apresentada como um backend completo.</p>
+  <p><strong>Escopo atual:</strong> controllers de cliente e operador, com serviços reais de
+  alteração de preço, manutenção, limpeza, estoque, relatório e login do
+  operador usando SQLite. Os serviços de cliente (crédito, pedidos, listagem de
+  produtos e status) continuam como contratos (<code>NotImplementedError</code>). A
+  aplicação não deve ser apresentada como um backend completo.</p>
 </blockquote>
 
 <h2 id="arquitetura-em-camadas">Arquitetura em camadas</h2>
@@ -117,7 +118,10 @@ pagamento, preparo e manutenção) reside nesta API.</p>
 tests/
 ├── conftest.py
 ├── test_api_client.py
-└── test_api_operator.py
+├── test_api_operator.py
+├── test_regressoes.py
+├── test_services_operador.py
+└── test_servicos_estoque_relatorio.py
 </code></pre>
 
 <p>A camada de <strong>API</strong> apenas valida entradas (Pydantic), delega aos <strong>serviços</strong> e
@@ -309,6 +313,21 @@ períodos com <code>inicio &gt; fim</code> são recusados com HTTP 400.</p>
   <td>401</td>
   <td><code>NAO_AUTORIZADO</code></td>
 </tr>
+<tr>
+  <td>Autenticação do operador não configurada</td>
+  <td>503</td>
+  <td><code>SERVICO_INDISPONIVEL</code></td>
+</tr>
+<tr>
+  <td>Banco ausente, não inicializado ou temporariamente bloqueado</td>
+  <td>503</td>
+  <td><code>BANCO_INDISPONIVEL</code></td>
+</tr>
+<tr>
+  <td>Falha interna de persistência</td>
+  <td>500</td>
+  <td><code>ERRO_INTERNO</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -325,7 +344,9 @@ python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </
 pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 
 <span class="c1"># 3. Configurar autenticação e inicializar um banco novo</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_TOKEN</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import secrets; print(secrets.token_urlsafe(32))'</span><span class="k">)</span><span class="s2">"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_USER</span><span class="o">=</span><span class="s2">&quot;operador&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import secrets; print(secrets.token_urlsafe(24))&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import secrets; print(secrets.token_urlsafe(32))&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
 python<span class="w"> </span>-m<span class="w"> </span><a href="app/repositories/database.html">app.repositories.database</a><span class="w"> </span>init
 
 <span class="c1"># 4. Subir a API</span>
@@ -424,21 +445,21 @@ variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</cod
 <thead>
 <tr>
   <th>Variável</th>
-  <th>Padrão de desenvolvimento</th>
+  <th>Configuração</th>
 </tr>
 </thead>
 <tbody>
 <tr>
   <td><code>OPERATOR_USER</code></td>
-  <td>definir ao implementar login</td>
+  <td>usuário do operador, obrigatório e sem padrão público</td>
 </tr>
 <tr>
   <td><code>OPERATOR_PASSWORD</code></td>
-  <td>definir ao implementar login, sem senha pública</td>
+  <td>senha do operador, obrigatória e sem padrão público</td>
 </tr>
 <tr>
   <td><code>OPERATOR_TOKEN</code></td>
-  <td>obrigatório, sem padrão</td>
+  <td>segredo Bearer obrigatório, sem padrão público</td>
 </tr>
 </tbody>
 </table>
@@ -446,9 +467,10 @@ variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</cod
 <p>A validação do token é feita pela dependência <code>get_current_operator</code> em
 <code>app/api/deps.py</code>. No Swagger (<code>/docs</code>), use o botão <strong>Authorize</strong> e informe o
 token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
-retornam HTTP 401 com <code>erro = "NAO_AUTORIZADO"</code>. A API recusa iniciar sem
-<code>OPERATOR_TOKEN</code> ou com banco não inicializado/migrado. O login ainda é um
-contrato pendente; por enquanto configure o Bearer diretamente.</p>
+retornam HTTP 401 com <code>erro = "NAO_AUTORIZADO"</code>. A API recusa iniciar sem as três
+variáveis de autenticação ou com banco não inicializado/migrado. O login compara
+usuário e senha com <code>secrets.compare_digest</code> e devolve exatamente o
+<code>OPERATOR_TOKEN</code> aceito pelo Bearer.</p>
 
 <h2 id="decisoes-tecnicas">Decisões técnicas</h2>
 
@@ -494,12 +516,22 @@ exponha a API somente por HTTPS.</li>
 </ul>
 
 <p>A limpeza exige MANUTENCAO e mantém esse estado. SAIR devolve PRONTA se o contador
-for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. Reabastecimento de
-COPOS aceita somente unidades inteiras; os demais insumos preservam suas unidades.</p>
+for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. O alerta de estoque
+usa <code>quantidade_atual &lt;= nivel_alerta</code>. O reabastecimento preserva as unidades do
+seed (ml, g e un); como o schema atual declara quantidades inteiras e não há
+migração acordada para unidades menores, frações são recusadas pelo serviço em
+vez de truncadas ou arredondadas silenciosamente.</p>
 
-<p>Os testes incluem HTTP com banco real, rollback de limpeza, concorrência,
-migração com referências e validação de configuração. Não substituem teste de
-implantação nem a implementação das regras de crédito, pedido e estoque pendentes.</p>
+<p>O relatório de vendas usa <code>pedido.criado_em</code> como instante da venda, pois o
+schema não possui <code>finalizado_em</code>; uma conclusão real exigirá coluna/migração e
+integração com o serviço de pedidos. Datas sem fuso são interpretadas como UTC e
+as comparações são feitas em UTC. O faturamento usa o <code>preco_cobrado</code> histórico,
+acumulado em centavos inteiros com Decimal, sem <code>SUM</code> de floats.</p>
+
+<p>Os testes incluem HTTP com banco real, rollback, concorrência de reabastecimento,
+migração com referências, estoque, relatório, login e validação de configuração.
+Não substituem teste de implantação nem a implementação das regras de crédito,
+pedido, listagem de produtos e status do cliente.</p>
 
 <h3 id="verificacoes-de-desenvolvimento">Verificações de desenvolvimento</h3>
 
@@ -521,12 +553,12 @@ A auditoria consulta avisos conhecidos e não comprova ausência de vulnerabilid
 
                         <label class="view-source-button" for="mod-app-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">"""API REST de uma Máquina de Café.</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;API REST de uma Máquina de Café.</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">.. include:: ../README.md</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="sd">"""</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">"0.1.0"</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
 </span></pre></div>
 
 

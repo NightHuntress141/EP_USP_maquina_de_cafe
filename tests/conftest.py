@@ -18,3 +18,5 @@ def client() -> TestClient:
 def configurar_token(monkeypatch: pytest.MonkeyPatch) -> None:
     """Isola a configuração dos testes sem depender do ambiente do desenvolvedor."""
     monkeypatch.setenv("OPERATOR_TOKEN", "test-token")
+    monkeypatch.setenv("OPERATOR_USER", "operador")
+    monkeypatch.setenv("OPERATOR_PASSWORD", "senha-teste")

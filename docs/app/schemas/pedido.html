@@ -107,7 +107,7 @@
 
                         <label class="view-source-button" for="mod-pedido-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""DTOs de pedido (RN02 a RN05)."""</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;DTOs de pedido (RN02 a RN05).&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
@@ -120,35 +120,35 @@
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusPedido</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">"""Ciclo de vida de um pedido (RN04/RN05)."""</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Ciclo de vida de um pedido (RN04/RN05).&quot;&quot;&quot;</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="n">EM_PREPARO</span> <span class="o">=</span> <span class="s2">"EM_PREPARO"</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="n">CONCLUIDO</span> <span class="o">=</span> <span class="s2">"CONCLUIDO"</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="n">CANCELADO</span> <span class="o">=</span> <span class="s2">"CANCELADO"</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="n">EM_PREPARO</span> <span class="o">=</span> <span class="s2">&quot;EM_PREPARO&quot;</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="n">CONCLUIDO</span> <span class="o">=</span> <span class="s2">&quot;CONCLUIDO&quot;</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="n">CANCELADO</span> <span class="o">=</span> <span class="s2">&quot;CANCELADO&quot;</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="w">    </span><span class="sd">"""Corpo da requisição de criação de pedido.</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de criação de pedido.</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
 </span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">    Attributes:</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        produto_id: Identificador da bebida desejada.</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        acucar: Número de porções de açúcar (0 a 3, sem custo adicional, RN02).</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">    """</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="p">)</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>        <span class="mi">0</span><span class="p">,</span>
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>        <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>        <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">"Porções de açúcar de 5 g (0 a 3, sem custo adicional)."</span><span class="p">,</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Porções de açúcar de 5 g (0 a 3, sem custo adicional).&quot;</span><span class="p">,</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="p">)</span>
 </span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
 </span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">"""Representação de um pedido criado ou consultado.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Representação de um pedido criado ou consultado.</span>
 </span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
 </span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">    Attributes:</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="sd">        id: Identificador do pedido.</span>
@@ -158,24 +158,24 @@
 </span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a><span class="sd">        preco: Preço cobrado pela bebida.</span>
 </span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="sd">        credito_restante: Crédito disponível após a cobrança.</span>
 </span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        previsao_termino: Horário previsto de conclusão do preparo, quando aplicável.</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">    """</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador do pedido."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    <span class="n">produto</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nome da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cappuccino"</span><span class="p">])</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Porções de açúcar."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador do pedido.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    <span class="n">produto</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Porções de açúcar.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>    <span class="n">status</span><span class="p">:</span> <span class="n">StatusPedido</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Situação atual do pedido."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"EM_PREPARO"</span><span class="p">]</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação atual do pedido.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EM_PREPARO&quot;</span><span class="p">]</span>
 </span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>    <span class="p">)</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Preço cobrado pela bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="n">credito_restante</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Crédito após a cobrança."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">3.50</span><span class="p">])</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço cobrado pela bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="n">credito_restante</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Crédito após a cobrança.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">3.50</span><span class="p">])</span>
 </span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>    <span class="n">previsao_termino</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
 </span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="kc">None</span><span class="p">,</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">"Horário previsto de término do preparo."</span><span class="p">,</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-10T14:30:12"</span><span class="p">],</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Horário previsto de término do preparo.&quot;</span><span class="p">,</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-10T14:30:12&quot;</span><span class="p">],</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>    <span class="p">)</span>
 </span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>
 </span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PedidoRequest"</span><span class="p">,</span> <span class="s2">"PedidoResponse"</span><span class="p">,</span> <span class="s2">"StatusPedido"</span><span class="p">]</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PedidoRequest&quot;</span><span class="p">,</span> <span class="s2">&quot;PedidoResponse&quot;</span><span class="p">,</span> <span class="s2">&quot;StatusPedido&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -183,7 +183,7 @@
                 <section id="PedidoRequest">
                             <input id="PedidoRequest-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">PedidoRequest</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
 
@@ -192,21 +192,21 @@
     </div>
     <a class="headerlink" href="#PedidoRequest"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PedidoRequest-22"><a href="#PedidoRequest-22"><span class="linenos">22</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="PedidoRequest-23"><a href="#PedidoRequest-23"><span class="linenos">23</span></a><span class="w">    </span><span class="sd">"""Corpo da requisição de criação de pedido.</span>
+</span><span id="PedidoRequest-23"><a href="#PedidoRequest-23"><span class="linenos">23</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de criação de pedido.</span>
 </span><span id="PedidoRequest-24"><a href="#PedidoRequest-24"><span class="linenos">24</span></a>
 </span><span id="PedidoRequest-25"><a href="#PedidoRequest-25"><span class="linenos">25</span></a><span class="sd">    Attributes:</span>
 </span><span id="PedidoRequest-26"><a href="#PedidoRequest-26"><span class="linenos">26</span></a><span class="sd">        produto_id: Identificador da bebida desejada.</span>
 </span><span id="PedidoRequest-27"><a href="#PedidoRequest-27"><span class="linenos">27</span></a><span class="sd">        acucar: Número de porções de açúcar (0 a 3, sem custo adicional, RN02).</span>
-</span><span id="PedidoRequest-28"><a href="#PedidoRequest-28"><span class="linenos">28</span></a><span class="sd">    """</span>
+</span><span id="PedidoRequest-28"><a href="#PedidoRequest-28"><span class="linenos">28</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="PedidoRequest-29"><a href="#PedidoRequest-29"><span class="linenos">29</span></a>
 </span><span id="PedidoRequest-30"><a href="#PedidoRequest-30"><span class="linenos">30</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="PedidoRequest-31"><a href="#PedidoRequest-31"><span class="linenos">31</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+</span><span id="PedidoRequest-31"><a href="#PedidoRequest-31"><span class="linenos">31</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 </span><span id="PedidoRequest-32"><a href="#PedidoRequest-32"><span class="linenos">32</span></a>    <span class="p">)</span>
 </span><span id="PedidoRequest-33"><a href="#PedidoRequest-33"><span class="linenos">33</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
 </span><span id="PedidoRequest-34"><a href="#PedidoRequest-34"><span class="linenos">34</span></a>        <span class="mi">0</span><span class="p">,</span>
 </span><span id="PedidoRequest-35"><a href="#PedidoRequest-35"><span class="linenos">35</span></a>        <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 </span><span id="PedidoRequest-36"><a href="#PedidoRequest-36"><span class="linenos">36</span></a>        <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="PedidoRequest-37"><a href="#PedidoRequest-37"><span class="linenos">37</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">"Porções de açúcar de 5 g (0 a 3, sem custo adicional)."</span><span class="p">,</span>
+</span><span id="PedidoRequest-37"><a href="#PedidoRequest-37"><span class="linenos">37</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Porções de açúcar de 5 g (0 a 3, sem custo adicional).&quot;</span><span class="p">,</span>
 </span><span id="PedidoRequest-38"><a href="#PedidoRequest-38"><span class="linenos">38</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
 </span><span id="PedidoRequest-39"><a href="#PedidoRequest-39"><span class="linenos">39</span></a>    <span class="p">)</span>
 </span></pre></div>
@@ -228,10 +228,10 @@
             <span class="name">produto_id</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoRequest.produto_id"></a>
-
+    
             <div class="docstring"><p>Identificador da bebida.</p>
 </div>
 
@@ -242,10 +242,10 @@
             <span class="name">acucar</span><span class="annotation">: int</span>        =
 <span class="default_value">0</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoRequest.acucar"></a>
-
+    
             <div class="docstring"><p>Porções de açúcar de 5 g (0 a 3, sem custo adicional).</p>
 </div>
 
@@ -255,7 +255,7 @@
                 <section id="PedidoResponse">
                             <input id="PedidoResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">PedidoResponse</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
 
@@ -264,7 +264,7 @@
     </div>
     <a class="headerlink" href="#PedidoResponse"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="PedidoResponse-42"><a href="#PedidoResponse-42"><span class="linenos">42</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PedidoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="PedidoResponse-43"><a href="#PedidoResponse-43"><span class="linenos">43</span></a><span class="w">    </span><span class="sd">"""Representação de um pedido criado ou consultado.</span>
+</span><span id="PedidoResponse-43"><a href="#PedidoResponse-43"><span class="linenos">43</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Representação de um pedido criado ou consultado.</span>
 </span><span id="PedidoResponse-44"><a href="#PedidoResponse-44"><span class="linenos">44</span></a>
 </span><span id="PedidoResponse-45"><a href="#PedidoResponse-45"><span class="linenos">45</span></a><span class="sd">    Attributes:</span>
 </span><span id="PedidoResponse-46"><a href="#PedidoResponse-46"><span class="linenos">46</span></a><span class="sd">        id: Identificador do pedido.</span>
@@ -274,20 +274,20 @@
 </span><span id="PedidoResponse-50"><a href="#PedidoResponse-50"><span class="linenos">50</span></a><span class="sd">        preco: Preço cobrado pela bebida.</span>
 </span><span id="PedidoResponse-51"><a href="#PedidoResponse-51"><span class="linenos">51</span></a><span class="sd">        credito_restante: Crédito disponível após a cobrança.</span>
 </span><span id="PedidoResponse-52"><a href="#PedidoResponse-52"><span class="linenos">52</span></a><span class="sd">        previsao_termino: Horário previsto de conclusão do preparo, quando aplicável.</span>
-</span><span id="PedidoResponse-53"><a href="#PedidoResponse-53"><span class="linenos">53</span></a><span class="sd">    """</span>
+</span><span id="PedidoResponse-53"><a href="#PedidoResponse-53"><span class="linenos">53</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="PedidoResponse-54"><a href="#PedidoResponse-54"><span class="linenos">54</span></a>
-</span><span id="PedidoResponse-55"><a href="#PedidoResponse-55"><span class="linenos">55</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador do pedido."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</span><span id="PedidoResponse-56"><a href="#PedidoResponse-56"><span class="linenos">56</span></a>    <span class="n">produto</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nome da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cappuccino"</span><span class="p">])</span>
-</span><span id="PedidoResponse-57"><a href="#PedidoResponse-57"><span class="linenos">57</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Porções de açúcar."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span><span id="PedidoResponse-55"><a href="#PedidoResponse-55"><span class="linenos">55</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador do pedido.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="PedidoResponse-56"><a href="#PedidoResponse-56"><span class="linenos">56</span></a>    <span class="n">produto</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="PedidoResponse-57"><a href="#PedidoResponse-57"><span class="linenos">57</span></a>    <span class="n">acucar</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Porções de açúcar.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </span><span id="PedidoResponse-58"><a href="#PedidoResponse-58"><span class="linenos">58</span></a>    <span class="n">status</span><span class="p">:</span> <span class="n">StatusPedido</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="PedidoResponse-59"><a href="#PedidoResponse-59"><span class="linenos">59</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Situação atual do pedido."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"EM_PREPARO"</span><span class="p">]</span>
+</span><span id="PedidoResponse-59"><a href="#PedidoResponse-59"><span class="linenos">59</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação atual do pedido.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;EM_PREPARO&quot;</span><span class="p">]</span>
 </span><span id="PedidoResponse-60"><a href="#PedidoResponse-60"><span class="linenos">60</span></a>    <span class="p">)</span>
-</span><span id="PedidoResponse-61"><a href="#PedidoResponse-61"><span class="linenos">61</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Preço cobrado pela bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
-</span><span id="PedidoResponse-62"><a href="#PedidoResponse-62"><span class="linenos">62</span></a>    <span class="n">credito_restante</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Crédito após a cobrança."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">3.50</span><span class="p">])</span>
+</span><span id="PedidoResponse-61"><a href="#PedidoResponse-61"><span class="linenos">61</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço cobrado pela bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
+</span><span id="PedidoResponse-62"><a href="#PedidoResponse-62"><span class="linenos">62</span></a>    <span class="n">credito_restante</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Crédito após a cobrança.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">3.50</span><span class="p">])</span>
 </span><span id="PedidoResponse-63"><a href="#PedidoResponse-63"><span class="linenos">63</span></a>    <span class="n">previsao_termino</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
 </span><span id="PedidoResponse-64"><a href="#PedidoResponse-64"><span class="linenos">64</span></a>        <span class="kc">None</span><span class="p">,</span>
-</span><span id="PedidoResponse-65"><a href="#PedidoResponse-65"><span class="linenos">65</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">"Horário previsto de término do preparo."</span><span class="p">,</span>
-</span><span id="PedidoResponse-66"><a href="#PedidoResponse-66"><span class="linenos">66</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-10T14:30:12"</span><span class="p">],</span>
+</span><span id="PedidoResponse-65"><a href="#PedidoResponse-65"><span class="linenos">65</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Horário previsto de término do preparo.&quot;</span><span class="p">,</span>
+</span><span id="PedidoResponse-66"><a href="#PedidoResponse-66"><span class="linenos">66</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-10T14:30:12&quot;</span><span class="p">],</span>
 </span><span id="PedidoResponse-67"><a href="#PedidoResponse-67"><span class="linenos">67</span></a>    <span class="p">)</span>
 </span></pre></div>
 
@@ -313,10 +313,10 @@
             <span class="name">id</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.id"></a>
-
+    
             <div class="docstring"><p>Identificador do pedido.</p>
 </div>
 
@@ -327,10 +327,10 @@
             <span class="name">produto</span><span class="annotation">: str</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.produto"></a>
-
+    
             <div class="docstring"><p>Nome da bebida.</p>
 </div>
 
@@ -341,10 +341,10 @@
             <span class="name">acucar</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.acucar"></a>
-
+    
             <div class="docstring"><p>Porções de açúcar.</p>
 </div>
 
@@ -355,10 +355,10 @@
             <span class="name">status</span><span class="annotation">: <a href="#StatusPedido">StatusPedido</a></span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.status"></a>
-
+    
             <div class="docstring"><p>Situação atual do pedido.</p>
 </div>
 
@@ -369,10 +369,10 @@
             <span class="name">preco</span><span class="annotation">: float</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.preco"></a>
-
+    
             <div class="docstring"><p>Preço cobrado pela bebida.</p>
 </div>
 
@@ -383,10 +383,10 @@
             <span class="name">credito_restante</span><span class="annotation">: float</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.credito_restante"></a>
-
+    
             <div class="docstring"><p>Crédito após a cobrança.</p>
 </div>
 
@@ -397,10 +397,10 @@
             <span class="name">previsao_termino</span><span class="annotation">: datetime.datetime | None</span>        =
 <span class="default_value">None</span>
 
-
+        
     </div>
     <a class="headerlink" href="#PedidoResponse.previsao_termino"></a>
-
+    
             <div class="docstring"><p>Horário previsto de término do preparo.</p>
 </div>
 
@@ -410,7 +410,7 @@
                 <section id="StatusPedido">
                             <input id="StatusPedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">StatusPedido</span><wbr>(<span class="base">builtins.str</span>, <span class="base">enum.Enum</span>):
 
@@ -419,11 +419,11 @@
     </div>
     <a class="headerlink" href="#StatusPedido"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="StatusPedido-14"><a href="#StatusPedido-14"><span class="linenos">14</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusPedido</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="StatusPedido-15"><a href="#StatusPedido-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">"""Ciclo de vida de um pedido (RN04/RN05)."""</span>
+</span><span id="StatusPedido-15"><a href="#StatusPedido-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Ciclo de vida de um pedido (RN04/RN05).&quot;&quot;&quot;</span>
 </span><span id="StatusPedido-16"><a href="#StatusPedido-16"><span class="linenos">16</span></a>
-</span><span id="StatusPedido-17"><a href="#StatusPedido-17"><span class="linenos">17</span></a>    <span class="n">EM_PREPARO</span> <span class="o">=</span> <span class="s2">"EM_PREPARO"</span>
-</span><span id="StatusPedido-18"><a href="#StatusPedido-18"><span class="linenos">18</span></a>    <span class="n">CONCLUIDO</span> <span class="o">=</span> <span class="s2">"CONCLUIDO"</span>
-</span><span id="StatusPedido-19"><a href="#StatusPedido-19"><span class="linenos">19</span></a>    <span class="n">CANCELADO</span> <span class="o">=</span> <span class="s2">"CANCELADO"</span>
+</span><span id="StatusPedido-17"><a href="#StatusPedido-17"><span class="linenos">17</span></a>    <span class="n">EM_PREPARO</span> <span class="o">=</span> <span class="s2">&quot;EM_PREPARO&quot;</span>
+</span><span id="StatusPedido-18"><a href="#StatusPedido-18"><span class="linenos">18</span></a>    <span class="n">CONCLUIDO</span> <span class="o">=</span> <span class="s2">&quot;CONCLUIDO&quot;</span>
+</span><span id="StatusPedido-19"><a href="#StatusPedido-19"><span class="linenos">19</span></a>    <span class="n">CANCELADO</span> <span class="o">=</span> <span class="s2">&quot;CANCELADO&quot;</span>
 </span></pre></div>
 
 
@@ -436,11 +436,11 @@
             <span class="name">EM_PREPARO</span>        =
 <span class="default_value">&lt;<a href="#StatusPedido.EM_PREPARO">StatusPedido.EM_PREPARO</a>: &#39;EM_PREPARO&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#StatusPedido.EM_PREPARO"></a>
-
-
+    
+    
 
                             </div>
                             <div id="StatusPedido.CONCLUIDO" class="classattr">
@@ -448,11 +448,11 @@
             <span class="name">CONCLUIDO</span>        =
 <span class="default_value">&lt;<a href="#StatusPedido.CONCLUIDO">StatusPedido.CONCLUIDO</a>: &#39;CONCLUIDO&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#StatusPedido.CONCLUIDO"></a>
-
-
+    
+    
 
                             </div>
                             <div id="StatusPedido.CANCELADO" class="classattr">
@@ -460,11 +460,11 @@
             <span class="name">CANCELADO</span>        =
 <span class="default_value">&lt;<a href="#StatusPedido.CANCELADO">StatusPedido.CANCELADO</a>: &#39;CANCELADO&#39;&gt;</span>
 
-
+        
     </div>
     <a class="headerlink" href="#StatusPedido.CANCELADO"></a>
-
-
+    
+    
 
                             </div>
                 </section>

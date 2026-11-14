@@ -92,7 +92,7 @@
 
                         <label class="view-source-button" for="mod-relatorio-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""DTOs do relatório de vendas (RN12)."""</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;DTOs do relatório de vendas (RN12).&quot;&quot;&quot;</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
@@ -102,25 +102,25 @@
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VendaPorBebida</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">"""Consolidado de vendas de uma bebida no período.</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consolidado de vendas de uma bebida no período.</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">    Attributes:</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">        produto_id: Identificador da bebida.</span>
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        quantidade: Quantidade de pedidos concluídos no período.</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        faturamento: Faturamento gerado pela bebida no período.</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    """</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nome da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cappuccino"</span><span class="p">])</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Pedidos concluídos no período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pedidos concluídos no período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="n">faturamento</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Faturamento da bebida no período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">78.0</span><span class="p">]</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Faturamento da bebida no período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">78.0</span><span class="p">]</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="p">)</span>
 </span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
 </span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="k">class</span><span class="w"> </span><span class="nc">RelatorioResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">"""Relatório de vendas do período solicitado (RN12).</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Relatório de vendas do período solicitado (RN12).</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">    Attributes:</span>
 </span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="sd">        inicio: Início do período consultado.</span>
@@ -128,20 +128,20 @@
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">        total_pedidos: Total de pedidos concluídos no período.</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        faturamento_total: Faturamento total do período.</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        por_bebida: Consolidado por bebida.</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">    """</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
 </span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Início do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-01T00:00:00"</span><span class="p">]</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Início do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-01T00:00:00&quot;</span><span class="p">]</span>
 </span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>    <span class="p">)</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Fim do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-31T23:59:59"</span><span class="p">])</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Total de pedidos concluídos."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">])</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Fim do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-31T23:59:59&quot;</span><span class="p">])</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total de pedidos concluídos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">])</span>
 </span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="n">faturamento_total</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Faturamento total do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">273.0</span><span class="p">]</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Faturamento total do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">273.0</span><span class="p">]</span>
 </span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="p">)</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Consolidado por bebida."</span><span class="p">)</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Consolidado por bebida.&quot;</span><span class="p">)</span>
 </span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>
 </span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RelatorioResponse"</span><span class="p">,</span> <span class="s2">"VendaPorBebida"</span><span class="p">]</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;RelatorioResponse&quot;</span><span class="p">,</span> <span class="s2">&quot;VendaPorBebida&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -149,7 +149,7 @@
                 <section id="RelatorioResponse">
                             <input id="RelatorioResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">RelatorioResponse</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
 
@@ -158,7 +158,7 @@
     </div>
     <a class="headerlink" href="#RelatorioResponse"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="RelatorioResponse-29"><a href="#RelatorioResponse-29"><span class="linenos">29</span></a><span class="k">class</span><span class="w"> </span><span class="nc">RelatorioResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="RelatorioResponse-30"><a href="#RelatorioResponse-30"><span class="linenos">30</span></a><span class="w">    </span><span class="sd">"""Relatório de vendas do período solicitado (RN12).</span>
+</span><span id="RelatorioResponse-30"><a href="#RelatorioResponse-30"><span class="linenos">30</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Relatório de vendas do período solicitado (RN12).</span>
 </span><span id="RelatorioResponse-31"><a href="#RelatorioResponse-31"><span class="linenos">31</span></a>
 </span><span id="RelatorioResponse-32"><a href="#RelatorioResponse-32"><span class="linenos">32</span></a><span class="sd">    Attributes:</span>
 </span><span id="RelatorioResponse-33"><a href="#RelatorioResponse-33"><span class="linenos">33</span></a><span class="sd">        inicio: Início do período consultado.</span>
@@ -166,17 +166,17 @@
 </span><span id="RelatorioResponse-35"><a href="#RelatorioResponse-35"><span class="linenos">35</span></a><span class="sd">        total_pedidos: Total de pedidos concluídos no período.</span>
 </span><span id="RelatorioResponse-36"><a href="#RelatorioResponse-36"><span class="linenos">36</span></a><span class="sd">        faturamento_total: Faturamento total do período.</span>
 </span><span id="RelatorioResponse-37"><a href="#RelatorioResponse-37"><span class="linenos">37</span></a><span class="sd">        por_bebida: Consolidado por bebida.</span>
-</span><span id="RelatorioResponse-38"><a href="#RelatorioResponse-38"><span class="linenos">38</span></a><span class="sd">    """</span>
+</span><span id="RelatorioResponse-38"><a href="#RelatorioResponse-38"><span class="linenos">38</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="RelatorioResponse-39"><a href="#RelatorioResponse-39"><span class="linenos">39</span></a>
 </span><span id="RelatorioResponse-40"><a href="#RelatorioResponse-40"><span class="linenos">40</span></a>    <span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="RelatorioResponse-41"><a href="#RelatorioResponse-41"><span class="linenos">41</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Início do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-01T00:00:00"</span><span class="p">]</span>
+</span><span id="RelatorioResponse-41"><a href="#RelatorioResponse-41"><span class="linenos">41</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Início do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-01T00:00:00&quot;</span><span class="p">]</span>
 </span><span id="RelatorioResponse-42"><a href="#RelatorioResponse-42"><span class="linenos">42</span></a>    <span class="p">)</span>
-</span><span id="RelatorioResponse-43"><a href="#RelatorioResponse-43"><span class="linenos">43</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Fim do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"2026-03-31T23:59:59"</span><span class="p">])</span>
-</span><span id="RelatorioResponse-44"><a href="#RelatorioResponse-44"><span class="linenos">44</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Total de pedidos concluídos."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">])</span>
+</span><span id="RelatorioResponse-43"><a href="#RelatorioResponse-43"><span class="linenos">43</span></a>    <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Fim do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2026-03-31T23:59:59&quot;</span><span class="p">])</span>
+</span><span id="RelatorioResponse-44"><a href="#RelatorioResponse-44"><span class="linenos">44</span></a>    <span class="n">total_pedidos</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Total de pedidos concluídos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">42</span><span class="p">])</span>
 </span><span id="RelatorioResponse-45"><a href="#RelatorioResponse-45"><span class="linenos">45</span></a>    <span class="n">faturamento_total</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="RelatorioResponse-46"><a href="#RelatorioResponse-46"><span class="linenos">46</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Faturamento total do período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">273.0</span><span class="p">]</span>
+</span><span id="RelatorioResponse-46"><a href="#RelatorioResponse-46"><span class="linenos">46</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Faturamento total do período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">273.0</span><span class="p">]</span>
 </span><span id="RelatorioResponse-47"><a href="#RelatorioResponse-47"><span class="linenos">47</span></a>    <span class="p">)</span>
-</span><span id="RelatorioResponse-48"><a href="#RelatorioResponse-48"><span class="linenos">48</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Consolidado por bebida."</span><span class="p">)</span>
+</span><span id="RelatorioResponse-48"><a href="#RelatorioResponse-48"><span class="linenos">48</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Consolidado por bebida.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -199,10 +199,10 @@
             <span class="name">inicio</span><span class="annotation">: datetime.datetime</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#RelatorioResponse.inicio"></a>
-
+    
             <div class="docstring"><p>Início do período.</p>
 </div>
 
@@ -213,10 +213,10 @@
             <span class="name">fim</span><span class="annotation">: datetime.datetime</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#RelatorioResponse.fim"></a>
-
+    
             <div class="docstring"><p>Fim do período.</p>
 </div>
 
@@ -227,10 +227,10 @@
             <span class="name">total_pedidos</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#RelatorioResponse.total_pedidos"></a>
-
+    
             <div class="docstring"><p>Total de pedidos concluídos.</p>
 </div>
 
@@ -241,10 +241,10 @@
             <span class="name">faturamento_total</span><span class="annotation">: float</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#RelatorioResponse.faturamento_total"></a>
-
+    
             <div class="docstring"><p>Faturamento total do período.</p>
 </div>
 
@@ -255,10 +255,10 @@
             <span class="name">por_bebida</span><span class="annotation">: list[<a href="#VendaPorBebida">VendaPorBebida</a>]</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#RelatorioResponse.por_bebida"></a>
-
+    
             <div class="docstring"><p>Consolidado por bebida.</p>
 </div>
 
@@ -268,7 +268,7 @@
                 <section id="VendaPorBebida">
                             <input id="VendaPorBebida-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-
+            
     <span class="def">class</span>
     <span class="name">VendaPorBebida</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
 
@@ -277,20 +277,20 @@
     </div>
     <a class="headerlink" href="#VendaPorBebida"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="VendaPorBebida-11"><a href="#VendaPorBebida-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">VendaPorBebida</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="VendaPorBebida-12"><a href="#VendaPorBebida-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">"""Consolidado de vendas de uma bebida no período.</span>
+</span><span id="VendaPorBebida-12"><a href="#VendaPorBebida-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consolidado de vendas de uma bebida no período.</span>
 </span><span id="VendaPorBebida-13"><a href="#VendaPorBebida-13"><span class="linenos">13</span></a>
 </span><span id="VendaPorBebida-14"><a href="#VendaPorBebida-14"><span class="linenos">14</span></a><span class="sd">    Attributes:</span>
 </span><span id="VendaPorBebida-15"><a href="#VendaPorBebida-15"><span class="linenos">15</span></a><span class="sd">        produto_id: Identificador da bebida.</span>
 </span><span id="VendaPorBebida-16"><a href="#VendaPorBebida-16"><span class="linenos">16</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
 </span><span id="VendaPorBebida-17"><a href="#VendaPorBebida-17"><span class="linenos">17</span></a><span class="sd">        quantidade: Quantidade de pedidos concluídos no período.</span>
 </span><span id="VendaPorBebida-18"><a href="#VendaPorBebida-18"><span class="linenos">18</span></a><span class="sd">        faturamento: Faturamento gerado pela bebida no período.</span>
-</span><span id="VendaPorBebida-19"><a href="#VendaPorBebida-19"><span class="linenos">19</span></a><span class="sd">    """</span>
+</span><span id="VendaPorBebida-19"><a href="#VendaPorBebida-19"><span class="linenos">19</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="VendaPorBebida-20"><a href="#VendaPorBebida-20"><span class="linenos">20</span></a>
-</span><span id="VendaPorBebida-21"><a href="#VendaPorBebida-21"><span class="linenos">21</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Identificador da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-</span><span id="VendaPorBebida-22"><a href="#VendaPorBebida-22"><span class="linenos">22</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nome da bebida."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cappuccino"</span><span class="p">])</span>
-</span><span id="VendaPorBebida-23"><a href="#VendaPorBebida-23"><span class="linenos">23</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Pedidos concluídos no período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
+</span><span id="VendaPorBebida-21"><a href="#VendaPorBebida-21"><span class="linenos">21</span></a>    <span class="n">produto_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</span><span id="VendaPorBebida-22"><a href="#VendaPorBebida-22"><span class="linenos">22</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="VendaPorBebida-23"><a href="#VendaPorBebida-23"><span class="linenos">23</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pedidos concluídos no período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
 </span><span id="VendaPorBebida-24"><a href="#VendaPorBebida-24"><span class="linenos">24</span></a>    <span class="n">faturamento</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="VendaPorBebida-25"><a href="#VendaPorBebida-25"><span class="linenos">25</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Faturamento da bebida no período."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">78.0</span><span class="p">]</span>
+</span><span id="VendaPorBebida-25"><a href="#VendaPorBebida-25"><span class="linenos">25</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Faturamento da bebida no período.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">78.0</span><span class="p">]</span>
 </span><span id="VendaPorBebida-26"><a href="#VendaPorBebida-26"><span class="linenos">26</span></a>    <span class="p">)</span>
 </span></pre></div>
 
@@ -313,10 +313,10 @@
             <span class="name">produto_id</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#VendaPorBebida.produto_id"></a>
-
+    
             <div class="docstring"><p>Identificador da bebida.</p>
 </div>
 
@@ -327,10 +327,10 @@
             <span class="name">nome</span><span class="annotation">: str</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#VendaPorBebida.nome"></a>
-
+    
             <div class="docstring"><p>Nome da bebida.</p>
 </div>
 
@@ -341,10 +341,10 @@
             <span class="name">quantidade</span><span class="annotation">: int</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#VendaPorBebida.quantidade"></a>
-
+    
             <div class="docstring"><p>Pedidos concluídos no período.</p>
 </div>
 
@@ -355,10 +355,10 @@
             <span class="name">faturamento</span><span class="annotation">: float</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-
+        
     </div>
     <a class="headerlink" href="#VendaPorBebida.faturamento"></a>
-
+    
             <div class="docstring"><p>Faturamento da bebida no período.</p>
 </div>
 

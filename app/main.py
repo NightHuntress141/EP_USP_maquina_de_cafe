@@ -18,7 +18,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.client import router as client_router
 from app.api.operator import router as operator_router
-from app.core.config import origens_cors, token_operador
+from app.core.config import credenciais_operador, origens_cors, token_operador
 from app.core.exceptions import BusinessError
 from app.repositories.operador_repository import validar_banco
 
@@ -34,6 +34,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         Contexto de execução da API após validar a configuração.
     """
     token_operador()
+    credenciais_operador()
     validar_banco()
     yield
 

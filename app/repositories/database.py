@@ -28,16 +28,26 @@ def inicializar(caminho: Path) -> None:
     # A criação exclusiva evita alterar um banco já existente, inclusive vazio.
     with caminho.open("xb"):
         pass
-    conexao = sqlite3.connect(caminho)
+    conexao: sqlite3.Connection | None = None
     try:
+        conexao = sqlite3.connect(caminho)
         schema = (RAIZ / "database/schema.sql").read_text()
         seed = (RAIZ / "database/seed.sql").read_text()
         conexao.execute("PRAGMA foreign_keys = ON")
         conexao.executescript("BEGIN IMMEDIATE;\n" + schema + "\n" + seed + "\nCOMMIT;")
+    except Exception:
+        # O arquivo foi criado por esta chamada e não existia antes: não deixar
+        # um banco parcial que impeça uma nova tentativa de init.
+        if conexao is not None:
+            conexao.close()
+            conexao = None
+        caminho.unlink(missing_ok=True)
+        raise
     finally:
-        if conexao.in_transaction:
-            conexao.rollback()
-        conexao.close()
+        if conexao is not None:
+            if conexao.in_transaction:
+                conexao.rollback()
+            conexao.close()
 
 
 def migrar(caminho: Path) -> None:

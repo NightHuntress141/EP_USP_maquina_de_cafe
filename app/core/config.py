@@ -20,6 +20,24 @@ def token_operador() -> str:
     return token
 
 
+def credenciais_operador() -> tuple[str, str]:
+    """Obtém as credenciais obrigatórias do login, sem padrão público.
+
+    Returns:
+        Par ``(usuario, senha)`` configurado em OPERATOR_USER e OPERATOR_PASSWORD.
+
+    Raises:
+        RuntimeError: Se usuário ou senha estiverem ausentes ou com espaços de borda.
+    """
+    usuario = os.getenv("OPERATOR_USER", "")
+    senha = os.getenv("OPERATOR_PASSWORD", "")
+    if not usuario or not senha or usuario != usuario.strip() or senha != senha.strip():
+        raise RuntimeError(
+            "Defina OPERATOR_USER e OPERATOR_PASSWORD não vazios e sem espaços de borda."
+        )
+    return usuario, senha
+
+
 def caminho_banco() -> Path:
     """Retorna o caminho absoluto do banco SQLite configurado."""
     return Path(

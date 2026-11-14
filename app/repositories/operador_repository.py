@@ -6,12 +6,30 @@ import logging
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
+from datetime import datetime
+from decimal import Decimal
 
 from app.core.config import caminho_banco, timeout_banco
 from app.core.exceptions import BancoIndisponivelError, PersistenciaError
-from app.core.modelos import EstadoMaquina, Maquina, ProdutoAtualizado
+from app.core.modelos import (
+    EstadoMaquina,
+    Ingrediente,
+    Maquina,
+    PedidoConcluido,
+    ProdutoAtualizado,
+)
 
 logger = logging.getLogger(__name__)
+
+CODIGOS_BANCO_INDISPONIVEL = {
+    sqlite3.SQLITE_BUSY,
+    sqlite3.SQLITE_LOCKED,
+    sqlite3.SQLITE_CANTOPEN,
+    sqlite3.SQLITE_IOERR,
+    sqlite3.SQLITE_NOTADB,
+    sqlite3.SQLITE_PROTOCOL,
+}
+"""Códigos de ``OperationalError`` tratados como indisponibilidade temporária."""
 
 
 class OperadorRepository:
@@ -89,6 +107,103 @@ class OperadorRepository:
             and all(item["quantidade_atual"] >= item["quantidade"] for item in receita),
         }
 
+    def listar_ingredientes(self) -> list[Ingrediente]:
+        """Lista os reservatórios e insumos em ordem determinística por ID.
+
+        Returns:
+            Ingredientes mapeados para o domínio, na unidade do seed.
+        """
+        linhas = self._conexao.execute(
+            "SELECT id, codigo, unidade, quantidade_atual, capacidade_maxima, nivel_alerta "
+            "FROM ingrediente ORDER BY id"
+        ).fetchall()
+        return [self._ingrediente(linha) for linha in linhas]
+
+    def obter_ingrediente(self, codigo: str) -> Ingrediente | None:
+        """Consulta um ingrediente pelo código interno do banco.
+
+        Args:
+            codigo: Código em maiúsculas, já validado pelo serviço.
+
+        Returns:
+            Ingrediente encontrado, ou None quando não cadastrado.
+        """
+        linha = self._conexao.execute(
+            "SELECT id, codigo, unidade, quantidade_atual, capacidade_maxima, nivel_alerta "
+            "FROM ingrediente WHERE codigo = ?",
+            (codigo,),
+        ).fetchone()
+        return None if linha is None else self._ingrediente(linha)
+
+    @staticmethod
+    def _ingrediente(linha: sqlite3.Row) -> Ingrediente:
+        """Mapeia uma linha de ingrediente para o domínio."""
+        return Ingrediente(
+            id=linha["id"],
+            codigo=linha["codigo"],
+            unidade=linha["unidade"],
+            quantidade_atual=linha["quantidade_atual"],
+            capacidade_maxima=linha["capacidade_maxima"],
+            nivel_alerta=linha["nivel_alerta"],
+        )
+
+    def atualizar_estoque(self, ingrediente_id: int, quantidade: int) -> None:
+        """Persiste a quantidade validada de um reservatório.
+
+        Args:
+            ingrediente_id: Identificador do ingrediente.
+            quantidade: Nova quantidade, já convertida para inteiro.
+        """
+        self._conexao.execute(
+            "UPDATE ingrediente SET quantidade_atual = ? WHERE id = ?",
+            (quantidade, ingrediente_id),
+        )
+
+    def registrar_reabastecimento(self, ingrediente_id: int, quantidade: int) -> None:
+        """Insere a auditoria do reabastecimento na transação corrente.
+
+        O ID é gerado de forma explícita porque ``INT PRIMARY KEY`` não é
+        autoincremento no SQLite; a leitura e a inserção são protegidas pelo
+        ``BEGIN IMMEDIATE`` da unidade de trabalho.
+
+        Args:
+            ingrediente_id: Identificador do ingrediente reabastecido.
+            quantidade: Quantidade inteira adicionada.
+        """
+        self._conexao.execute(
+            "INSERT INTO reabastecimento (id, ingrediente_id, quantidade, criado_em) "
+            "SELECT COALESCE(MAX(id), 0) + 1, ?, ?, CURRENT_TIMESTAMP FROM reabastecimento",
+            (ingrediente_id, quantidade),
+        )
+
+    def listar_pedidos_concluidos(self) -> list[PedidoConcluido]:
+        """Lista pedidos concluídos para a consolidação do relatório.
+
+        O filtro de período é aplicado pelo serviço, com normalização de fuso,
+        para não depender do formato textual gravado em ``criado_em``.
+
+        Returns:
+            Pedidos concluídos em ordem de identificador.
+
+        Raises:
+            PersistenciaError: Se uma data ou valor histórico for inválido.
+        """
+        linhas = self._conexao.execute(
+            "SELECT p.id, p.produto_id, pr.nome, p.preco_cobrado, p.criado_em "
+            "FROM pedido p JOIN produto pr ON pr.id = p.produto_id "
+            "WHERE p.status = 'CONCLUIDO' ORDER BY p.id"
+        ).fetchall()
+        return [
+            PedidoConcluido(
+                pedido_id=linha["id"],
+                produto_id=linha["produto_id"],
+                nome=linha["nome"],
+                preco_cobrado=Decimal(str(linha["preco_cobrado"])),
+                criado_em=_converter_data(linha["criado_em"]),
+            )
+            for linha in linhas
+        ]
+
     def atualizar_preco(self, produto_id: int, centavos: int) -> None:
         """Armazena o preço como inteiro, sem perda de precisão decimal.
 
@@ -110,7 +225,7 @@ class OperadorRepository:
         if "preco_centavos" not in colunas:
             raise BancoIndisponivelError("Inicialize ou migre o banco antes de iniciar a API.")
         self.obter_maquina()
-        for tabela in ("limpeza", "ingrediente", "receita_item"):
+        for tabela in ("limpeza", "ingrediente", "receita_item", "pedido", "reabastecimento"):
             # Nomes constantes definidos pela aplicação, nunca fornecidos pelo cliente.
             if (
                 self._conexao.execute(
@@ -120,6 +235,26 @@ class OperadorRepository:
                 is None
             ):
                 raise BancoIndisponivelError("Banco não inicializado corretamente.")
+
+
+def _converter_data(valor: object) -> datetime:
+    """Converte o timestamp persistido em datetime, preservando o fuso existente.
+
+    Args:
+        valor: Texto ISO/UTC ou datetime devolvido pelo driver.
+
+    Returns:
+        Data/hora correspondente.
+
+    Raises:
+        PersistenciaError: Se o valor não for uma data reconhecível.
+    """
+    if isinstance(valor, datetime):
+        return valor
+    try:
+        return datetime.fromisoformat(str(valor))
+    except ValueError as exc:
+        raise PersistenciaError("Data inválida encontrada no banco.") from exc
 
 
 @contextmanager
@@ -145,8 +280,11 @@ def transacao() -> Iterator[OperadorRepository]:
         yield OperadorRepository(conexao)
         conexao.commit()
     except sqlite3.OperationalError as exc:
-        logger.exception("Banco indisponível durante operação do operador.")
-        raise BancoIndisponivelError("Banco temporariamente indisponível.") from exc
+        if getattr(exc, "sqlite_errorcode", None) in CODIGOS_BANCO_INDISPONIVEL:
+            logger.exception("Banco indisponível durante operação do operador.")
+            raise BancoIndisponivelError("Banco temporariamente indisponível.") from exc
+        logger.exception("Falha interna de persistência do operador.")
+        raise PersistenciaError("Não foi possível concluir a operação.") from exc
     except sqlite3.DatabaseError as exc:
         logger.exception("Falha interna de persistência do operador.")
         raise PersistenciaError("Não foi possível concluir a operação.") from exc
@@ -159,7 +297,47 @@ def transacao() -> Iterator[OperadorRepository]:
                 conexao.close()
 
 
+@contextmanager
+def transacao_leitura() -> Iterator[OperadorRepository]:
+    """Abre uma unidade de leitura sem adquirir o lock de escrita.
+
+    Todas as consultas feitas dentro do contexto compartilham o mesmo snapshot,
+    o que mantém totais e agrupamentos coerentes sem serializar escritores.
+
+    Returns:
+        Contexto com o repositório ligado à transação de leitura atual.
+
+    Raises:
+        BancoIndisponivelError: Se o banco estiver ausente, bloqueado ou inacessível.
+        PersistenciaError: Se uma consulta falhar por erro interno.
+    """
+    conexao: sqlite3.Connection | None = None
+    try:
+        conexao = sqlite3.connect(
+            caminho_banco().as_uri() + "?mode=ro", uri=True, timeout=timeout_banco()
+        )
+        conexao.row_factory = sqlite3.Row
+        conexao.execute("BEGIN")
+        yield OperadorRepository(conexao)
+    except sqlite3.OperationalError as exc:
+        if getattr(exc, "sqlite_errorcode", None) in CODIGOS_BANCO_INDISPONIVEL:
+            logger.exception("Banco indisponível durante leitura do operador.")
+            raise BancoIndisponivelError("Banco temporariamente indisponível.") from exc
+        logger.exception("Falha interna de leitura do operador.")
+        raise PersistenciaError("Não foi possível concluir a consulta.") from exc
+    except sqlite3.DatabaseError as exc:
+        logger.exception("Falha interna de leitura do operador.")
+        raise PersistenciaError("Não foi possível concluir a consulta.") from exc
+    finally:
+        if conexao is not None:
+            try:
+                if conexao.in_transaction:
+                    conexao.rollback()
+            finally:
+                conexao.close()
+
+
 def validar_banco() -> None:
     """Valida o banco sem alterar dados, durante a inicialização da API."""
-    with transacao() as repositorio:
+    with transacao_leitura() as repositorio:
         repositorio.validar_schema()

@@ -49,50 +49,136 @@
                     <h1 class="modulename">
 <a href="./../../app.html">app</a><wbr>.<a href="./../services.html">services</a><wbr>.relatorio_service    </h1>
 
-                        <div class="docstring"><p>Contrato do serviço de relatórios.</p>
-
-<p>A implementação real das regras de negócio (RN12) é de responsabilidade dos
-demais integrantes. Este módulo define apenas a interface consumida pela API.</p>
+                        <div class="docstring"><p>Serviço de relatórios: consolidação de vendas concluídas (RN12).</p>
 </div>
 
                         <input id="mod-relatorio_service-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-relatorio_service-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""Contrato do serviço de relatórios.</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="sd">A implementação real das regras de negócio (RN12) é de responsabilidade dos</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="sd">demais integrantes. Este módulo define apenas a interface consumida pela API.</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">"""</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="k">def</span><span class="w"> </span><span class="nf">gerar_relatorio</span><span class="p">(</span><span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">"""Gera o relatório consolidado de vendas do período.</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    Regras envolvidas:</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        RN12 – consolida os pedidos concluídos no intervalo informado, com total</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">        de pedidos, faturamento total e detalhamento por bebida.</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">    Args:</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">        inicio: Início do período (inclusive), já validado pela API.</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">        fim: Fim do período (inclusive), já validado pela API.</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">    Returns:</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        Dicionário no formato aceito por</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        :class:`app.schemas.relatorio.RelatorioResponse`.</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">    Raises:</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">    """</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"relatorio_service.gerar_relatorio ainda não foi implementado."</span><span class="p">)</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"gerar_relatorio"</span><span class="p">]</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Serviço de relatórios: consolidação de vendas concluídas (RN12).&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">OperacaoInvalidaError</span><span class="p">,</span> <span class="n">PersistenciaError</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.modelos</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>    <span class="n">PedidoConcluido</span><span class="p">,</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>    <span class="n">ResultadoRelatorio</span><span class="p">,</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a>    <span class="n">VendaPorBebida</span><span class="p">,</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>    <span class="n">normalizar_utc</span><span class="p">,</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="p">)</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.valores</span><span class="w"> </span><span class="kn">import</span> <span class="n">para_centavos</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.repositories.operador_repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">transacao_leitura</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="k">def</span><span class="w"> </span><span class="nf">gerar_relatorio</span><span class="p">(</span><span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultadoRelatorio</span><span class="p">:</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Gera o relatório consolidado de vendas do período.</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">        RN12 – considera somente pedidos ``CONCLUIDO``, com ``inicio`` e ``fim``</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">        inclusivos, agrupa pela identidade da bebida e usa ``preco_cobrado``</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">        (preço histórico) em vez do preço atual do produto.</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">    Decisões de contrato:</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">        - O instante da venda é ``pedido.criado_em`` porque o schema não possui</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">          ``finalizado_em``. Uma conclusão real exigirá coluna/migração e</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">          integração com o serviço de pedidos.</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="sd">        - Datas sem fuso são interpretadas como UTC e todas as comparações são</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="sd">          feitas em UTC. Os campos ``inicio`` e ``fim`` devolvidos preservam os</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">          valores recebidos.</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a><span class="sd">        - Os valores são acumulados em centavos inteiros, a partir de Decimal,</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">          em vez de ``SUM`` de floats.</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">    Args:</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">        inicio: Início do período (inclusive).</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="sd">        fim: Fim do período (inclusive).</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">    Returns:</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Relatório no formato aceito por :class:`app.schemas.relatorio.RelatorioResponse`.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">    Raises:</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        OperacaoInvalidaError: Se as datas forem inválidas ou se ``inicio &gt; fim``.</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        PersistenciaError: Se houver valor histórico inválido no banco.</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inicio</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fim</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="k">raise</span> <span class="n">OperacaoInvalidaError</span><span class="p">(</span><span class="s2">&quot;O período deve ser informado com datas válidas.&quot;</span><span class="p">)</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="n">inicio_utc</span> <span class="o">=</span> <span class="n">normalizar_utc</span><span class="p">(</span><span class="n">inicio</span><span class="p">)</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    <span class="n">fim_utc</span> <span class="o">=</span> <span class="n">normalizar_utc</span><span class="p">(</span><span class="n">fim</span><span class="p">)</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>    <span class="k">if</span> <span class="n">inicio_utc</span> <span class="o">&gt;</span> <span class="n">fim_utc</span><span class="p">:</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>        <span class="k">raise</span> <span class="n">OperacaoInvalidaError</span><span class="p">(</span><span class="s2">&quot;O início do período deve ser anterior ou igual ao fim.&quot;</span><span class="p">)</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="k">with</span> <span class="n">transacao_leitura</span><span class="p">()</span> <span class="k">as</span> <span class="n">repositorio</span><span class="p">:</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="n">pedidos</span> <span class="o">=</span> <span class="n">repositorio</span><span class="o">.</span><span class="n">listar_pedidos_concluidos</span><span class="p">()</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="n">total_centavos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="n">total_pedidos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="n">grupos</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="k">for</span> <span class="n">pedido</span> <span class="ow">in</span> <span class="n">pedidos</span><span class="p">:</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">_no_periodo</span><span class="p">(</span><span class="n">pedido</span><span class="p">,</span> <span class="n">inicio_utc</span><span class="p">,</span> <span class="n">fim_utc</span><span class="p">):</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>            <span class="k">continue</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>        <span class="n">centavos</span> <span class="o">=</span> <span class="n">_centavos_historicos</span><span class="p">(</span><span class="n">pedido</span><span class="p">)</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="n">total_centavos</span> <span class="o">+=</span> <span class="n">centavos</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="n">total_pedidos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="n">grupo</span> <span class="o">=</span> <span class="n">grupos</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>            <span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;nome&quot;</span><span class="p">:</span> <span class="n">pedido</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="s2">&quot;quantidade&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;centavos&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="p">)</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">centavos</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="p">{</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>            <span class="s2">&quot;produto_id&quot;</span><span class="p">:</span> <span class="n">produto_id</span><span class="p">,</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="s2">&quot;nome&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;nome&quot;</span><span class="p">]),</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>            <span class="s2">&quot;quantidade&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">]),</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>            <span class="s2">&quot;faturamento&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="p">}</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>        <span class="k">for</span> <span class="n">produto_id</span><span class="p">,</span> <span class="n">grupo</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">grupos</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="p">]</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="s2">&quot;inicio&quot;</span><span class="p">:</span> <span class="n">inicio</span><span class="p">,</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="s2">&quot;fim&quot;</span><span class="p">:</span> <span class="n">fim</span><span class="p">,</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="s2">&quot;total_pedidos&quot;</span><span class="p">:</span> <span class="n">total_pedidos</span><span class="p">,</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="s2">&quot;faturamento_total&quot;</span><span class="p">:</span> <span class="n">total_centavos</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="s2">&quot;por_bebida&quot;</span><span class="p">:</span> <span class="n">por_bebida</span><span class="p">,</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="p">}</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_no_periodo</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoConcluido</span><span class="p">,</span> <span class="n">inicio_utc</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">fim_utc</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifica se o pedido concluído pertence ao intervalo inclusivo em UTC.</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">    Args:</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        pedido: Pedido lido do repositório.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        inicio_utc: Início normalizado para UTC.</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        fim_utc: Fim normalizado para UTC.</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">    Returns:</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="sd">        ``True`` quando ``inicio &lt;= criado_em &lt;= fim``.</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="n">criado_em</span> <span class="o">=</span> <span class="n">normalizar_utc</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">criado_em</span><span class="p">)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>    <span class="k">return</span> <span class="n">inicio_utc</span> <span class="o">&lt;=</span> <span class="n">criado_em</span> <span class="o">&lt;=</span> <span class="n">fim_utc</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_centavos_historicos</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoConcluido</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Converte o preço histórico em centavos exatos.</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">    Args:</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">        pedido: Pedido com ``preco_cobrado`` lido do banco.</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">    Returns:</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        Preço histórico em centavos.</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">    Raises:</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        PersistenciaError: Se o valor persistido não representar centavos exatos.</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="k">return</span> <span class="n">para_centavos</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">preco_cobrado</span><span class="p">)</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="k">raise</span> <span class="n">PersistenciaError</span><span class="p">(</span><span class="s2">&quot;Valor histórico inválido encontrado no banco.&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gerar_relatorio&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -100,33 +186,84 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
                 <section id="gerar_relatorio">
                             <input id="gerar_relatorio-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-
+            
         <span class="def">def</span>
-        <span class="name">gerar_relatorio</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>,</span><span class="param">	<span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+        <span class="name">gerar_relatorio</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>,</span><span class="param">	<span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span></span><span class="return-annotation">) -> <span class="n"><a href="../core/modelos.html#ResultadoRelatorio">app.core.modelos.ResultadoRelatorio</a></span>:</span></span>
 
                 <label class="view-source-button" for="gerar_relatorio-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#gerar_relatorio"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="gerar_relatorio-14"><a href="#gerar_relatorio-14"><span class="linenos">14</span></a><span class="k">def</span><span class="w"> </span><span class="nf">gerar_relatorio</span><span class="p">(</span><span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="gerar_relatorio-15"><a href="#gerar_relatorio-15"><span class="linenos">15</span></a><span class="w">    </span><span class="sd">"""Gera o relatório consolidado de vendas do período.</span>
-</span><span id="gerar_relatorio-16"><a href="#gerar_relatorio-16"><span class="linenos">16</span></a>
-</span><span id="gerar_relatorio-17"><a href="#gerar_relatorio-17"><span class="linenos">17</span></a><span class="sd">    Regras envolvidas:</span>
-</span><span id="gerar_relatorio-18"><a href="#gerar_relatorio-18"><span class="linenos">18</span></a><span class="sd">        RN12 – consolida os pedidos concluídos no intervalo informado, com total</span>
-</span><span id="gerar_relatorio-19"><a href="#gerar_relatorio-19"><span class="linenos">19</span></a><span class="sd">        de pedidos, faturamento total e detalhamento por bebida.</span>
-</span><span id="gerar_relatorio-20"><a href="#gerar_relatorio-20"><span class="linenos">20</span></a>
-</span><span id="gerar_relatorio-21"><a href="#gerar_relatorio-21"><span class="linenos">21</span></a><span class="sd">    Args:</span>
-</span><span id="gerar_relatorio-22"><a href="#gerar_relatorio-22"><span class="linenos">22</span></a><span class="sd">        inicio: Início do período (inclusive), já validado pela API.</span>
-</span><span id="gerar_relatorio-23"><a href="#gerar_relatorio-23"><span class="linenos">23</span></a><span class="sd">        fim: Fim do período (inclusive), já validado pela API.</span>
-</span><span id="gerar_relatorio-24"><a href="#gerar_relatorio-24"><span class="linenos">24</span></a>
-</span><span id="gerar_relatorio-25"><a href="#gerar_relatorio-25"><span class="linenos">25</span></a><span class="sd">    Returns:</span>
-</span><span id="gerar_relatorio-26"><a href="#gerar_relatorio-26"><span class="linenos">26</span></a><span class="sd">        Dicionário no formato aceito por</span>
-</span><span id="gerar_relatorio-27"><a href="#gerar_relatorio-27"><span class="linenos">27</span></a><span class="sd">        :class:`app.schemas.relatorio.RelatorioResponse`.</span>
-</span><span id="gerar_relatorio-28"><a href="#gerar_relatorio-28"><span class="linenos">28</span></a>
-</span><span id="gerar_relatorio-29"><a href="#gerar_relatorio-29"><span class="linenos">29</span></a><span class="sd">    Raises:</span>
-</span><span id="gerar_relatorio-30"><a href="#gerar_relatorio-30"><span class="linenos">30</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="gerar_relatorio-31"><a href="#gerar_relatorio-31"><span class="linenos">31</span></a><span class="sd">    """</span>
-</span><span id="gerar_relatorio-32"><a href="#gerar_relatorio-32"><span class="linenos">32</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"relatorio_service.gerar_relatorio ainda não foi implementado."</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="gerar_relatorio-19"><a href="#gerar_relatorio-19"><span class="linenos">19</span></a><span class="k">def</span><span class="w"> </span><span class="nf">gerar_relatorio</span><span class="p">(</span><span class="n">inicio</span><span class="p">:</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">fim</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResultadoRelatorio</span><span class="p">:</span>
+</span><span id="gerar_relatorio-20"><a href="#gerar_relatorio-20"><span class="linenos">20</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Gera o relatório consolidado de vendas do período.</span>
+</span><span id="gerar_relatorio-21"><a href="#gerar_relatorio-21"><span class="linenos">21</span></a>
+</span><span id="gerar_relatorio-22"><a href="#gerar_relatorio-22"><span class="linenos">22</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="gerar_relatorio-23"><a href="#gerar_relatorio-23"><span class="linenos">23</span></a><span class="sd">        RN12 – considera somente pedidos ``CONCLUIDO``, com ``inicio`` e ``fim``</span>
+</span><span id="gerar_relatorio-24"><a href="#gerar_relatorio-24"><span class="linenos">24</span></a><span class="sd">        inclusivos, agrupa pela identidade da bebida e usa ``preco_cobrado``</span>
+</span><span id="gerar_relatorio-25"><a href="#gerar_relatorio-25"><span class="linenos">25</span></a><span class="sd">        (preço histórico) em vez do preço atual do produto.</span>
+</span><span id="gerar_relatorio-26"><a href="#gerar_relatorio-26"><span class="linenos">26</span></a>
+</span><span id="gerar_relatorio-27"><a href="#gerar_relatorio-27"><span class="linenos">27</span></a><span class="sd">    Decisões de contrato:</span>
+</span><span id="gerar_relatorio-28"><a href="#gerar_relatorio-28"><span class="linenos">28</span></a><span class="sd">        - O instante da venda é ``pedido.criado_em`` porque o schema não possui</span>
+</span><span id="gerar_relatorio-29"><a href="#gerar_relatorio-29"><span class="linenos">29</span></a><span class="sd">          ``finalizado_em``. Uma conclusão real exigirá coluna/migração e</span>
+</span><span id="gerar_relatorio-30"><a href="#gerar_relatorio-30"><span class="linenos">30</span></a><span class="sd">          integração com o serviço de pedidos.</span>
+</span><span id="gerar_relatorio-31"><a href="#gerar_relatorio-31"><span class="linenos">31</span></a><span class="sd">        - Datas sem fuso são interpretadas como UTC e todas as comparações são</span>
+</span><span id="gerar_relatorio-32"><a href="#gerar_relatorio-32"><span class="linenos">32</span></a><span class="sd">          feitas em UTC. Os campos ``inicio`` e ``fim`` devolvidos preservam os</span>
+</span><span id="gerar_relatorio-33"><a href="#gerar_relatorio-33"><span class="linenos">33</span></a><span class="sd">          valores recebidos.</span>
+</span><span id="gerar_relatorio-34"><a href="#gerar_relatorio-34"><span class="linenos">34</span></a><span class="sd">        - Os valores são acumulados em centavos inteiros, a partir de Decimal,</span>
+</span><span id="gerar_relatorio-35"><a href="#gerar_relatorio-35"><span class="linenos">35</span></a><span class="sd">          em vez de ``SUM`` de floats.</span>
+</span><span id="gerar_relatorio-36"><a href="#gerar_relatorio-36"><span class="linenos">36</span></a>
+</span><span id="gerar_relatorio-37"><a href="#gerar_relatorio-37"><span class="linenos">37</span></a><span class="sd">    Args:</span>
+</span><span id="gerar_relatorio-38"><a href="#gerar_relatorio-38"><span class="linenos">38</span></a><span class="sd">        inicio: Início do período (inclusive).</span>
+</span><span id="gerar_relatorio-39"><a href="#gerar_relatorio-39"><span class="linenos">39</span></a><span class="sd">        fim: Fim do período (inclusive).</span>
+</span><span id="gerar_relatorio-40"><a href="#gerar_relatorio-40"><span class="linenos">40</span></a>
+</span><span id="gerar_relatorio-41"><a href="#gerar_relatorio-41"><span class="linenos">41</span></a><span class="sd">    Returns:</span>
+</span><span id="gerar_relatorio-42"><a href="#gerar_relatorio-42"><span class="linenos">42</span></a><span class="sd">        Relatório no formato aceito por :class:`app.schemas.relatorio.RelatorioResponse`.</span>
+</span><span id="gerar_relatorio-43"><a href="#gerar_relatorio-43"><span class="linenos">43</span></a>
+</span><span id="gerar_relatorio-44"><a href="#gerar_relatorio-44"><span class="linenos">44</span></a><span class="sd">    Raises:</span>
+</span><span id="gerar_relatorio-45"><a href="#gerar_relatorio-45"><span class="linenos">45</span></a><span class="sd">        OperacaoInvalidaError: Se as datas forem inválidas ou se ``inicio &gt; fim``.</span>
+</span><span id="gerar_relatorio-46"><a href="#gerar_relatorio-46"><span class="linenos">46</span></a><span class="sd">        PersistenciaError: Se houver valor histórico inválido no banco.</span>
+</span><span id="gerar_relatorio-47"><a href="#gerar_relatorio-47"><span class="linenos">47</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="gerar_relatorio-48"><a href="#gerar_relatorio-48"><span class="linenos">48</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inicio</span><span class="p">,</span> <span class="n">datetime</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fim</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+</span><span id="gerar_relatorio-49"><a href="#gerar_relatorio-49"><span class="linenos">49</span></a>        <span class="k">raise</span> <span class="n">OperacaoInvalidaError</span><span class="p">(</span><span class="s2">&quot;O período deve ser informado com datas válidas.&quot;</span><span class="p">)</span>
+</span><span id="gerar_relatorio-50"><a href="#gerar_relatorio-50"><span class="linenos">50</span></a>    <span class="n">inicio_utc</span> <span class="o">=</span> <span class="n">normalizar_utc</span><span class="p">(</span><span class="n">inicio</span><span class="p">)</span>
+</span><span id="gerar_relatorio-51"><a href="#gerar_relatorio-51"><span class="linenos">51</span></a>    <span class="n">fim_utc</span> <span class="o">=</span> <span class="n">normalizar_utc</span><span class="p">(</span><span class="n">fim</span><span class="p">)</span>
+</span><span id="gerar_relatorio-52"><a href="#gerar_relatorio-52"><span class="linenos">52</span></a>    <span class="k">if</span> <span class="n">inicio_utc</span> <span class="o">&gt;</span> <span class="n">fim_utc</span><span class="p">:</span>
+</span><span id="gerar_relatorio-53"><a href="#gerar_relatorio-53"><span class="linenos">53</span></a>        <span class="k">raise</span> <span class="n">OperacaoInvalidaError</span><span class="p">(</span><span class="s2">&quot;O início do período deve ser anterior ou igual ao fim.&quot;</span><span class="p">)</span>
+</span><span id="gerar_relatorio-54"><a href="#gerar_relatorio-54"><span class="linenos">54</span></a>
+</span><span id="gerar_relatorio-55"><a href="#gerar_relatorio-55"><span class="linenos">55</span></a>    <span class="k">with</span> <span class="n">transacao_leitura</span><span class="p">()</span> <span class="k">as</span> <span class="n">repositorio</span><span class="p">:</span>
+</span><span id="gerar_relatorio-56"><a href="#gerar_relatorio-56"><span class="linenos">56</span></a>        <span class="n">pedidos</span> <span class="o">=</span> <span class="n">repositorio</span><span class="o">.</span><span class="n">listar_pedidos_concluidos</span><span class="p">()</span>
+</span><span id="gerar_relatorio-57"><a href="#gerar_relatorio-57"><span class="linenos">57</span></a>
+</span><span id="gerar_relatorio-58"><a href="#gerar_relatorio-58"><span class="linenos">58</span></a>    <span class="n">total_centavos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="gerar_relatorio-59"><a href="#gerar_relatorio-59"><span class="linenos">59</span></a>    <span class="n">total_pedidos</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="gerar_relatorio-60"><a href="#gerar_relatorio-60"><span class="linenos">60</span></a>    <span class="n">grupos</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="gerar_relatorio-61"><a href="#gerar_relatorio-61"><span class="linenos">61</span></a>    <span class="k">for</span> <span class="n">pedido</span> <span class="ow">in</span> <span class="n">pedidos</span><span class="p">:</span>
+</span><span id="gerar_relatorio-62"><a href="#gerar_relatorio-62"><span class="linenos">62</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">_no_periodo</span><span class="p">(</span><span class="n">pedido</span><span class="p">,</span> <span class="n">inicio_utc</span><span class="p">,</span> <span class="n">fim_utc</span><span class="p">):</span>
+</span><span id="gerar_relatorio-63"><a href="#gerar_relatorio-63"><span class="linenos">63</span></a>            <span class="k">continue</span>
+</span><span id="gerar_relatorio-64"><a href="#gerar_relatorio-64"><span class="linenos">64</span></a>        <span class="n">centavos</span> <span class="o">=</span> <span class="n">_centavos_historicos</span><span class="p">(</span><span class="n">pedido</span><span class="p">)</span>
+</span><span id="gerar_relatorio-65"><a href="#gerar_relatorio-65"><span class="linenos">65</span></a>        <span class="n">total_centavos</span> <span class="o">+=</span> <span class="n">centavos</span>
+</span><span id="gerar_relatorio-66"><a href="#gerar_relatorio-66"><span class="linenos">66</span></a>        <span class="n">total_pedidos</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="gerar_relatorio-67"><a href="#gerar_relatorio-67"><span class="linenos">67</span></a>        <span class="n">grupo</span> <span class="o">=</span> <span class="n">grupos</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
+</span><span id="gerar_relatorio-68"><a href="#gerar_relatorio-68"><span class="linenos">68</span></a>            <span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;nome&quot;</span><span class="p">:</span> <span class="n">pedido</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="s2">&quot;quantidade&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;centavos&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</span><span id="gerar_relatorio-69"><a href="#gerar_relatorio-69"><span class="linenos">69</span></a>        <span class="p">)</span>
+</span><span id="gerar_relatorio-70"><a href="#gerar_relatorio-70"><span class="linenos">70</span></a>        <span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="gerar_relatorio-71"><a href="#gerar_relatorio-71"><span class="linenos">71</span></a>        <span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="n">centavos</span>
+</span><span id="gerar_relatorio-72"><a href="#gerar_relatorio-72"><span class="linenos">72</span></a>
+</span><span id="gerar_relatorio-73"><a href="#gerar_relatorio-73"><span class="linenos">73</span></a>    <span class="n">por_bebida</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">VendaPorBebida</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="gerar_relatorio-74"><a href="#gerar_relatorio-74"><span class="linenos">74</span></a>        <span class="p">{</span>
+</span><span id="gerar_relatorio-75"><a href="#gerar_relatorio-75"><span class="linenos">75</span></a>            <span class="s2">&quot;produto_id&quot;</span><span class="p">:</span> <span class="n">produto_id</span><span class="p">,</span>
+</span><span id="gerar_relatorio-76"><a href="#gerar_relatorio-76"><span class="linenos">76</span></a>            <span class="s2">&quot;nome&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;nome&quot;</span><span class="p">]),</span>
+</span><span id="gerar_relatorio-77"><a href="#gerar_relatorio-77"><span class="linenos">77</span></a>            <span class="s2">&quot;quantidade&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;quantidade&quot;</span><span class="p">]),</span>
+</span><span id="gerar_relatorio-78"><a href="#gerar_relatorio-78"><span class="linenos">78</span></a>            <span class="s2">&quot;faturamento&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">grupo</span><span class="p">[</span><span class="s2">&quot;centavos&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="gerar_relatorio-79"><a href="#gerar_relatorio-79"><span class="linenos">79</span></a>        <span class="p">}</span>
+</span><span id="gerar_relatorio-80"><a href="#gerar_relatorio-80"><span class="linenos">80</span></a>        <span class="k">for</span> <span class="n">produto_id</span><span class="p">,</span> <span class="n">grupo</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">grupos</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+</span><span id="gerar_relatorio-81"><a href="#gerar_relatorio-81"><span class="linenos">81</span></a>    <span class="p">]</span>
+</span><span id="gerar_relatorio-82"><a href="#gerar_relatorio-82"><span class="linenos">82</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="gerar_relatorio-83"><a href="#gerar_relatorio-83"><span class="linenos">83</span></a>        <span class="s2">&quot;inicio&quot;</span><span class="p">:</span> <span class="n">inicio</span><span class="p">,</span>
+</span><span id="gerar_relatorio-84"><a href="#gerar_relatorio-84"><span class="linenos">84</span></a>        <span class="s2">&quot;fim&quot;</span><span class="p">:</span> <span class="n">fim</span><span class="p">,</span>
+</span><span id="gerar_relatorio-85"><a href="#gerar_relatorio-85"><span class="linenos">85</span></a>        <span class="s2">&quot;total_pedidos&quot;</span><span class="p">:</span> <span class="n">total_pedidos</span><span class="p">,</span>
+</span><span id="gerar_relatorio-86"><a href="#gerar_relatorio-86"><span class="linenos">86</span></a>        <span class="s2">&quot;faturamento_total&quot;</span><span class="p">:</span> <span class="n">total_centavos</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="gerar_relatorio-87"><a href="#gerar_relatorio-87"><span class="linenos">87</span></a>        <span class="s2">&quot;por_bebida&quot;</span><span class="p">:</span> <span class="n">por_bebida</span><span class="p">,</span>
+</span><span id="gerar_relatorio-88"><a href="#gerar_relatorio-88"><span class="linenos">88</span></a>    <span class="p">}</span>
 </span></pre></div>
 
 
@@ -135,28 +272,39 @@ demais integrantes. Este módulo define apenas a interface consumida pela API.</
 <h6 id="regras-envolvidas">Regras envolvidas:</h6>
 
 <blockquote>
-  <p>RN12 – consolida os pedidos concluídos no intervalo informado, com total
-  de pedidos, faturamento total e detalhamento por bebida.</p>
+  <p>RN12 – considera somente pedidos <code>CONCLUIDO</code>, com <code>inicio</code> e <code>fim</code>
+  inclusivos, agrupa pela identidade da bebida e usa <code>preco_cobrado</code>
+  (preço histórico) em vez do preço atual do produto.</p>
 </blockquote>
+
+<p>Decisões de contrato:
+    - O instante da venda é <code>pedido.criado_em</code> porque o schema não possui
+      <code>finalizado_em</code>. Uma conclusão real exigirá coluna/migração e
+      integração com o serviço de pedidos.
+    - Datas sem fuso são interpretadas como UTC e todas as comparações são
+      feitas em UTC. Os campos <code>inicio</code> e <code>fim</code> devolvidos preservam os
+      valores recebidos.
+    - Os valores são acumulados em centavos inteiros, a partir de Decimal,
+      em vez de <code>SUM</code> de floats.</p>
 
 <h6 id="arguments">Arguments:</h6>
 
 <ul>
-<li><strong>inicio:</strong>  Início do período (inclusive), já validado pela API.</li>
-<li><strong>fim:</strong>  Fim do período (inclusive), já validado pela API.</li>
+<li><strong>inicio:</strong>  Início do período (inclusive).</li>
+<li><strong>fim:</strong>  Fim do período (inclusive).</li>
 </ul>
 
 <h6 id="returns">Returns:</h6>
 
 <blockquote>
-  <p>Dicionário no formato aceito por
-  <code><a href="../schemas/relatorio.html#RelatorioResponse">app.schemas.relatorio.RelatorioResponse</a></code>.</p>
+  <p>Relatório no formato aceito por <code><a href="../schemas/relatorio.html#RelatorioResponse">app.schemas.relatorio.RelatorioResponse</a></code>.</p>
 </blockquote>
 
 <h6 id="raises">Raises:</h6>
 
 <ul>
-<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
+<li><strong>OperacaoInvalidaError:</strong>  Se as datas forem inválidas ou se <code>inicio &gt; fim</code>.</li>
+<li><strong>PersistenciaError:</strong>  Se houver valor histórico inválido no banco.</li>
 </ul>
 </div>
 
