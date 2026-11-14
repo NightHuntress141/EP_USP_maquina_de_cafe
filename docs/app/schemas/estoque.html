@@ -31,6 +31,33 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
+                    <a class="class" href="#EstoqueResponse">EstoqueResponse</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#EstoqueResponse.reservatorios">reservatorios</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="class" href="#ItemEstoque">ItemEstoque</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="variable" href="#ItemEstoque.item">item</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.atual">atual</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.capacidade">capacidade</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#ItemEstoque.nivel_baixo">nivel_baixo</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
                     <a class="class" href="#ItemReservatorio">ItemReservatorio</a>
                             <ul class="memberlist">
                         <li>
@@ -55,33 +82,6 @@
 
             </li>
             <li>
-                    <a class="class" href="#ItemEstoque">ItemEstoque</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="variable" href="#ItemEstoque.item">item</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#ItemEstoque.atual">atual</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#ItemEstoque.capacidade">capacidade</a>
-                        </li>
-                        <li>
-                                <a class="variable" href="#ItemEstoque.nivel_baixo">nivel_baixo</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
-                    <a class="class" href="#EstoqueResponse">EstoqueResponse</a>
-                            <ul class="memberlist">
-                        <li>
-                                <a class="variable" href="#EstoqueResponse.reservatorios">reservatorios</a>
-                        </li>
-                </ul>
-
-            </li>
-            <li>
                     <a class="class" href="#ReabastecimentoRequest">ReabastecimentoRequest</a>
                             <ul class="memberlist">
                         <li>
@@ -89,6 +89,12 @@
                         </li>
                         <li>
                                 <a class="variable" href="#ReabastecimentoRequest.quantidade">quantidade</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#ReabastecimentoRequest.recusar_valor_nao_numerico">recusar_valor_nao_numerico</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#ReabastecimentoRequest.validar_copos">validar_copos</a>
                         </li>
                 </ul>
 
@@ -125,85 +131,275 @@
 
                         <label class="view-source-button" for="mod-estoque-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;DTOs de estoque e reabastecimento (RN09).&quot;&quot;&quot;</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemReservatorio</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatórios e insumos controlados pela máquina.&quot;&quot;&quot;</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="n">AGUA</span> <span class="o">=</span> <span class="s2">&quot;agua&quot;</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">CAFE</span> <span class="o">=</span> <span class="s2">&quot;cafe&quot;</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="n">LEITE</span> <span class="o">=</span> <span class="s2">&quot;leite&quot;</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="n">CHOCOLATE</span> <span class="o">=</span> <span class="s2">&quot;chocolate&quot;</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="n">ACUCAR</span> <span class="o">=</span> <span class="s2">&quot;acucar&quot;</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="n">COPOS</span> <span class="o">=</span> <span class="s2">&quot;copos&quot;</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação atual de um reservatório ou insumo.</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        item: Identificador do reservatório.</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        atual: Quantidade disponível no momento.</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">        capacidade: Capacidade máxima do reservatório.</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">        nivel_baixo: Indica se o nível está abaixo do limite de alerta.</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório ou insumo.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;leite&quot;</span><span class="p">])</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade disponível.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">])</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Capacidade máxima.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.0</span><span class="p">])</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica nível abaixo do limite de alerta.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">])</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstoqueResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo da máquina.</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        reservatorios: Situação de cada reservatório ou insumo.</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação de todos os reservatórios.&quot;</span><span class="p">)</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de reabastecimento (RN09).</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        item: Reservatório a reabastecer.</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">        quantidade: Quantidade a adicionar, em unidades do insumo.</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório a reabastecer.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;agua&quot;</span><span class="p">])</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade a adicionar.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">])</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">        item: Situação atualizada do reservatório reabastecido.</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório após o reabastecimento.&quot;</span><span class="p">)</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>    <span class="s2">&quot;ItemReservatorio&quot;</span><span class="p">,</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>    <span class="s2">&quot;ItemEstoque&quot;</span><span class="p">,</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>    <span class="s2">&quot;EstoqueResponse&quot;</span><span class="p">,</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>    <span class="s2">&quot;ReabastecimentoRequest&quot;</span><span class="p">,</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>    <span class="s2">&quot;ReabastecimentoResponse&quot;</span><span class="p">,</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="p">]</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;DTOs de estoque e reabastecimento (RN09).&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_validator</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemReservatorio</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatórios e insumos controlados pela máquina.&quot;&quot;&quot;</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="n">AGUA</span> <span class="o">=</span> <span class="s2">&quot;agua&quot;</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>    <span class="n">CAFE</span> <span class="o">=</span> <span class="s2">&quot;cafe&quot;</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="n">LEITE</span> <span class="o">=</span> <span class="s2">&quot;leite&quot;</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>    <span class="n">CHOCOLATE</span> <span class="o">=</span> <span class="s2">&quot;chocolate&quot;</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="n">ACUCAR</span> <span class="o">=</span> <span class="s2">&quot;acucar&quot;</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="n">COPOS</span> <span class="o">=</span> <span class="s2">&quot;copos&quot;</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação atual de um reservatório ou insumo.</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">        item: Identificador do reservatório.</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">        atual: Quantidade disponível no momento.</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">        capacidade: Capacidade máxima do reservatório.</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">        nivel_baixo: Indica se o nível está abaixo do limite de alerta.</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório ou insumo.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;leite&quot;</span><span class="p">])</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade disponível.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">])</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Capacidade máxima.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.0</span><span class="p">])</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica nível abaixo do limite de alerta.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="p">)</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstoqueResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo da máquina.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        reservatorios: Situação de cada reservatório ou insumo.</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação de todos os reservatórios.&quot;</span><span class="p">)</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de reabastecimento (RN09).</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        item: Reservatório a reabastecer.</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        quantidade: Quantidade a adicionar, em unidades do insumo.</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório a reabastecer.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;agua&quot;</span><span class="p">]</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="p">)</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>        <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="n">allow_inf_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade a adicionar.&quot;</span><span class="p">,</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">],</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="p">)</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;quantidade&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="nd">@classmethod</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">recusar_valor_nao_numerico</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quantidade</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Impede coerções laxas de booleanos e textos para quantidade.</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        Args:</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">            quantidade: Valor bruto recebido no JSON.</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">        Returns:</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">            O próprio valor, quando for um número.</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        Raises:</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">            ValueError: Se o valor não for int, float ou Decimal.</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">)):</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade deve ser um número.&quot;</span><span class="p">)</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="k">return</span> <span class="n">quantidade</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_copos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReabastecimentoRequest</span><span class="p">:</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Exige unidades inteiras quando o insumo é COPOS.</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">        Returns:</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">            Requisição validada, preservando as unidades dos demais insumos.</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        Raises:</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">            ValueError: Se a quantidade de copos for fracionária.</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">ItemReservatorio</span><span class="o">.</span><span class="n">COPOS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantidade</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade de copos deve ser inteira.&quot;</span><span class="p">)</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        item: Situação atualizada do reservatório reabastecido.</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório após o reabastecimento.&quot;</span><span class="p">)</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="s2">&quot;EstoqueResponse&quot;</span><span class="p">,</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>    <span class="s2">&quot;ItemEstoque&quot;</span><span class="p">,</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>    <span class="s2">&quot;ItemReservatorio&quot;</span><span class="p">,</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>    <span class="s2">&quot;ReabastecimentoRequest&quot;</span><span class="p">,</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="s2">&quot;ReabastecimentoResponse&quot;</span><span class="p">,</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="p">]</span>
 </span></pre></div>
 
 
             </section>
+                <section id="EstoqueResponse">
+                            <input id="EstoqueResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">EstoqueResponse</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
+
+                <label class="view-source-button" for="EstoqueResponse-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#EstoqueResponse"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EstoqueResponse-41"><a href="#EstoqueResponse-41"><span class="linenos">41</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstoqueResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="EstoqueResponse-42"><a href="#EstoqueResponse-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo da máquina.</span>
+</span><span id="EstoqueResponse-43"><a href="#EstoqueResponse-43"><span class="linenos">43</span></a>
+</span><span id="EstoqueResponse-44"><a href="#EstoqueResponse-44"><span class="linenos">44</span></a><span class="sd">    Attributes:</span>
+</span><span id="EstoqueResponse-45"><a href="#EstoqueResponse-45"><span class="linenos">45</span></a><span class="sd">        reservatorios: Situação de cada reservatório ou insumo.</span>
+</span><span id="EstoqueResponse-46"><a href="#EstoqueResponse-46"><span class="linenos">46</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="EstoqueResponse-47"><a href="#EstoqueResponse-47"><span class="linenos">47</span></a>
+</span><span id="EstoqueResponse-48"><a href="#EstoqueResponse-48"><span class="linenos">48</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação de todos os reservatórios.&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Estoque completo da máquina.</p>
+
+<h6 id="attributes">Attributes:</h6>
+
+<ul>
+<li><strong>reservatorios:</strong>  Situação de cada reservatório ou insumo.</li>
+</ul>
+</div>
+
+
+                            <div id="EstoqueResponse.reservatorios" class="classattr">
+                                <div class="attr variable">
+            <span class="name">reservatorios</span><span class="annotation">: list[<a href="#ItemEstoque">ItemEstoque</a>]</span>        =
+<span class="default_value">PydanticUndefined</span>
+
+        
+    </div>
+    <a class="headerlink" href="#EstoqueResponse.reservatorios"></a>
+    
+            <div class="docstring"><p>Situação de todos os reservatórios.</p>
+</div>
+
+
+                            </div>
+                </section>
+                <section id="ItemEstoque">
+                            <input id="ItemEstoque-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">ItemEstoque</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
+
+                <label class="view-source-button" for="ItemEstoque-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ItemEstoque"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ItemEstoque-23"><a href="#ItemEstoque-23"><span class="linenos">23</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="ItemEstoque-24"><a href="#ItemEstoque-24"><span class="linenos">24</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação atual de um reservatório ou insumo.</span>
+</span><span id="ItemEstoque-25"><a href="#ItemEstoque-25"><span class="linenos">25</span></a>
+</span><span id="ItemEstoque-26"><a href="#ItemEstoque-26"><span class="linenos">26</span></a><span class="sd">    Attributes:</span>
+</span><span id="ItemEstoque-27"><a href="#ItemEstoque-27"><span class="linenos">27</span></a><span class="sd">        item: Identificador do reservatório.</span>
+</span><span id="ItemEstoque-28"><a href="#ItemEstoque-28"><span class="linenos">28</span></a><span class="sd">        atual: Quantidade disponível no momento.</span>
+</span><span id="ItemEstoque-29"><a href="#ItemEstoque-29"><span class="linenos">29</span></a><span class="sd">        capacidade: Capacidade máxima do reservatório.</span>
+</span><span id="ItemEstoque-30"><a href="#ItemEstoque-30"><span class="linenos">30</span></a><span class="sd">        nivel_baixo: Indica se o nível está abaixo do limite de alerta.</span>
+</span><span id="ItemEstoque-31"><a href="#ItemEstoque-31"><span class="linenos">31</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ItemEstoque-32"><a href="#ItemEstoque-32"><span class="linenos">32</span></a>
+</span><span id="ItemEstoque-33"><a href="#ItemEstoque-33"><span class="linenos">33</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório ou insumo.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;leite&quot;</span><span class="p">])</span>
+</span><span id="ItemEstoque-34"><a href="#ItemEstoque-34"><span class="linenos">34</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade disponível.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">])</span>
+</span><span id="ItemEstoque-35"><a href="#ItemEstoque-35"><span class="linenos">35</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Capacidade máxima.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.0</span><span class="p">])</span>
+</span><span id="ItemEstoque-36"><a href="#ItemEstoque-36"><span class="linenos">36</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="ItemEstoque-37"><a href="#ItemEstoque-37"><span class="linenos">37</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica nível abaixo do limite de alerta.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>
+</span><span id="ItemEstoque-38"><a href="#ItemEstoque-38"><span class="linenos">38</span></a>    <span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Situação atual de um reservatório ou insumo.</p>
+
+<h6 id="attributes">Attributes:</h6>
+
+<ul>
+<li><strong>item:</strong>  Identificador do reservatório.</li>
+<li><strong>atual:</strong>  Quantidade disponível no momento.</li>
+<li><strong>capacidade:</strong>  Capacidade máxima do reservatório.</li>
+<li><strong>nivel_baixo:</strong>  Indica se o nível está abaixo do limite de alerta.</li>
+</ul>
+</div>
+
+
+                            <div id="ItemEstoque.item" class="classattr">
+                                <div class="attr variable">
+            <span class="name">item</span><span class="annotation">: <a href="#ItemReservatorio">ItemReservatorio</a></span>        =
+<span class="default_value">PydanticUndefined</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.item"></a>
+    
+            <div class="docstring"><p>Reservatório ou insumo.</p>
+</div>
+
+
+                            </div>
+                            <div id="ItemEstoque.atual" class="classattr">
+                                <div class="attr variable">
+            <span class="name">atual</span><span class="annotation">: float</span>        =
+<span class="default_value">PydanticUndefined</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.atual"></a>
+    
+            <div class="docstring"><p>Quantidade disponível.</p>
+</div>
+
+
+                            </div>
+                            <div id="ItemEstoque.capacidade" class="classattr">
+                                <div class="attr variable">
+            <span class="name">capacidade</span><span class="annotation">: float</span>        =
+<span class="default_value">PydanticUndefined</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.capacidade"></a>
+    
+            <div class="docstring"><p>Capacidade máxima.</p>
+</div>
+
+
+                            </div>
+                            <div id="ItemEstoque.nivel_baixo" class="classattr">
+                                <div class="attr variable">
+            <span class="name">nivel_baixo</span><span class="annotation">: bool</span>        =
+<span class="default_value">PydanticUndefined</span>
+
+        
+    </div>
+    <a class="headerlink" href="#ItemEstoque.nivel_baixo"></a>
+    
+            <div class="docstring"><p>Indica nível abaixo do limite de alerta.</p>
+</div>
+
+
+                            </div>
+                </section>
                 <section id="ItemReservatorio">
                             <input id="ItemReservatorio-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
@@ -215,15 +411,15 @@
 
     </div>
     <a class="headerlink" href="#ItemReservatorio"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ItemReservatorio-11"><a href="#ItemReservatorio-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemReservatorio</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="ItemReservatorio-12"><a href="#ItemReservatorio-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatórios e insumos controlados pela máquina.&quot;&quot;&quot;</span>
-</span><span id="ItemReservatorio-13"><a href="#ItemReservatorio-13"><span class="linenos">13</span></a>
-</span><span id="ItemReservatorio-14"><a href="#ItemReservatorio-14"><span class="linenos">14</span></a>    <span class="n">AGUA</span> <span class="o">=</span> <span class="s2">&quot;agua&quot;</span>
-</span><span id="ItemReservatorio-15"><a href="#ItemReservatorio-15"><span class="linenos">15</span></a>    <span class="n">CAFE</span> <span class="o">=</span> <span class="s2">&quot;cafe&quot;</span>
-</span><span id="ItemReservatorio-16"><a href="#ItemReservatorio-16"><span class="linenos">16</span></a>    <span class="n">LEITE</span> <span class="o">=</span> <span class="s2">&quot;leite&quot;</span>
-</span><span id="ItemReservatorio-17"><a href="#ItemReservatorio-17"><span class="linenos">17</span></a>    <span class="n">CHOCOLATE</span> <span class="o">=</span> <span class="s2">&quot;chocolate&quot;</span>
-</span><span id="ItemReservatorio-18"><a href="#ItemReservatorio-18"><span class="linenos">18</span></a>    <span class="n">ACUCAR</span> <span class="o">=</span> <span class="s2">&quot;acucar&quot;</span>
-</span><span id="ItemReservatorio-19"><a href="#ItemReservatorio-19"><span class="linenos">19</span></a>    <span class="n">COPOS</span> <span class="o">=</span> <span class="s2">&quot;copos&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ItemReservatorio-12"><a href="#ItemReservatorio-12"><span class="linenos">12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemReservatorio</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="ItemReservatorio-13"><a href="#ItemReservatorio-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatórios e insumos controlados pela máquina.&quot;&quot;&quot;</span>
+</span><span id="ItemReservatorio-14"><a href="#ItemReservatorio-14"><span class="linenos">14</span></a>
+</span><span id="ItemReservatorio-15"><a href="#ItemReservatorio-15"><span class="linenos">15</span></a>    <span class="n">AGUA</span> <span class="o">=</span> <span class="s2">&quot;agua&quot;</span>
+</span><span id="ItemReservatorio-16"><a href="#ItemReservatorio-16"><span class="linenos">16</span></a>    <span class="n">CAFE</span> <span class="o">=</span> <span class="s2">&quot;cafe&quot;</span>
+</span><span id="ItemReservatorio-17"><a href="#ItemReservatorio-17"><span class="linenos">17</span></a>    <span class="n">LEITE</span> <span class="o">=</span> <span class="s2">&quot;leite&quot;</span>
+</span><span id="ItemReservatorio-18"><a href="#ItemReservatorio-18"><span class="linenos">18</span></a>    <span class="n">CHOCOLATE</span> <span class="o">=</span> <span class="s2">&quot;chocolate&quot;</span>
+</span><span id="ItemReservatorio-19"><a href="#ItemReservatorio-19"><span class="linenos">19</span></a>    <span class="n">ACUCAR</span> <span class="o">=</span> <span class="s2">&quot;acucar&quot;</span>
+</span><span id="ItemReservatorio-20"><a href="#ItemReservatorio-20"><span class="linenos">20</span></a>    <span class="n">COPOS</span> <span class="o">=</span> <span class="s2">&quot;copos&quot;</span>
 </span></pre></div>
 
 
@@ -304,151 +500,6 @@
 
                             </div>
                 </section>
-                <section id="ItemEstoque">
-                            <input id="ItemEstoque-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">ItemEstoque</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
-
-                <label class="view-source-button" for="ItemEstoque-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#ItemEstoque"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ItemEstoque-22"><a href="#ItemEstoque-22"><span class="linenos">22</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ItemEstoque</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="ItemEstoque-23"><a href="#ItemEstoque-23"><span class="linenos">23</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Situação atual de um reservatório ou insumo.</span>
-</span><span id="ItemEstoque-24"><a href="#ItemEstoque-24"><span class="linenos">24</span></a>
-</span><span id="ItemEstoque-25"><a href="#ItemEstoque-25"><span class="linenos">25</span></a><span class="sd">    Attributes:</span>
-</span><span id="ItemEstoque-26"><a href="#ItemEstoque-26"><span class="linenos">26</span></a><span class="sd">        item: Identificador do reservatório.</span>
-</span><span id="ItemEstoque-27"><a href="#ItemEstoque-27"><span class="linenos">27</span></a><span class="sd">        atual: Quantidade disponível no momento.</span>
-</span><span id="ItemEstoque-28"><a href="#ItemEstoque-28"><span class="linenos">28</span></a><span class="sd">        capacidade: Capacidade máxima do reservatório.</span>
-</span><span id="ItemEstoque-29"><a href="#ItemEstoque-29"><span class="linenos">29</span></a><span class="sd">        nivel_baixo: Indica se o nível está abaixo do limite de alerta.</span>
-</span><span id="ItemEstoque-30"><a href="#ItemEstoque-30"><span class="linenos">30</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="ItemEstoque-31"><a href="#ItemEstoque-31"><span class="linenos">31</span></a>
-</span><span id="ItemEstoque-32"><a href="#ItemEstoque-32"><span class="linenos">32</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório ou insumo.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;leite&quot;</span><span class="p">])</span>
-</span><span id="ItemEstoque-33"><a href="#ItemEstoque-33"><span class="linenos">33</span></a>    <span class="n">atual</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade disponível.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">2.5</span><span class="p">])</span>
-</span><span id="ItemEstoque-34"><a href="#ItemEstoque-34"><span class="linenos">34</span></a>    <span class="n">capacidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Capacidade máxima.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.0</span><span class="p">])</span>
-</span><span id="ItemEstoque-35"><a href="#ItemEstoque-35"><span class="linenos">35</span></a>    <span class="n">nivel_baixo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica nível abaixo do limite de alerta.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">])</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Situação atual de um reservatório ou insumo.</p>
-
-<h6 id="attributes">Attributes:</h6>
-
-<ul>
-<li><strong>item:</strong>  Identificador do reservatório.</li>
-<li><strong>atual:</strong>  Quantidade disponível no momento.</li>
-<li><strong>capacidade:</strong>  Capacidade máxima do reservatório.</li>
-<li><strong>nivel_baixo:</strong>  Indica se o nível está abaixo do limite de alerta.</li>
-</ul>
-</div>
-
-
-                            <div id="ItemEstoque.item" class="classattr">
-                                <div class="attr variable">
-            <span class="name">item</span><span class="annotation">: <a href="#ItemReservatorio">ItemReservatorio</a></span>        =
-<span class="default_value">PydanticUndefined</span>
-
-        
-    </div>
-    <a class="headerlink" href="#ItemEstoque.item"></a>
-    
-            <div class="docstring"><p>Reservatório ou insumo.</p>
-</div>
-
-
-                            </div>
-                            <div id="ItemEstoque.atual" class="classattr">
-                                <div class="attr variable">
-            <span class="name">atual</span><span class="annotation">: float</span>        =
-<span class="default_value">PydanticUndefined</span>
-
-        
-    </div>
-    <a class="headerlink" href="#ItemEstoque.atual"></a>
-    
-            <div class="docstring"><p>Quantidade disponível.</p>
-</div>
-
-
-                            </div>
-                            <div id="ItemEstoque.capacidade" class="classattr">
-                                <div class="attr variable">
-            <span class="name">capacidade</span><span class="annotation">: float</span>        =
-<span class="default_value">PydanticUndefined</span>
-
-        
-    </div>
-    <a class="headerlink" href="#ItemEstoque.capacidade"></a>
-    
-            <div class="docstring"><p>Capacidade máxima.</p>
-</div>
-
-
-                            </div>
-                            <div id="ItemEstoque.nivel_baixo" class="classattr">
-                                <div class="attr variable">
-            <span class="name">nivel_baixo</span><span class="annotation">: bool</span>        =
-<span class="default_value">PydanticUndefined</span>
-
-        
-    </div>
-    <a class="headerlink" href="#ItemEstoque.nivel_baixo"></a>
-    
-            <div class="docstring"><p>Indica nível abaixo do limite de alerta.</p>
-</div>
-
-
-                            </div>
-                </section>
-                <section id="EstoqueResponse">
-                            <input id="EstoqueResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr class">
-            
-    <span class="def">class</span>
-    <span class="name">EstoqueResponse</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
-
-                <label class="view-source-button" for="EstoqueResponse-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#EstoqueResponse"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EstoqueResponse-38"><a href="#EstoqueResponse-38"><span class="linenos">38</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstoqueResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="EstoqueResponse-39"><a href="#EstoqueResponse-39"><span class="linenos">39</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estoque completo da máquina.</span>
-</span><span id="EstoqueResponse-40"><a href="#EstoqueResponse-40"><span class="linenos">40</span></a>
-</span><span id="EstoqueResponse-41"><a href="#EstoqueResponse-41"><span class="linenos">41</span></a><span class="sd">    Attributes:</span>
-</span><span id="EstoqueResponse-42"><a href="#EstoqueResponse-42"><span class="linenos">42</span></a><span class="sd">        reservatorios: Situação de cada reservatório ou insumo.</span>
-</span><span id="EstoqueResponse-43"><a href="#EstoqueResponse-43"><span class="linenos">43</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="EstoqueResponse-44"><a href="#EstoqueResponse-44"><span class="linenos">44</span></a>
-</span><span id="EstoqueResponse-45"><a href="#EstoqueResponse-45"><span class="linenos">45</span></a>    <span class="n">reservatorios</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ItemEstoque</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Situação de todos os reservatórios.&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Estoque completo da máquina.</p>
-
-<h6 id="attributes">Attributes:</h6>
-
-<ul>
-<li><strong>reservatorios:</strong>  Situação de cada reservatório ou insumo.</li>
-</ul>
-</div>
-
-
-                            <div id="EstoqueResponse.reservatorios" class="classattr">
-                                <div class="attr variable">
-            <span class="name">reservatorios</span><span class="annotation">: list[<a href="#ItemEstoque">ItemEstoque</a>]</span>        =
-<span class="default_value">PydanticUndefined</span>
-
-        
-    </div>
-    <a class="headerlink" href="#EstoqueResponse.reservatorios"></a>
-    
-            <div class="docstring"><p>Situação de todos os reservatórios.</p>
-</div>
-
-
-                            </div>
-                </section>
                 <section id="ReabastecimentoRequest">
                             <input id="ReabastecimentoRequest-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
@@ -460,16 +511,56 @@
 
     </div>
     <a class="headerlink" href="#ReabastecimentoRequest"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoRequest-48"><a href="#ReabastecimentoRequest-48"><span class="linenos">48</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="ReabastecimentoRequest-49"><a href="#ReabastecimentoRequest-49"><span class="linenos">49</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de reabastecimento (RN09).</span>
-</span><span id="ReabastecimentoRequest-50"><a href="#ReabastecimentoRequest-50"><span class="linenos">50</span></a>
-</span><span id="ReabastecimentoRequest-51"><a href="#ReabastecimentoRequest-51"><span class="linenos">51</span></a><span class="sd">    Attributes:</span>
-</span><span id="ReabastecimentoRequest-52"><a href="#ReabastecimentoRequest-52"><span class="linenos">52</span></a><span class="sd">        item: Reservatório a reabastecer.</span>
-</span><span id="ReabastecimentoRequest-53"><a href="#ReabastecimentoRequest-53"><span class="linenos">53</span></a><span class="sd">        quantidade: Quantidade a adicionar, em unidades do insumo.</span>
-</span><span id="ReabastecimentoRequest-54"><a href="#ReabastecimentoRequest-54"><span class="linenos">54</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="ReabastecimentoRequest-55"><a href="#ReabastecimentoRequest-55"><span class="linenos">55</span></a>
-</span><span id="ReabastecimentoRequest-56"><a href="#ReabastecimentoRequest-56"><span class="linenos">56</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório a reabastecer.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;agua&quot;</span><span class="p">])</span>
-</span><span id="ReabastecimentoRequest-57"><a href="#ReabastecimentoRequest-57"><span class="linenos">57</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade a adicionar.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">])</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoRequest-51"><a href="#ReabastecimentoRequest-51"><span class="linenos"> 51</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="ReabastecimentoRequest-52"><a href="#ReabastecimentoRequest-52"><span class="linenos"> 52</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de reabastecimento (RN09).</span>
+</span><span id="ReabastecimentoRequest-53"><a href="#ReabastecimentoRequest-53"><span class="linenos"> 53</span></a>
+</span><span id="ReabastecimentoRequest-54"><a href="#ReabastecimentoRequest-54"><span class="linenos"> 54</span></a><span class="sd">    Attributes:</span>
+</span><span id="ReabastecimentoRequest-55"><a href="#ReabastecimentoRequest-55"><span class="linenos"> 55</span></a><span class="sd">        item: Reservatório a reabastecer.</span>
+</span><span id="ReabastecimentoRequest-56"><a href="#ReabastecimentoRequest-56"><span class="linenos"> 56</span></a><span class="sd">        quantidade: Quantidade a adicionar, em unidades do insumo.</span>
+</span><span id="ReabastecimentoRequest-57"><a href="#ReabastecimentoRequest-57"><span class="linenos"> 57</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoRequest-58"><a href="#ReabastecimentoRequest-58"><span class="linenos"> 58</span></a>
+</span><span id="ReabastecimentoRequest-59"><a href="#ReabastecimentoRequest-59"><span class="linenos"> 59</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemReservatorio</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="ReabastecimentoRequest-60"><a href="#ReabastecimentoRequest-60"><span class="linenos"> 60</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório a reabastecer.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;agua&quot;</span><span class="p">]</span>
+</span><span id="ReabastecimentoRequest-61"><a href="#ReabastecimentoRequest-61"><span class="linenos"> 61</span></a>    <span class="p">)</span>
+</span><span id="ReabastecimentoRequest-62"><a href="#ReabastecimentoRequest-62"><span class="linenos"> 62</span></a>    <span class="n">quantidade</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="ReabastecimentoRequest-63"><a href="#ReabastecimentoRequest-63"><span class="linenos"> 63</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="ReabastecimentoRequest-64"><a href="#ReabastecimentoRequest-64"><span class="linenos"> 64</span></a>        <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="ReabastecimentoRequest-65"><a href="#ReabastecimentoRequest-65"><span class="linenos"> 65</span></a>        <span class="n">allow_inf_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="ReabastecimentoRequest-66"><a href="#ReabastecimentoRequest-66"><span class="linenos"> 66</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantidade a adicionar.&quot;</span><span class="p">,</span>
+</span><span id="ReabastecimentoRequest-67"><a href="#ReabastecimentoRequest-67"><span class="linenos"> 67</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">],</span>
+</span><span id="ReabastecimentoRequest-68"><a href="#ReabastecimentoRequest-68"><span class="linenos"> 68</span></a>    <span class="p">)</span>
+</span><span id="ReabastecimentoRequest-69"><a href="#ReabastecimentoRequest-69"><span class="linenos"> 69</span></a>
+</span><span id="ReabastecimentoRequest-70"><a href="#ReabastecimentoRequest-70"><span class="linenos"> 70</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;quantidade&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest-71"><a href="#ReabastecimentoRequest-71"><span class="linenos"> 71</span></a>    <span class="nd">@classmethod</span>
+</span><span id="ReabastecimentoRequest-72"><a href="#ReabastecimentoRequest-72"><span class="linenos"> 72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">recusar_valor_nao_numerico</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quantidade</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+</span><span id="ReabastecimentoRequest-73"><a href="#ReabastecimentoRequest-73"><span class="linenos"> 73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Impede coerções laxas de booleanos e textos para quantidade.</span>
+</span><span id="ReabastecimentoRequest-74"><a href="#ReabastecimentoRequest-74"><span class="linenos"> 74</span></a>
+</span><span id="ReabastecimentoRequest-75"><a href="#ReabastecimentoRequest-75"><span class="linenos"> 75</span></a><span class="sd">        Args:</span>
+</span><span id="ReabastecimentoRequest-76"><a href="#ReabastecimentoRequest-76"><span class="linenos"> 76</span></a><span class="sd">            quantidade: Valor bruto recebido no JSON.</span>
+</span><span id="ReabastecimentoRequest-77"><a href="#ReabastecimentoRequest-77"><span class="linenos"> 77</span></a>
+</span><span id="ReabastecimentoRequest-78"><a href="#ReabastecimentoRequest-78"><span class="linenos"> 78</span></a><span class="sd">        Returns:</span>
+</span><span id="ReabastecimentoRequest-79"><a href="#ReabastecimentoRequest-79"><span class="linenos"> 79</span></a><span class="sd">            O próprio valor, quando for um número.</span>
+</span><span id="ReabastecimentoRequest-80"><a href="#ReabastecimentoRequest-80"><span class="linenos"> 80</span></a>
+</span><span id="ReabastecimentoRequest-81"><a href="#ReabastecimentoRequest-81"><span class="linenos"> 81</span></a><span class="sd">        Raises:</span>
+</span><span id="ReabastecimentoRequest-82"><a href="#ReabastecimentoRequest-82"><span class="linenos"> 82</span></a><span class="sd">            ValueError: Se o valor não for int, float ou Decimal.</span>
+</span><span id="ReabastecimentoRequest-83"><a href="#ReabastecimentoRequest-83"><span class="linenos"> 83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoRequest-84"><a href="#ReabastecimentoRequest-84"><span class="linenos"> 84</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">)):</span>
+</span><span id="ReabastecimentoRequest-85"><a href="#ReabastecimentoRequest-85"><span class="linenos"> 85</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade deve ser um número.&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest-86"><a href="#ReabastecimentoRequest-86"><span class="linenos"> 86</span></a>        <span class="k">return</span> <span class="n">quantidade</span>
+</span><span id="ReabastecimentoRequest-87"><a href="#ReabastecimentoRequest-87"><span class="linenos"> 87</span></a>
+</span><span id="ReabastecimentoRequest-88"><a href="#ReabastecimentoRequest-88"><span class="linenos"> 88</span></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest-89"><a href="#ReabastecimentoRequest-89"><span class="linenos"> 89</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_copos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReabastecimentoRequest</span><span class="p">:</span>
+</span><span id="ReabastecimentoRequest-90"><a href="#ReabastecimentoRequest-90"><span class="linenos"> 90</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Exige unidades inteiras quando o insumo é COPOS.</span>
+</span><span id="ReabastecimentoRequest-91"><a href="#ReabastecimentoRequest-91"><span class="linenos"> 91</span></a>
+</span><span id="ReabastecimentoRequest-92"><a href="#ReabastecimentoRequest-92"><span class="linenos"> 92</span></a><span class="sd">        Returns:</span>
+</span><span id="ReabastecimentoRequest-93"><a href="#ReabastecimentoRequest-93"><span class="linenos"> 93</span></a><span class="sd">            Requisição validada, preservando as unidades dos demais insumos.</span>
+</span><span id="ReabastecimentoRequest-94"><a href="#ReabastecimentoRequest-94"><span class="linenos"> 94</span></a>
+</span><span id="ReabastecimentoRequest-95"><a href="#ReabastecimentoRequest-95"><span class="linenos"> 95</span></a><span class="sd">        Raises:</span>
+</span><span id="ReabastecimentoRequest-96"><a href="#ReabastecimentoRequest-96"><span class="linenos"> 96</span></a><span class="sd">            ValueError: Se a quantidade de copos for fracionária.</span>
+</span><span id="ReabastecimentoRequest-97"><a href="#ReabastecimentoRequest-97"><span class="linenos"> 97</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoRequest-98"><a href="#ReabastecimentoRequest-98"><span class="linenos"> 98</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">ItemReservatorio</span><span class="o">.</span><span class="n">COPOS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantidade</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+</span><span id="ReabastecimentoRequest-99"><a href="#ReabastecimentoRequest-99"><span class="linenos"> 99</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade de copos deve ser inteira.&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest-100"><a href="#ReabastecimentoRequest-100"><span class="linenos">100</span></a>        <span class="k">return</span> <span class="bp">self</span>
 </span></pre></div>
 
 
@@ -512,6 +603,107 @@
 
 
                             </div>
+                            <div id="ReabastecimentoRequest.recusar_valor_nao_numerico" class="classattr">
+                                        <input id="ReabastecimentoRequest.recusar_valor_nao_numerico-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-field_validator">@field_validator(&#39;quantidade&#39;, mode=&#39;before&#39;)</div>
+        <div class="decorator decorator-classmethod">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">recusar_valor_nao_numerico</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="n">quantidade</span><span class="p">:</span> <span class="nb">object</span></span><span class="return-annotation">) -> <span class="nb">object</span>:</span></span>
+
+                <label class="view-source-button" for="ReabastecimentoRequest.recusar_valor_nao_numerico-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ReabastecimentoRequest.recusar_valor_nao_numerico"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-70"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-70"><span class="linenos">70</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;quantidade&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-71"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-71"><span class="linenos">71</span></a>    <span class="nd">@classmethod</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-72"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-72"><span class="linenos">72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">recusar_valor_nao_numerico</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">quantidade</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-73"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Impede coerções laxas de booleanos e textos para quantidade.</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-74"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-74"><span class="linenos">74</span></a>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-75"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-75"><span class="linenos">75</span></a><span class="sd">        Args:</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-76"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-76"><span class="linenos">76</span></a><span class="sd">            quantidade: Valor bruto recebido no JSON.</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-77"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-77"><span class="linenos">77</span></a>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-78"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-78"><span class="linenos">78</span></a><span class="sd">        Returns:</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-79"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-79"><span class="linenos">79</span></a><span class="sd">            O próprio valor, quando for um número.</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-80"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-80"><span class="linenos">80</span></a>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-81"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-81"><span class="linenos">81</span></a><span class="sd">        Raises:</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-82"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-82"><span class="linenos">82</span></a><span class="sd">            ValueError: Se o valor não for int, float ou Decimal.</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-83"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-83"><span class="linenos">83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-84"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-84"><span class="linenos">84</span></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantidade</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">)):</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-85"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-85"><span class="linenos">85</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade deve ser um número.&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest.recusar_valor_nao_numerico-86"><a href="#ReabastecimentoRequest.recusar_valor_nao_numerico-86"><span class="linenos">86</span></a>        <span class="k">return</span> <span class="n">quantidade</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Impede coerções laxas de booleanos e textos para quantidade.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>quantidade:</strong>  Valor bruto recebido no JSON.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>O próprio valor, quando for um número.</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>ValueError:</strong>  Se o valor não for int, float ou Decimal.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="ReabastecimentoRequest.validar_copos" class="classattr">
+                                        <input id="ReabastecimentoRequest.validar_copos-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-model_validator">@model_validator(mode=&#39;after&#39;)</div>
+
+        <span class="def">def</span>
+        <span class="name">validar_copos</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n"><a href="#ReabastecimentoRequest">ReabastecimentoRequest</a></span>:</span></span>
+
+                <label class="view-source-button" for="ReabastecimentoRequest.validar_copos-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#ReabastecimentoRequest.validar_copos"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoRequest.validar_copos-88"><a href="#ReabastecimentoRequest.validar_copos-88"><span class="linenos"> 88</span></a>    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest.validar_copos-89"><a href="#ReabastecimentoRequest.validar_copos-89"><span class="linenos"> 89</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_copos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReabastecimentoRequest</span><span class="p">:</span>
+</span><span id="ReabastecimentoRequest.validar_copos-90"><a href="#ReabastecimentoRequest.validar_copos-90"><span class="linenos"> 90</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Exige unidades inteiras quando o insumo é COPOS.</span>
+</span><span id="ReabastecimentoRequest.validar_copos-91"><a href="#ReabastecimentoRequest.validar_copos-91"><span class="linenos"> 91</span></a>
+</span><span id="ReabastecimentoRequest.validar_copos-92"><a href="#ReabastecimentoRequest.validar_copos-92"><span class="linenos"> 92</span></a><span class="sd">        Returns:</span>
+</span><span id="ReabastecimentoRequest.validar_copos-93"><a href="#ReabastecimentoRequest.validar_copos-93"><span class="linenos"> 93</span></a><span class="sd">            Requisição validada, preservando as unidades dos demais insumos.</span>
+</span><span id="ReabastecimentoRequest.validar_copos-94"><a href="#ReabastecimentoRequest.validar_copos-94"><span class="linenos"> 94</span></a>
+</span><span id="ReabastecimentoRequest.validar_copos-95"><a href="#ReabastecimentoRequest.validar_copos-95"><span class="linenos"> 95</span></a><span class="sd">        Raises:</span>
+</span><span id="ReabastecimentoRequest.validar_copos-96"><a href="#ReabastecimentoRequest.validar_copos-96"><span class="linenos"> 96</span></a><span class="sd">            ValueError: Se a quantidade de copos for fracionária.</span>
+</span><span id="ReabastecimentoRequest.validar_copos-97"><a href="#ReabastecimentoRequest.validar_copos-97"><span class="linenos"> 97</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoRequest.validar_copos-98"><a href="#ReabastecimentoRequest.validar_copos-98"><span class="linenos"> 98</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">ItemReservatorio</span><span class="o">.</span><span class="n">COPOS</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantidade</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+</span><span id="ReabastecimentoRequest.validar_copos-99"><a href="#ReabastecimentoRequest.validar_copos-99"><span class="linenos"> 99</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A quantidade de copos deve ser inteira.&quot;</span><span class="p">)</span>
+</span><span id="ReabastecimentoRequest.validar_copos-100"><a href="#ReabastecimentoRequest.validar_copos-100"><span class="linenos">100</span></a>        <span class="k">return</span> <span class="bp">self</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Exige unidades inteiras quando o insumo é COPOS.</p>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Requisição validada, preservando as unidades dos demais insumos.</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>ValueError:</strong>  Se a quantidade de copos for fracionária.</li>
+</ul>
+</div>
+
+
+                            </div>
                 </section>
                 <section id="ReabastecimentoResponse">
                             <input id="ReabastecimentoResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
@@ -524,14 +716,14 @@
 
     </div>
     <a class="headerlink" href="#ReabastecimentoResponse"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoResponse-60"><a href="#ReabastecimentoResponse-60"><span class="linenos">60</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="ReabastecimentoResponse-61"><a href="#ReabastecimentoResponse-61"><span class="linenos">61</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.</span>
-</span><span id="ReabastecimentoResponse-62"><a href="#ReabastecimentoResponse-62"><span class="linenos">62</span></a>
-</span><span id="ReabastecimentoResponse-63"><a href="#ReabastecimentoResponse-63"><span class="linenos">63</span></a><span class="sd">    Attributes:</span>
-</span><span id="ReabastecimentoResponse-64"><a href="#ReabastecimentoResponse-64"><span class="linenos">64</span></a><span class="sd">        item: Situação atualizada do reservatório reabastecido.</span>
-</span><span id="ReabastecimentoResponse-65"><a href="#ReabastecimentoResponse-65"><span class="linenos">65</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="ReabastecimentoResponse-66"><a href="#ReabastecimentoResponse-66"><span class="linenos">66</span></a>
-</span><span id="ReabastecimentoResponse-67"><a href="#ReabastecimentoResponse-67"><span class="linenos">67</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório após o reabastecimento.&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ReabastecimentoResponse-103"><a href="#ReabastecimentoResponse-103"><span class="linenos">103</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ReabastecimentoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="ReabastecimentoResponse-104"><a href="#ReabastecimentoResponse-104"><span class="linenos">104</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Reservatório atualizado após o reabastecimento.</span>
+</span><span id="ReabastecimentoResponse-105"><a href="#ReabastecimentoResponse-105"><span class="linenos">105</span></a>
+</span><span id="ReabastecimentoResponse-106"><a href="#ReabastecimentoResponse-106"><span class="linenos">106</span></a><span class="sd">    Attributes:</span>
+</span><span id="ReabastecimentoResponse-107"><a href="#ReabastecimentoResponse-107"><span class="linenos">107</span></a><span class="sd">        item: Situação atualizada do reservatório reabastecido.</span>
+</span><span id="ReabastecimentoResponse-108"><a href="#ReabastecimentoResponse-108"><span class="linenos">108</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ReabastecimentoResponse-109"><a href="#ReabastecimentoResponse-109"><span class="linenos">109</span></a>
+</span><span id="ReabastecimentoResponse-110"><a href="#ReabastecimentoResponse-110"><span class="linenos">110</span></a>    <span class="n">item</span><span class="p">:</span> <span class="n">ItemEstoque</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reservatório após o reabastecimento.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 

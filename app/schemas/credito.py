@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 from pydantic import BaseModel, Field, field_validator
 
-VALORES_CREDITO_ACEITOS: tuple[float, ...] = (0.50, 1.00, 2.00, 5.00, 10.00, 20.00)
+VALORES_CREDITO_ACEITOS = tuple(
+    Decimal(valor) for valor in ("0.50", "1.00", "2.00", "5.00", "10.00", "20.00")
+)
 """Valores de crédito aceitos pela máquina (RN01)."""
 
 
@@ -15,16 +19,17 @@ class CreditoRequest(BaseModel):
         valor: Valor a ser inserido. Deve ser um dos valores aceitos (RN01).
     """
 
-    valor: float = Field(
+    valor: Decimal = Field(
         ...,
         gt=0,
+        allow_inf_nan=False,
         description="Valor a inserir. Aceitos: 0.50, 1.00, 2.00, 5.00, 10.00 e 20.00 (RN01).",
         examples=[10.00],
     )
 
     @field_validator("valor")
     @classmethod
-    def _validar_valor_aceito(cls, valor: float) -> float:
+    def _validar_valor_aceito(cls, valor: Decimal) -> Decimal:
         """Garante que o valor pertence ao conjunto aceito pela RN01.
 
         Args:
@@ -36,7 +41,7 @@ class CreditoRequest(BaseModel):
         Raises:
             ValueError: Se o valor não for um dos aceitos pela máquina.
         """
-        if round(valor, 2) not in VALORES_CREDITO_ACEITOS:
+        if valor not in VALORES_CREDITO_ACEITOS:
             aceitos = ", ".join(f"R$ {v:.2f}" for v in VALORES_CREDITO_ACEITOS)
             raise ValueError(f"Valor de crédito não aceito. Aceitos: {aceitos}.")
         return valor
@@ -64,4 +69,9 @@ class TrocoResponse(BaseModel):
     credito: float = Field(..., description="Crédito restante após o troco.", examples=[0.00])
 
 
-__all__ = ["VALORES_CREDITO_ACEITOS", "CreditoRequest", "CreditoResponse", "TrocoResponse"]
+__all__ = [
+    "VALORES_CREDITO_ACEITOS",
+    "CreditoRequest",
+    "CreditoResponse",
+    "TrocoResponse",
+]

@@ -36,6 +36,7 @@
     <li><a href="#autenticacao-do-operador-rn11">Autenticação do operador (RN11)</a></li>
     <li><a href="#decisoes-tecnicas">Decisões técnicas</a></li>
     <li><a href="#observacao-para-o-grupo">Observação para o grupo</a></li>
+    <li><a href="#persistencia-e-configuracao">Persistência e configuração</a></li>
   </ul></li>
 </ul>
 
@@ -45,6 +46,7 @@
                     <li><a href="app/api.html">api</a></li>
                     <li><a href="app/core.html">core</a></li>
                     <li><a href="app/main.html">main</a></li>
+                    <li><a href="app/repositories.html">repositories</a></li>
                     <li><a href="app/schemas.html">schemas</a></li>
                     <li><a href="app/services.html">services</a></li>
             </ul>
@@ -78,12 +80,11 @@ A máquina física é apenas um cliente: toda a inteligência (cardápio, estoqu
 pagamento, preparo e manutenção) reside nesta API.</p>
 
 <blockquote>
-  <p><strong>Escopo atual desta entrega:</strong> camada de <strong>API (controllers)</strong> dos fluxos do
-  <strong>cliente</strong> e do <strong>operador</strong>, com schemas Pydantic, autenticação Bearer,
-  tratamento padronizado de erros, testes, documentação e a estrutura de pastas
-  do projeto. As regras de negócio e a persistência (camadas de serviço e
-  repositório) são de responsabilidade dos demais integrantes e estão
-  representadas aqui por <em>stubs</em> com a assinatura dos métodos.</p>
+  <p><strong>Escopo atual:</strong> controllers de cliente e operador, com serviços reais de
+  alteração de preço, manutenção, limpeza, estoque, relatório e login do
+  operador usando SQLite. Os serviços de cliente (crédito, pedidos, listagem de
+  produtos e status) continuam como contratos (<code>NotImplementedError</code>). A
+  aplicação não deve ser apresentada como um backend completo.</p>
 </blockquote>
 
 <h2 id="arquitetura-em-camadas">Arquitetura em camadas</h2>
@@ -103,7 +104,8 @@ pagamento, preparo e manutenção) reside nesta API.</p>
 │   ├── produto.py
 │   ├── relatorio.py
 │   └── status.py
-├── services/          # Contrato das regras de negócio (stubs)
+├── repositories/      # SQLite, unidade de trabalho e migração
+├── services/          # Regras implementadas e contratos pendentes
 │   ├── credito_service.py
 │   ├── estoque_service.py
 │   ├── operador_service.py
@@ -116,7 +118,10 @@ pagamento, preparo e manutenção) reside nesta API.</p>
 tests/
 ├── conftest.py
 ├── test_api_client.py
-└── test_api_operator.py
+├── test_api_operator.py
+├── test_regressoes.py
+├── test_services_operador.py
+└── test_servicos_estoque_relatorio.py
 </code></pre>
 
 <p>A camada de <strong>API</strong> apenas valida entradas (Pydantic), delega aos <strong>serviços</strong> e
@@ -308,6 +313,21 @@ períodos com <code>inicio &gt; fim</code> são recusados com HTTP 400.</p>
   <td>401</td>
   <td><code>NAO_AUTORIZADO</code></td>
 </tr>
+<tr>
+  <td>Autenticação do operador não configurada</td>
+  <td>503</td>
+  <td><code>SERVICO_INDISPONIVEL</code></td>
+</tr>
+<tr>
+  <td>Banco ausente, não inicializado ou temporariamente bloqueado</td>
+  <td>503</td>
+  <td><code>BANCO_INDISPONIVEL</code></td>
+</tr>
+<tr>
+  <td>Falha interna de persistência</td>
+  <td>500</td>
+  <td><code>ERRO_INTERNO</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -323,7 +343,13 @@ python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </
 <span class="c1"># 2. Instalar as dependências</span>
 pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 
-<span class="c1"># 3. Subir a API</span>
+<span class="c1"># 3. Configurar autenticação e inicializar um banco novo</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_USER</span><span class="o">=</span><span class="s2">&quot;operador&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import secrets; print(secrets.token_urlsafe(24))&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">OPERATOR_TOKEN</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import secrets; print(secrets.token_urlsafe(32))&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+python<span class="w"> </span>-m<span class="w"> </span><a href="app/repositories/database.html">app.repositories.database</a><span class="w"> </span>init
+
+<span class="c1"># 4. Subir a API</span>
 uvicorn<span class="w"> </span><a href="app/main.html">app.main</a>:app<span class="w"> </span>--reload
 </code></pre>
 </div>
@@ -337,6 +363,7 @@ uvicorn<span class="w"> </span><a href="app/main.html">app.main</a>:app<span cla
 
 <div class="pdoc-code codehilite">
 <pre><span></span><code><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
 pytest<span class="w"> </span>-q
 </code></pre>
 </div>
@@ -351,7 +378,8 @@ testes a cada <strong>push na <code>main</code></strong> e a cada <strong>pull r
 Os passos executados são exatamente os mesmos do fluxo local:</p>
 
 <div class="pdoc-code codehilite">
-<pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+ruff<span class="w"> </span>check<span class="w"> </span>app<span class="w"> </span>tests
 pytest<span class="w"> </span>-q
 </code></pre>
 </div>
@@ -402,7 +430,7 @@ README (via <code>.. include::</code> na docstring do pacote <code><a href="">ap
 
 <h2 id="autenticacao-do-operador-rn11">Autenticação do operador (RN11)</h2>
 
-<p>O <code>POST /operador/login</code> é <strong>público</strong>: recebe <code>usuario</code> e <code>senha</code>, compara com as
+<p>O contrato do <code>POST /operador/login</code> é <strong>público</strong>: recebe <code>usuario</code> e <code>senha</code>, deverá comparar com as
 variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</code> e devolve o token de
 <code>OPERATOR_TOKEN</code> no corpo <code>{"token": "...", "tipo": "bearer"}</code>.</p>
 
@@ -417,21 +445,21 @@ variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</cod
 <thead>
 <tr>
   <th>Variável</th>
-  <th>Padrão de desenvolvimento</th>
+  <th>Configuração</th>
 </tr>
 </thead>
 <tbody>
 <tr>
   <td><code>OPERATOR_USER</code></td>
-  <td><code>operador</code></td>
+  <td>usuário do operador, obrigatório e sem padrão público</td>
 </tr>
 <tr>
   <td><code>OPERATOR_PASSWORD</code></td>
-  <td><code>senha_padrao_para_dev</code></td>
+  <td>senha do operador, obrigatória e sem padrão público</td>
 </tr>
 <tr>
   <td><code>OPERATOR_TOKEN</code></td>
-  <td><code>senha_padrao_para_dev</code></td>
+  <td>segredo Bearer obrigatório, sem padrão público</td>
 </tr>
 </tbody>
 </table>
@@ -439,7 +467,10 @@ variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</cod
 <p>A validação do token é feita pela dependência <code>get_current_operator</code> em
 <code>app/api/deps.py</code>. No Swagger (<code>/docs</code>), use o botão <strong>Authorize</strong> e informe o
 token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
-retornam HTTP 401 com <code>erro = "NAO_AUTORIZADO"</code>.</p>
+retornam HTTP 401 com <code>erro = "NAO_AUTORIZADO"</code>. A API recusa iniciar sem as três
+variáveis de autenticação ou com banco não inicializado/migrado. O login compara
+usuário e senha com <code>secrets.compare_digest</code> e devolve exatamente o
+<code>OPERATOR_TOKEN</code> aceito pelo Bearer.</p>
 
 <h2 id="decisoes-tecnicas">Decisões técnicas</h2>
 
@@ -451,8 +482,8 @@ padrão do Python/Pydantic.</li>
 os controllers finos e sem <code>try/except</code> repetidos.</li>
 <li><strong>Validação de entrada no Pydantic</strong> (valores de crédito da RN01, açúcar de 0 a
 3) e HTTP 400 para dados inválidos (em vez do 422 padrão do FastAPI).</li>
-<li><strong>Services como contrato</strong> (<code>NotImplementedError</code>) para respeitar a divisão de
-responsabilidades e permitir testar a API com serviços mockados.</li>
+<li><strong>Serviços pendentes como contratos</strong> (<code>NotImplementedError</code>); os três serviços
+implementados têm testes de integração com persistência real.</li>
 </ul>
 
 <h2 id="observacao-para-o-grupo">Observação para o grupo</h2>
@@ -462,6 +493,60 @@ requisição/resposta (Cappuccino aparece como R$ 6,00 na tabela, mas R$ 6,50 no
 exemplos; Chocolate quente, R$ 6,50 na tabela e R$ 7,00 nos exemplos). Como os
 preços são dados de domínio (camada de serviço), isso <strong>não afeta a API</strong>, mas
 deve ser alinhado antes de popular o cardápio.</p>
+
+<h2 id="persistencia-e-configuracao">Persistência e configuração</h2>
+
+<p>Consulte <a href="database/README.md">database/README.md</a> para inicialização e migração.
+Preço é validado em reais com Decimal e armazenado em centavos inteiros; o JSON
+continua usando reais. Não são aceitos frações de centavo, valores não finitos
+ou preços acima de R$ 99.999.999,99. Crédito só aceita as denominações exatas.</p>
+
+<p>Os serviços coordenam regras; somente os repositórios executam SQL. Uma unidade
+de trabalho mantém leitura, decisão e gravações na mesma transação. Erros de
+persistência são registrados no servidor e devolvidos sem SQL/caminhos internos.</p>
+
+<ul>
+<li><code>DATABASE_PATH</code>: caminho do banco (padrão: <code>maquina.db</code> na raiz do projeto).</li>
+<li><code>DATABASE_TIMEOUT_SECONDS</code>: espera por lock, entre 0 e 30 (padrão: 5).</li>
+<li><code>CORS_ORIGINS</code>: origens HTTP(S) explícitas separadas por vírgula, sem caminhos.
+Por padrão nenhuma origem externa é permitida; cookies não são habilitados.</li>
+<li><code>OPERATOR_TOKEN</code>: segredo obrigatório, sem fallback. Gere um valor aleatório e
+evite compartilhá-lo em código, logs ou URLs. Fora do desenvolvimento local,
+exponha a API somente por HTTPS.</li>
+</ul>
+
+<p>A limpeza exige MANUTENCAO e mantém esse estado. SAIR devolve PRONTA se o contador
+for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. O alerta de estoque
+usa <code>quantidade_atual &lt;= nivel_alerta</code>. O reabastecimento preserva as unidades do
+seed (ml, g e un); como o schema atual declara quantidades inteiras e não há
+migração acordada para unidades menores, frações são recusadas pelo serviço em
+vez de truncadas ou arredondadas silenciosamente.</p>
+
+<p>O relatório de vendas usa <code>pedido.criado_em</code> como instante da venda, pois o
+schema não possui <code>finalizado_em</code>; uma conclusão real exigirá coluna/migração e
+integração com o serviço de pedidos. Datas sem fuso são interpretadas como UTC e
+as comparações são feitas em UTC. O faturamento usa o <code>preco_cobrado</code> histórico,
+acumulado em centavos inteiros com Decimal, sem <code>SUM</code> de floats.</p>
+
+<p>Os testes incluem HTTP com banco real, rollback, concorrência de reabastecimento,
+migração com referências, estoque, relatório, login e validação de configuração.
+Não substituem teste de implantação nem a implementação das regras de crédito,
+pedido, listagem de produtos e status do cliente.</p>
+
+<h3 id="verificacoes-de-desenvolvimento">Verificações de desenvolvimento</h3>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code>ruff<span class="w"> </span>check<span class="w"> </span>app<span class="w"> </span>tests
+ruff<span class="w"> </span>format<span class="w"> </span>--check<span class="w"> </span>app<span class="w"> </span>tests
+pytest<span class="w"> </span>-q
+pip-audit<span class="w"> </span>-r<span class="w"> </span>constraints.txt<span class="w"> </span>--no-deps<span class="w"> </span>--disable-pip
+</code></pre>
+</div>
+
+<p><code>requirements.txt</code> contém somente execução; <code>requirements-dev.txt</code> adiciona testes,
+documentação, lint e auditoria. <code>constraints.txt</code> registra as versões verificadas
+no Linux/WSL com Python 3.12. Atualizações devem passar pelos testes e pela auditoria.
+A auditoria consulta avisos conhecidos e não comprova ausência de vulnerabilidades.</p>
 </div>
 
                         <input id="mod-app-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">

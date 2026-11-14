@@ -114,17 +114,41 @@ class EstadoInvalidoError(BusinessError):
     erro = "ESTADO_INVALIDO"
 
 
+class PersistenciaError(BusinessError):
+    """Falha interna de persistência, sem expor detalhes do banco (HTTP 500)."""
+
+    status_code = 500
+    erro = "ERRO_INTERNO"
+
+
+class BancoIndisponivelError(BusinessError):
+    """Banco inacessível, não inicializado ou temporariamente ocupado (HTTP 503)."""
+
+    status_code = 503
+    erro = "BANCO_INDISPONIVEL"
+
+
+class ConfiguracaoIndisponivelError(BusinessError):
+    """Configuração obrigatória ausente, sem expor os valores esperados (HTTP 503)."""
+
+    status_code = 503
+    erro = "SERVICO_INDISPONIVEL"
+
+
 __all__ = [
-    "BusinessError",
-    "OperacaoInvalidaError",
-    "CreditoInsuficienteError",
+    "BancoIndisponivelError",
     "BebidaNaoEncontradaError",
-    "PedidoNaoEncontradoError",
-    "EstoqueInsuficienteError",
-    "MaquinaOcupadaError",
+    "BusinessError",
     "CapacidadeExcedidaError",
-    "MaquinaIndisponivelError",
+    "ConfiguracaoIndisponivelError",
     "CredenciaisInvalidasError",
-    "PedidoNaoCancelavelError",
+    "CreditoInsuficienteError",
     "EstadoInvalidoError",
+    "EstoqueInsuficienteError",
+    "MaquinaIndisponivelError",
+    "MaquinaOcupadaError",
+    "OperacaoInvalidaError",
+    "PedidoNaoCancelavelError",
+    "PedidoNaoEncontradoError",
+    "PersistenciaError",
 ]

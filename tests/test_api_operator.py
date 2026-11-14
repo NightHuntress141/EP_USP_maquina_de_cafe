@@ -65,7 +65,10 @@ def test_login_sucesso(mock_autenticar: object, client: TestClient) -> None:
     """POST /operador/login válido devolve 200 e o token."""
     mock_autenticar.return_value = "test-token"
 
-    response = client.post("/operador/login", json={"usuario": "operador", "senha": "senha_padrao_para_dev"})
+    response = client.post(
+        "/operador/login",
+        json={"usuario": "operador", "senha": "senha_padrao_para_dev"},
+    )
 
     assert response.status_code == 200
     assert response.json() == {"token": "test-token", "tipo": "bearer"}
@@ -295,12 +298,12 @@ def test_registrar_limpeza(
     mock_limpeza: object, client: TestClient, auth_headers: dict[str, str]
 ) -> None:
     """POST /operador/limpeza devolve 200 com contador zerado (RN07)."""
-    mock_limpeza.return_value = {"preparos_desde_limpeza": 0, "estado": "PRONTA"}
+    mock_limpeza.return_value = {"preparos_desde_limpeza": 0, "estado": "MANUTENCAO"}
 
     response = client.post("/operador/limpeza", headers=auth_headers)
 
     assert response.status_code == 200
-    assert response.json() == {"preparos_desde_limpeza": 0, "estado": "PRONTA"}
+    assert response.json() == {"preparos_desde_limpeza": 0, "estado": "MANUTENCAO"}
     mock_limpeza.assert_called_once()
 
 
@@ -311,7 +314,7 @@ def test_limpeza_fora_de_estado_valido(
     """POST /operador/limpeza fora do estado permitido devolve 409 (RN07)."""
     from app.core.exceptions import EstadoInvalidoError
 
-    mock_limpeza.side_effect = EstadoInvalidoError("A máquina não está aguardando limpeza.")
+    mock_limpeza.side_effect = EstadoInvalidoError("A máquina não está em manutenção.")
 
     response = client.post("/operador/limpeza", headers=auth_headers)
 
@@ -344,9 +347,7 @@ def test_gerar_relatorio(
     )
 
 
-def test_gerar_relatorio_periodo_invalido(
-    client: TestClient, auth_headers: dict[str, str]
-) -> None:
+def test_gerar_relatorio_periodo_invalido(client: TestClient, auth_headers: dict[str, str]) -> None:
     """GET /operador/relatorio com início > fim devolve 400 (RN12)."""
     response = client.get(
         "/operador/relatorio",
@@ -356,3 +357,90 @@ def test_gerar_relatorio_periodo_invalido(
 
     assert response.status_code == 400
     assert response.json()["erro"] == "DADOS_INVALIDOS"
+
+
+@pytest.mark.parametrize("valor", ["Infinity", "-Infinity", "NaN", "1e999", 0, -1, "invalido"])
+@pytest.mark.parametrize(
+    "metodo,rota,corpo,servico",
+    [
+        (
+            "put",
+            "/operador/produtos/1/preco",
+            "preco",
+            "app.services.produto_service.alterar_preco",
+        ),
+        (
+            "post",
+            "/operador/estoque/reabastecer",
+            "quantidade",
+            "app.services.estoque_service.reabastecer",
+        ),
+    ],
+)
+def test_numero_invalido_nao_chega_ao_servico(
+    client, auth_headers, valor, metodo, rota, corpo, servico
+):
+    """Recusa números não finitos, não positivos e texto antes da delegação."""
+    payload = {corpo: valor}
+    if corpo == "quantidade":
+        payload["item"] = "agua"
+    with patch(servico) as mock_servico:
+        resposta = client.request(metodo, rota, json=payload, headers=auth_headers)
+    assert resposta.status_code == 400
+    assert resposta.json()["erro"] == "DADOS_INVALIDOS"
+    mock_servico.assert_not_called()
+
+
+@pytest.mark.parametrize("autorizacao", [None, "Bearer invalido", "Basic test-token"])
+@pytest.mark.parametrize(
+    "metodo,rota,payload,servico",
+    [
+        (
+            "get",
+            "/operador/estoque",
+            None,
+            "app.services.estoque_service.consultar_estoque",
+        ),
+        (
+            "post",
+            "/operador/estoque/reabastecer",
+            {"item": "agua", "quantidade": 1},
+            "app.services.estoque_service.reabastecer",
+        ),
+        (
+            "put",
+            "/operador/produtos/1/preco",
+            {"preco": 5},
+            "app.services.produto_service.alterar_preco",
+        ),
+        (
+            "post",
+            "/operador/manutencao",
+            {"acao": "ENTRAR"},
+            "app.services.operador_service.alterar_manutencao",
+        ),
+        (
+            "post",
+            "/operador/limpeza",
+            None,
+            "app.services.operador_service.registrar_limpeza",
+        ),
+        (
+            "get",
+            "/operador/relatorio?inicio=2026-01-01T00:00:00&fim=2026-12-31T00:00:00",
+            None,
+            "app.services.relatorio_service.gerar_relatorio",
+        ),
+    ],
+)
+def test_rotas_protegidas_recusam_credenciais(
+    client, auth_headers, autorizacao, metodo, rota, payload, servico
+):
+    """Todas as rotas protegidas recusam credenciais inválidas sem chamar serviços."""
+    headers = {} if autorizacao is None else {"Authorization": autorizacao}
+    with patch(servico) as mock_servico:
+        resposta = client.request(metodo, rota, json=payload, headers=headers)
+    assert resposta.status_code == 401
+    assert resposta.json()["erro"] == "NAO_AUTORIZADO"
+    assert resposta.headers["www-authenticate"] == "Bearer"
+    mock_servico.assert_not_called()

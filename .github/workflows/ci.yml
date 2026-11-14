@@ -22,7 +22,13 @@ jobs:
           cache: pip
 
       - name: Instalar dependências
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
+
+      - name: Verificar código Python
+        run: ruff check app tests
+
+      - name: Auditar dependências fixadas
+        run: pip-audit -r constraints.txt --no-deps --disable-pip
 
       - name: Rodar testes
         run: pytest -q

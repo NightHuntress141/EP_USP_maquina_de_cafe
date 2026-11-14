@@ -36,6 +36,9 @@
                         <li>
                                 <a class="variable" href="#PrecoRequest.preco">preco</a>
                         </li>
+                        <li>
+                                <a class="function" href="#PrecoRequest.validar_preco">validar_preco</a>
+                        </li>
                 </ul>
 
             </li>
@@ -87,40 +90,67 @@
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PrecoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de alteração de preço (RN10).</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.valores</span><span class="w"> </span><span class="kn">import</span> <span class="n">para_centavos</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="sd">        preco: Novo preço da bebida, em reais.</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PrecoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de alteração de preço (RN10).</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Novo preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">7.00</span><span class="p">])</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Item do cardápio retornado pela API.</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">        id: Identificador da bebida (1 a 5, na ordem do cardápio).</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">        preco: Preço atual em reais.</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        tempo_preparo: Tempo de preparo simulado, em segundos.</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">        disponivel: ``True`` se há estoque suficiente para preparar a bebida agora.</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tempo de preparo em segundos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica se há estoque suficiente para preparar a bebida agora.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="p">)</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PrecoRequest&quot;</span><span class="p">,</span> <span class="s2">&quot;ProdutoResponse&quot;</span><span class="p">]</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        preco: Novo preço da bebida, em reais.</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>        <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="n">le</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;99999999.99&quot;</span><span class="p">),</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>        <span class="n">allow_inf_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais, com no máximo duas casas decimais.&quot;</span><span class="p">,</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">7.00</span><span class="p">],</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="p">)</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;preco&quot;</span><span class="p">)</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="nd">@classmethod</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_preco</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Decimal</span><span class="p">:</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Recusa frações de centavo sem arredondar a entrada.</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">        Args:</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">            preco: Preço informado em reais.</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        Returns:</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">            Valor validado.</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>        <span class="n">para_centavos</span><span class="p">(</span><span class="n">preco</span><span class="p">)</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="k">return</span> <span class="n">preco</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Item do cardápio retornado pela API.</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a><span class="sd">        id: Identificador da bebida (1 a 5, na ordem do cardápio).</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a><span class="sd">        preco: Preço atual em reais.</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a><span class="sd">        tempo_preparo: Tempo de preparo simulado, em segundos.</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        disponivel: ``True`` se há estoque suficiente para preparar a bebida agora.</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tempo de preparo em segundos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica se há estoque suficiente para preparar a bebida agora.&quot;</span><span class="p">,</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>    <span class="p">)</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PrecoRequest&quot;</span><span class="p">,</span> <span class="s2">&quot;ProdutoResponse&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -136,14 +166,35 @@
 
     </div>
     <a class="headerlink" href="#PrecoRequest"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="PrecoRequest-9"><a href="#PrecoRequest-9"><span class="linenos"> 9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PrecoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="PrecoRequest-10"><a href="#PrecoRequest-10"><span class="linenos">10</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de alteração de preço (RN10).</span>
-</span><span id="PrecoRequest-11"><a href="#PrecoRequest-11"><span class="linenos">11</span></a>
-</span><span id="PrecoRequest-12"><a href="#PrecoRequest-12"><span class="linenos">12</span></a><span class="sd">    Attributes:</span>
-</span><span id="PrecoRequest-13"><a href="#PrecoRequest-13"><span class="linenos">13</span></a><span class="sd">        preco: Novo preço da bebida, em reais.</span>
-</span><span id="PrecoRequest-14"><a href="#PrecoRequest-14"><span class="linenos">14</span></a><span class="sd">    &quot;&quot;&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PrecoRequest-13"><a href="#PrecoRequest-13"><span class="linenos">13</span></a><span class="k">class</span><span class="w"> </span><span class="nc">PrecoRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="PrecoRequest-14"><a href="#PrecoRequest-14"><span class="linenos">14</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Corpo da requisição de alteração de preço (RN10).</span>
 </span><span id="PrecoRequest-15"><a href="#PrecoRequest-15"><span class="linenos">15</span></a>
-</span><span id="PrecoRequest-16"><a href="#PrecoRequest-16"><span class="linenos">16</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Novo preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">7.00</span><span class="p">])</span>
+</span><span id="PrecoRequest-16"><a href="#PrecoRequest-16"><span class="linenos">16</span></a><span class="sd">    Attributes:</span>
+</span><span id="PrecoRequest-17"><a href="#PrecoRequest-17"><span class="linenos">17</span></a><span class="sd">        preco: Novo preço da bebida, em reais.</span>
+</span><span id="PrecoRequest-18"><a href="#PrecoRequest-18"><span class="linenos">18</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="PrecoRequest-19"><a href="#PrecoRequest-19"><span class="linenos">19</span></a>
+</span><span id="PrecoRequest-20"><a href="#PrecoRequest-20"><span class="linenos">20</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="PrecoRequest-21"><a href="#PrecoRequest-21"><span class="linenos">21</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="PrecoRequest-22"><a href="#PrecoRequest-22"><span class="linenos">22</span></a>        <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="PrecoRequest-23"><a href="#PrecoRequest-23"><span class="linenos">23</span></a>        <span class="n">le</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;99999999.99&quot;</span><span class="p">),</span>
+</span><span id="PrecoRequest-24"><a href="#PrecoRequest-24"><span class="linenos">24</span></a>        <span class="n">allow_inf_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="PrecoRequest-25"><a href="#PrecoRequest-25"><span class="linenos">25</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais, com no máximo duas casas decimais.&quot;</span><span class="p">,</span>
+</span><span id="PrecoRequest-26"><a href="#PrecoRequest-26"><span class="linenos">26</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">7.00</span><span class="p">],</span>
+</span><span id="PrecoRequest-27"><a href="#PrecoRequest-27"><span class="linenos">27</span></a>    <span class="p">)</span>
+</span><span id="PrecoRequest-28"><a href="#PrecoRequest-28"><span class="linenos">28</span></a>
+</span><span id="PrecoRequest-29"><a href="#PrecoRequest-29"><span class="linenos">29</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;preco&quot;</span><span class="p">)</span>
+</span><span id="PrecoRequest-30"><a href="#PrecoRequest-30"><span class="linenos">30</span></a>    <span class="nd">@classmethod</span>
+</span><span id="PrecoRequest-31"><a href="#PrecoRequest-31"><span class="linenos">31</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_preco</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Decimal</span><span class="p">:</span>
+</span><span id="PrecoRequest-32"><a href="#PrecoRequest-32"><span class="linenos">32</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Recusa frações de centavo sem arredondar a entrada.</span>
+</span><span id="PrecoRequest-33"><a href="#PrecoRequest-33"><span class="linenos">33</span></a>
+</span><span id="PrecoRequest-34"><a href="#PrecoRequest-34"><span class="linenos">34</span></a><span class="sd">        Args:</span>
+</span><span id="PrecoRequest-35"><a href="#PrecoRequest-35"><span class="linenos">35</span></a><span class="sd">            preco: Preço informado em reais.</span>
+</span><span id="PrecoRequest-36"><a href="#PrecoRequest-36"><span class="linenos">36</span></a>
+</span><span id="PrecoRequest-37"><a href="#PrecoRequest-37"><span class="linenos">37</span></a><span class="sd">        Returns:</span>
+</span><span id="PrecoRequest-38"><a href="#PrecoRequest-38"><span class="linenos">38</span></a><span class="sd">            Valor validado.</span>
+</span><span id="PrecoRequest-39"><a href="#PrecoRequest-39"><span class="linenos">39</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PrecoRequest-40"><a href="#PrecoRequest-40"><span class="linenos">40</span></a>        <span class="n">para_centavos</span><span class="p">(</span><span class="n">preco</span><span class="p">)</span>
+</span><span id="PrecoRequest-41"><a href="#PrecoRequest-41"><span class="linenos">41</span></a>        <span class="k">return</span> <span class="n">preco</span>
 </span></pre></div>
 
 
@@ -159,14 +210,60 @@
 
                             <div id="PrecoRequest.preco" class="classattr">
                                 <div class="attr variable">
-            <span class="name">preco</span><span class="annotation">: float</span>        =
+            <span class="name">preco</span><span class="annotation">: decimal.Decimal</span>        =
 <span class="default_value">PydanticUndefined</span>
 
         
     </div>
     <a class="headerlink" href="#PrecoRequest.preco"></a>
     
-            <div class="docstring"><p>Novo preço em reais.</p>
+            <div class="docstring"><p>Preço em reais, com no máximo duas casas decimais.</p>
+</div>
+
+
+                            </div>
+                            <div id="PrecoRequest.validar_preco" class="classattr">
+                                        <input id="PrecoRequest.validar_preco-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-field_validator">@field_validator(&#39;preco&#39;)</div>
+        <div class="decorator decorator-classmethod">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">validar_preco</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="n">preco</span><span class="p">:</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span></span><span class="return-annotation">) -> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span>:</span></span>
+
+                <label class="view-source-button" for="PrecoRequest.validar_preco-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#PrecoRequest.validar_preco"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="PrecoRequest.validar_preco-29"><a href="#PrecoRequest.validar_preco-29"><span class="linenos">29</span></a>    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;preco&quot;</span><span class="p">)</span>
+</span><span id="PrecoRequest.validar_preco-30"><a href="#PrecoRequest.validar_preco-30"><span class="linenos">30</span></a>    <span class="nd">@classmethod</span>
+</span><span id="PrecoRequest.validar_preco-31"><a href="#PrecoRequest.validar_preco-31"><span class="linenos">31</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validar_preco</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">preco</span><span class="p">:</span> <span class="n">Decimal</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Decimal</span><span class="p">:</span>
+</span><span id="PrecoRequest.validar_preco-32"><a href="#PrecoRequest.validar_preco-32"><span class="linenos">32</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Recusa frações de centavo sem arredondar a entrada.</span>
+</span><span id="PrecoRequest.validar_preco-33"><a href="#PrecoRequest.validar_preco-33"><span class="linenos">33</span></a>
+</span><span id="PrecoRequest.validar_preco-34"><a href="#PrecoRequest.validar_preco-34"><span class="linenos">34</span></a><span class="sd">        Args:</span>
+</span><span id="PrecoRequest.validar_preco-35"><a href="#PrecoRequest.validar_preco-35"><span class="linenos">35</span></a><span class="sd">            preco: Preço informado em reais.</span>
+</span><span id="PrecoRequest.validar_preco-36"><a href="#PrecoRequest.validar_preco-36"><span class="linenos">36</span></a>
+</span><span id="PrecoRequest.validar_preco-37"><a href="#PrecoRequest.validar_preco-37"><span class="linenos">37</span></a><span class="sd">        Returns:</span>
+</span><span id="PrecoRequest.validar_preco-38"><a href="#PrecoRequest.validar_preco-38"><span class="linenos">38</span></a><span class="sd">            Valor validado.</span>
+</span><span id="PrecoRequest.validar_preco-39"><a href="#PrecoRequest.validar_preco-39"><span class="linenos">39</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="PrecoRequest.validar_preco-40"><a href="#PrecoRequest.validar_preco-40"><span class="linenos">40</span></a>        <span class="n">para_centavos</span><span class="p">(</span><span class="n">preco</span><span class="p">)</span>
+</span><span id="PrecoRequest.validar_preco-41"><a href="#PrecoRequest.validar_preco-41"><span class="linenos">41</span></a>        <span class="k">return</span> <span class="n">preco</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Recusa frações de centavo sem arredondar a entrada.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>preco:</strong>  Preço informado em reais.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Valor validado.</p>
+</blockquote>
 </div>
 
 
@@ -183,24 +280,26 @@
 
     </div>
     <a class="headerlink" href="#ProdutoResponse"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ProdutoResponse-19"><a href="#ProdutoResponse-19"><span class="linenos">19</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="ProdutoResponse-20"><a href="#ProdutoResponse-20"><span class="linenos">20</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Item do cardápio retornado pela API.</span>
-</span><span id="ProdutoResponse-21"><a href="#ProdutoResponse-21"><span class="linenos">21</span></a>
-</span><span id="ProdutoResponse-22"><a href="#ProdutoResponse-22"><span class="linenos">22</span></a><span class="sd">    Attributes:</span>
-</span><span id="ProdutoResponse-23"><a href="#ProdutoResponse-23"><span class="linenos">23</span></a><span class="sd">        id: Identificador da bebida (1 a 5, na ordem do cardápio).</span>
-</span><span id="ProdutoResponse-24"><a href="#ProdutoResponse-24"><span class="linenos">24</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
-</span><span id="ProdutoResponse-25"><a href="#ProdutoResponse-25"><span class="linenos">25</span></a><span class="sd">        preco: Preço atual em reais.</span>
-</span><span id="ProdutoResponse-26"><a href="#ProdutoResponse-26"><span class="linenos">26</span></a><span class="sd">        tempo_preparo: Tempo de preparo simulado, em segundos.</span>
-</span><span id="ProdutoResponse-27"><a href="#ProdutoResponse-27"><span class="linenos">27</span></a><span class="sd">        disponivel: ``True`` se há estoque suficiente para preparar a bebida agora.</span>
-</span><span id="ProdutoResponse-28"><a href="#ProdutoResponse-28"><span class="linenos">28</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="ProdutoResponse-29"><a href="#ProdutoResponse-29"><span class="linenos">29</span></a>
-</span><span id="ProdutoResponse-30"><a href="#ProdutoResponse-30"><span class="linenos">30</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-</span><span id="ProdutoResponse-31"><a href="#ProdutoResponse-31"><span class="linenos">31</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
-</span><span id="ProdutoResponse-32"><a href="#ProdutoResponse-32"><span class="linenos">32</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
-</span><span id="ProdutoResponse-33"><a href="#ProdutoResponse-33"><span class="linenos">33</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tempo de preparo em segundos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
-</span><span id="ProdutoResponse-34"><a href="#ProdutoResponse-34"><span class="linenos">34</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-</span><span id="ProdutoResponse-35"><a href="#ProdutoResponse-35"><span class="linenos">35</span></a>        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica se há estoque suficiente para preparar a bebida agora.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>
-</span><span id="ProdutoResponse-36"><a href="#ProdutoResponse-36"><span class="linenos">36</span></a>    <span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ProdutoResponse-44"><a href="#ProdutoResponse-44"><span class="linenos">44</span></a><span class="k">class</span><span class="w"> </span><span class="nc">ProdutoResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="ProdutoResponse-45"><a href="#ProdutoResponse-45"><span class="linenos">45</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Item do cardápio retornado pela API.</span>
+</span><span id="ProdutoResponse-46"><a href="#ProdutoResponse-46"><span class="linenos">46</span></a>
+</span><span id="ProdutoResponse-47"><a href="#ProdutoResponse-47"><span class="linenos">47</span></a><span class="sd">    Attributes:</span>
+</span><span id="ProdutoResponse-48"><a href="#ProdutoResponse-48"><span class="linenos">48</span></a><span class="sd">        id: Identificador da bebida (1 a 5, na ordem do cardápio).</span>
+</span><span id="ProdutoResponse-49"><a href="#ProdutoResponse-49"><span class="linenos">49</span></a><span class="sd">        nome: Nome comercial da bebida.</span>
+</span><span id="ProdutoResponse-50"><a href="#ProdutoResponse-50"><span class="linenos">50</span></a><span class="sd">        preco: Preço atual em reais.</span>
+</span><span id="ProdutoResponse-51"><a href="#ProdutoResponse-51"><span class="linenos">51</span></a><span class="sd">        tempo_preparo: Tempo de preparo simulado, em segundos.</span>
+</span><span id="ProdutoResponse-52"><a href="#ProdutoResponse-52"><span class="linenos">52</span></a><span class="sd">        disponivel: ``True`` se há estoque suficiente para preparar a bebida agora.</span>
+</span><span id="ProdutoResponse-53"><a href="#ProdutoResponse-53"><span class="linenos">53</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="ProdutoResponse-54"><a href="#ProdutoResponse-54"><span class="linenos">54</span></a>
+</span><span id="ProdutoResponse-55"><a href="#ProdutoResponse-55"><span class="linenos">55</span></a>    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Identificador da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+</span><span id="ProdutoResponse-56"><a href="#ProdutoResponse-56"><span class="linenos">56</span></a>    <span class="n">nome</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nome da bebida.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cappuccino&quot;</span><span class="p">])</span>
+</span><span id="ProdutoResponse-57"><a href="#ProdutoResponse-57"><span class="linenos">57</span></a>    <span class="n">preco</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preço em reais.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">6.50</span><span class="p">])</span>
+</span><span id="ProdutoResponse-58"><a href="#ProdutoResponse-58"><span class="linenos">58</span></a>    <span class="n">tempo_preparo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tempo de preparo em segundos.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">])</span>
+</span><span id="ProdutoResponse-59"><a href="#ProdutoResponse-59"><span class="linenos">59</span></a>    <span class="n">disponivel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+</span><span id="ProdutoResponse-60"><a href="#ProdutoResponse-60"><span class="linenos">60</span></a>        <span class="o">...</span><span class="p">,</span>
+</span><span id="ProdutoResponse-61"><a href="#ProdutoResponse-61"><span class="linenos">61</span></a>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Indica se há estoque suficiente para preparar a bebida agora.&quot;</span><span class="p">,</span>
+</span><span id="ProdutoResponse-62"><a href="#ProdutoResponse-62"><span class="linenos">62</span></a>        <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+</span><span id="ProdutoResponse-63"><a href="#ProdutoResponse-63"><span class="linenos">63</span></a>    <span class="p">)</span>
 </span></pre></div>
 
 

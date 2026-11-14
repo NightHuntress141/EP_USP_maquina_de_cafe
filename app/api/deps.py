@@ -1,15 +1,17 @@
 """Dependências compartilhadas da camada de API.
 
-Concentra a autenticação do operador (RN11). Nesta entrega o módulo já fica
-pronto para os endpoints de ``/operador`` da próxima rodada.
+Concentra a autenticação do operador (RN11), com token obrigatório.
 """
 
 from __future__ import annotations
 
-import os
+from secrets import compare_digest
+from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
+from app.core.config import token_operador
 
 security = HTTPBearer(auto_error=False)
 """Esquema de segurança Bearer.
@@ -18,12 +20,9 @@ security = HTTPBearer(auto_error=False)
 cabeçalho ``Authorization`` está ausente, mantendo o corpo de erro padronizado.
 """
 
-TOKEN_PADRAO_DEV = "senha_padrao_para_dev"
-"""Token usado quando a variável de ambiente ``OPERATOR_TOKEN`` não está definida."""
-
 
 def get_current_operator(
-    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)],
 ) -> str:
     """Valida o token do operador (RN11).
 
@@ -37,10 +36,17 @@ def get_current_operator(
         O token validado.
 
     Raises:
-        HTTPException: 401 caso o token esteja ausente ou seja inválido.
+        HTTPException: 401 para credencial inválida; 503 para configuração ausente.
     """
-    token_esperado = os.getenv("OPERATOR_TOKEN", TOKEN_PADRAO_DEV)
-    if credentials is None or credentials.credentials != token_esperado:
+    try:
+        token_esperado = token_operador()
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=503, detail="Autenticação do operador não configurada."
+        ) from exc
+    if credentials is None or not compare_digest(
+        credentials.credentials.encode("utf-8"), token_esperado.encode("utf-8")
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token ausente ou inválido.",
@@ -49,4 +55,4 @@ def get_current_operator(
     return credentials.credentials
 
 
-__all__ = ["security", "get_current_operator", "TOKEN_PADRAO_DEV"]
+__all__ = ["get_current_operator", "security"]

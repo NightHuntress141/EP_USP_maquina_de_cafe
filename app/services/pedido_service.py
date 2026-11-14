@@ -81,4 +81,4 @@ def cancelar_pedido(pedido_id: int) -> dict[str, Any]:
     raise NotImplementedError("pedido_service.cancelar_pedido ainda não foi implementado.")
 
 
-__all__ = ["criar_pedido", "consultar_pedido", "cancelar_pedido"]
+__all__ = ["cancelar_pedido", "consultar_pedido", "criar_pedido"]

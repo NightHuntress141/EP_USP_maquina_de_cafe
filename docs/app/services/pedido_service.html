@@ -31,13 +31,13 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="function" href="#criar_pedido">criar_pedido</a>
+                    <a class="function" href="#cancelar_pedido">cancelar_pedido</a>
             </li>
             <li>
                     <a class="function" href="#consultar_pedido">consultar_pedido</a>
             </li>
             <li>
-                    <a class="function" href="#cancelar_pedido">cancelar_pedido</a>
+                    <a class="function" href="#criar_pedido">criar_pedido</a>
             </li>
     </ul>
 
@@ -148,11 +148,145 @@ dos demais integrantes. Este módulo define apenas a interface consumida pela AP
 </span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pedido_service.cancelar_pedido ainda não foi implementado.&quot;</span><span class="p">)</span>
 </span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>
 </span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a>
-</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;criar_pedido&quot;</span><span class="p">,</span> <span class="s2">&quot;consultar_pedido&quot;</span><span class="p">,</span> <span class="s2">&quot;cancelar_pedido&quot;</span><span class="p">]</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cancelar_pedido&quot;</span><span class="p">,</span> <span class="s2">&quot;consultar_pedido&quot;</span><span class="p">,</span> <span class="s2">&quot;criar_pedido&quot;</span><span class="p">]</span>
 </span></pre></div>
 
 
             </section>
+                <section id="cancelar_pedido">
+                            <input id="cancelar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">cancelar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="cancelar_pedido-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#cancelar_pedido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="cancelar_pedido-62"><a href="#cancelar_pedido-62"><span class="linenos">62</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="cancelar_pedido-63"><a href="#cancelar_pedido-63"><span class="linenos">63</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancela um pedido que esteja EM_PREPARO.</span>
+</span><span id="cancelar_pedido-64"><a href="#cancelar_pedido-64"><span class="linenos">64</span></a>
+</span><span id="cancelar_pedido-65"><a href="#cancelar_pedido-65"><span class="linenos">65</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="cancelar_pedido-66"><a href="#cancelar_pedido-66"><span class="linenos">66</span></a><span class="sd">        RN05 – permitido apenas com o pedido EM_PREPARO; o valor é devolvido ao</span>
+</span><span id="cancelar_pedido-67"><a href="#cancelar_pedido-67"><span class="linenos">67</span></a><span class="sd">        crédito, os ingredientes já consumidos não retornam ao estoque e a</span>
+</span><span id="cancelar_pedido-68"><a href="#cancelar_pedido-68"><span class="linenos">68</span></a><span class="sd">        máquina volta a PRONTA.</span>
+</span><span id="cancelar_pedido-69"><a href="#cancelar_pedido-69"><span class="linenos">69</span></a>
+</span><span id="cancelar_pedido-70"><a href="#cancelar_pedido-70"><span class="linenos">70</span></a><span class="sd">    Args:</span>
+</span><span id="cancelar_pedido-71"><a href="#cancelar_pedido-71"><span class="linenos">71</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="cancelar_pedido-72"><a href="#cancelar_pedido-72"><span class="linenos">72</span></a>
+</span><span id="cancelar_pedido-73"><a href="#cancelar_pedido-73"><span class="linenos">73</span></a><span class="sd">    Returns:</span>
+</span><span id="cancelar_pedido-74"><a href="#cancelar_pedido-74"><span class="linenos">74</span></a><span class="sd">        Dicionário no formato aceito por</span>
+</span><span id="cancelar_pedido-75"><a href="#cancelar_pedido-75"><span class="linenos">75</span></a><span class="sd">        :class:`app.schemas.pedido.PedidoResponse`, com status CANCELADO.</span>
+</span><span id="cancelar_pedido-76"><a href="#cancelar_pedido-76"><span class="linenos">76</span></a>
+</span><span id="cancelar_pedido-77"><a href="#cancelar_pedido-77"><span class="linenos">77</span></a><span class="sd">    Raises:</span>
+</span><span id="cancelar_pedido-78"><a href="#cancelar_pedido-78"><span class="linenos">78</span></a><span class="sd">        PedidoNaoEncontradoError: Se o pedido não existir.</span>
+</span><span id="cancelar_pedido-79"><a href="#cancelar_pedido-79"><span class="linenos">79</span></a><span class="sd">        PedidoNaoCancelavelError: Se o pedido não estiver EM_PREPARO.</span>
+</span><span id="cancelar_pedido-80"><a href="#cancelar_pedido-80"><span class="linenos">80</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
+</span><span id="cancelar_pedido-81"><a href="#cancelar_pedido-81"><span class="linenos">81</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="cancelar_pedido-82"><a href="#cancelar_pedido-82"><span class="linenos">82</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pedido_service.cancelar_pedido ainda não foi implementado.&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Cancela um pedido que esteja EM_PREPARO.</p>
+
+<h6 id="regras-envolvidas">Regras envolvidas:</h6>
+
+<blockquote>
+  <p>RN05 – permitido apenas com o pedido EM_PREPARO; o valor é devolvido ao
+  crédito, os ingredientes já consumidos não retornam ao estoque e a
+  máquina volta a PRONTA.</p>
+</blockquote>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Dicionário no formato aceito por
+  <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>, com status CANCELADO.</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>PedidoNaoEncontradoError:</strong>  Se o pedido não existir.</li>
+<li><strong>PedidoNaoCancelavelError:</strong>  Se o pedido não estiver EM_PREPARO.</li>
+<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
+</ul>
+</div>
+
+
+                </section>
+                <section id="consultar_pedido">
+                            <input id="consultar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">consultar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="consultar_pedido-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#consultar_pedido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="consultar_pedido-41"><a href="#consultar_pedido-41"><span class="linenos">41</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="consultar_pedido-42"><a href="#consultar_pedido-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consulta um pedido e calcula seu status atual.</span>
+</span><span id="consultar_pedido-43"><a href="#consultar_pedido-43"><span class="linenos">43</span></a>
+</span><span id="consultar_pedido-44"><a href="#consultar_pedido-44"><span class="linenos">44</span></a><span class="sd">    Regras envolvidas:</span>
+</span><span id="consultar_pedido-45"><a href="#consultar_pedido-45"><span class="linenos">45</span></a><span class="sd">        RN04 – o status é calculado no momento da consulta (sem timer):</span>
+</span><span id="consultar_pedido-46"><a href="#consultar_pedido-46"><span class="linenos">46</span></a><span class="sd">        EM_PREPARO até o horário previsto de término, depois CONCLUIDO.</span>
+</span><span id="consultar_pedido-47"><a href="#consultar_pedido-47"><span class="linenos">47</span></a>
+</span><span id="consultar_pedido-48"><a href="#consultar_pedido-48"><span class="linenos">48</span></a><span class="sd">    Args:</span>
+</span><span id="consultar_pedido-49"><a href="#consultar_pedido-49"><span class="linenos">49</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="consultar_pedido-50"><a href="#consultar_pedido-50"><span class="linenos">50</span></a>
+</span><span id="consultar_pedido-51"><a href="#consultar_pedido-51"><span class="linenos">51</span></a><span class="sd">    Returns:</span>
+</span><span id="consultar_pedido-52"><a href="#consultar_pedido-52"><span class="linenos">52</span></a><span class="sd">        Dicionário no formato aceito por</span>
+</span><span id="consultar_pedido-53"><a href="#consultar_pedido-53"><span class="linenos">53</span></a><span class="sd">        :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="consultar_pedido-54"><a href="#consultar_pedido-54"><span class="linenos">54</span></a>
+</span><span id="consultar_pedido-55"><a href="#consultar_pedido-55"><span class="linenos">55</span></a><span class="sd">    Raises:</span>
+</span><span id="consultar_pedido-56"><a href="#consultar_pedido-56"><span class="linenos">56</span></a><span class="sd">        PedidoNaoEncontradoError: Se o pedido não existir.</span>
+</span><span id="consultar_pedido-57"><a href="#consultar_pedido-57"><span class="linenos">57</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
+</span><span id="consultar_pedido-58"><a href="#consultar_pedido-58"><span class="linenos">58</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="consultar_pedido-59"><a href="#consultar_pedido-59"><span class="linenos">59</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pedido_service.consultar_pedido ainda não foi implementado.&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Consulta um pedido e calcula seu status atual.</p>
+
+<h6 id="regras-envolvidas">Regras envolvidas:</h6>
+
+<blockquote>
+  <p>RN04 – o status é calculado no momento da consulta (sem timer):
+  EM_PREPARO até o horário previsto de término, depois CONCLUIDO.</p>
+</blockquote>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Dicionário no formato aceito por
+  <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li><strong>PedidoNaoEncontradoError:</strong>  Se o pedido não existir.</li>
+<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
+</ul>
+</div>
+
+
+                </section>
                 <section id="criar_pedido">
                             <input id="criar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -226,140 +360,6 @@ dos demais integrantes. Este módulo define apenas a interface consumida pela AP
 <li><strong>EstoqueInsuficienteError:</strong>  Se faltar ingrediente, açúcar ou copo.</li>
 <li><strong>MaquinaOcupadaError:</strong>  Se houver outra bebida em preparo.</li>
 <li><strong>MaquinaIndisponivelError:</strong>  Se a máquina estiver em manutenção/limpeza.</li>
-<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="consultar_pedido">
-                            <input id="consultar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">consultar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="consultar_pedido-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#consultar_pedido"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="consultar_pedido-41"><a href="#consultar_pedido-41"><span class="linenos">41</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="consultar_pedido-42"><a href="#consultar_pedido-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consulta um pedido e calcula seu status atual.</span>
-</span><span id="consultar_pedido-43"><a href="#consultar_pedido-43"><span class="linenos">43</span></a>
-</span><span id="consultar_pedido-44"><a href="#consultar_pedido-44"><span class="linenos">44</span></a><span class="sd">    Regras envolvidas:</span>
-</span><span id="consultar_pedido-45"><a href="#consultar_pedido-45"><span class="linenos">45</span></a><span class="sd">        RN04 – o status é calculado no momento da consulta (sem timer):</span>
-</span><span id="consultar_pedido-46"><a href="#consultar_pedido-46"><span class="linenos">46</span></a><span class="sd">        EM_PREPARO até o horário previsto de término, depois CONCLUIDO.</span>
-</span><span id="consultar_pedido-47"><a href="#consultar_pedido-47"><span class="linenos">47</span></a>
-</span><span id="consultar_pedido-48"><a href="#consultar_pedido-48"><span class="linenos">48</span></a><span class="sd">    Args:</span>
-</span><span id="consultar_pedido-49"><a href="#consultar_pedido-49"><span class="linenos">49</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
-</span><span id="consultar_pedido-50"><a href="#consultar_pedido-50"><span class="linenos">50</span></a>
-</span><span id="consultar_pedido-51"><a href="#consultar_pedido-51"><span class="linenos">51</span></a><span class="sd">    Returns:</span>
-</span><span id="consultar_pedido-52"><a href="#consultar_pedido-52"><span class="linenos">52</span></a><span class="sd">        Dicionário no formato aceito por</span>
-</span><span id="consultar_pedido-53"><a href="#consultar_pedido-53"><span class="linenos">53</span></a><span class="sd">        :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="consultar_pedido-54"><a href="#consultar_pedido-54"><span class="linenos">54</span></a>
-</span><span id="consultar_pedido-55"><a href="#consultar_pedido-55"><span class="linenos">55</span></a><span class="sd">    Raises:</span>
-</span><span id="consultar_pedido-56"><a href="#consultar_pedido-56"><span class="linenos">56</span></a><span class="sd">        PedidoNaoEncontradoError: Se o pedido não existir.</span>
-</span><span id="consultar_pedido-57"><a href="#consultar_pedido-57"><span class="linenos">57</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="consultar_pedido-58"><a href="#consultar_pedido-58"><span class="linenos">58</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="consultar_pedido-59"><a href="#consultar_pedido-59"><span class="linenos">59</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pedido_service.consultar_pedido ainda não foi implementado.&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Consulta um pedido e calcula seu status atual.</p>
-
-<h6 id="regras-envolvidas">Regras envolvidas:</h6>
-
-<blockquote>
-  <p>RN04 – o status é calculado no momento da consulta (sem timer):
-  EM_PREPARO até o horário previsto de término, depois CONCLUIDO.</p>
-</blockquote>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Dicionário no formato aceito por
-  <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
-</blockquote>
-
-<h6 id="raises">Raises:</h6>
-
-<ul>
-<li><strong>PedidoNaoEncontradoError:</strong>  Se o pedido não existir.</li>
-<li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="cancelar_pedido">
-                            <input id="cancelar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">cancelar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="cancelar_pedido-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#cancelar_pedido"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="cancelar_pedido-62"><a href="#cancelar_pedido-62"><span class="linenos">62</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="cancelar_pedido-63"><a href="#cancelar_pedido-63"><span class="linenos">63</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancela um pedido que esteja EM_PREPARO.</span>
-</span><span id="cancelar_pedido-64"><a href="#cancelar_pedido-64"><span class="linenos">64</span></a>
-</span><span id="cancelar_pedido-65"><a href="#cancelar_pedido-65"><span class="linenos">65</span></a><span class="sd">    Regras envolvidas:</span>
-</span><span id="cancelar_pedido-66"><a href="#cancelar_pedido-66"><span class="linenos">66</span></a><span class="sd">        RN05 – permitido apenas com o pedido EM_PREPARO; o valor é devolvido ao</span>
-</span><span id="cancelar_pedido-67"><a href="#cancelar_pedido-67"><span class="linenos">67</span></a><span class="sd">        crédito, os ingredientes já consumidos não retornam ao estoque e a</span>
-</span><span id="cancelar_pedido-68"><a href="#cancelar_pedido-68"><span class="linenos">68</span></a><span class="sd">        máquina volta a PRONTA.</span>
-</span><span id="cancelar_pedido-69"><a href="#cancelar_pedido-69"><span class="linenos">69</span></a>
-</span><span id="cancelar_pedido-70"><a href="#cancelar_pedido-70"><span class="linenos">70</span></a><span class="sd">    Args:</span>
-</span><span id="cancelar_pedido-71"><a href="#cancelar_pedido-71"><span class="linenos">71</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
-</span><span id="cancelar_pedido-72"><a href="#cancelar_pedido-72"><span class="linenos">72</span></a>
-</span><span id="cancelar_pedido-73"><a href="#cancelar_pedido-73"><span class="linenos">73</span></a><span class="sd">    Returns:</span>
-</span><span id="cancelar_pedido-74"><a href="#cancelar_pedido-74"><span class="linenos">74</span></a><span class="sd">        Dicionário no formato aceito por</span>
-</span><span id="cancelar_pedido-75"><a href="#cancelar_pedido-75"><span class="linenos">75</span></a><span class="sd">        :class:`app.schemas.pedido.PedidoResponse`, com status CANCELADO.</span>
-</span><span id="cancelar_pedido-76"><a href="#cancelar_pedido-76"><span class="linenos">76</span></a>
-</span><span id="cancelar_pedido-77"><a href="#cancelar_pedido-77"><span class="linenos">77</span></a><span class="sd">    Raises:</span>
-</span><span id="cancelar_pedido-78"><a href="#cancelar_pedido-78"><span class="linenos">78</span></a><span class="sd">        PedidoNaoEncontradoError: Se o pedido não existir.</span>
-</span><span id="cancelar_pedido-79"><a href="#cancelar_pedido-79"><span class="linenos">79</span></a><span class="sd">        PedidoNaoCancelavelError: Se o pedido não estiver EM_PREPARO.</span>
-</span><span id="cancelar_pedido-80"><a href="#cancelar_pedido-80"><span class="linenos">80</span></a><span class="sd">        NotImplementedError: Enquanto a regra de negócio não for implementada.</span>
-</span><span id="cancelar_pedido-81"><a href="#cancelar_pedido-81"><span class="linenos">81</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="cancelar_pedido-82"><a href="#cancelar_pedido-82"><span class="linenos">82</span></a>    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pedido_service.cancelar_pedido ainda não foi implementado.&quot;</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Cancela um pedido que esteja EM_PREPARO.</p>
-
-<h6 id="regras-envolvidas">Regras envolvidas:</h6>
-
-<blockquote>
-  <p>RN05 – permitido apenas com o pedido EM_PREPARO; o valor é devolvido ao
-  crédito, os ingredientes já consumidos não retornam ao estoque e a
-  máquina volta a PRONTA.</p>
-</blockquote>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Dicionário no formato aceito por
-  <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>, com status CANCELADO.</p>
-</blockquote>
-
-<h6 id="raises">Raises:</h6>
-
-<ul>
-<li><strong>PedidoNaoEncontradoError:</strong>  Se o pedido não existir.</li>
-<li><strong>PedidoNaoCancelavelError:</strong>  Se o pedido não estiver EM_PREPARO.</li>
 <li><strong>NotImplementedError:</strong>  Enquanto a regra de negócio não for implementada.</li>
 </ul>
 </div>
