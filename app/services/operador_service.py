@@ -1,13 +1,10 @@
-"""Contrato do serviço do operador.
-
-A implementação real das regras de negócio (RN07, RN08 e RN11) é de
-responsabilidade dos demais integrantes. Este módulo define apenas a interface
-consumida pela API.
-"""
+"""Serviços de manutenção e limpeza e contrato de autenticação do operador."""
 
 from __future__ import annotations
 
-from typing import Any
+from app.core.exceptions import EstadoInvalidoError, OperacaoInvalidaError
+from app.core.modelos import EstadoMaquina, ResultadoLimpeza, ResultadoManutencao
+from app.repositories.operador_repository import transacao
 
 
 def autenticar(usuario: str, senha: str) -> str:
@@ -32,45 +29,60 @@ def autenticar(usuario: str, senha: str) -> str:
     raise NotImplementedError("operador_service.autenticar ainda não foi implementado.")
 
 
-def alterar_manutencao(acao: str) -> dict[str, Any]:
-    """Coloca a máquina em manutenção ou a devolve à operação.
-
-    Regras envolvidas:
-        RN08 – apenas o operador autenticado pode entrar ou sair da manutenção,
-        respeitando as transições de estado válidas da máquina.
+def alterar_manutencao(acao: str) -> ResultadoManutencao:
+    """Executa a entrada ou saída explícita da manutenção (RN08).
 
     Args:
-        acao: ``ENTRAR`` ou ``SAIR``, já validado pela API.
+        acao: ENTRAR ou SAIR.
 
     Returns:
-        Dicionário no formato aceito por
-        :class:`app.schemas.operador.ManutencaoResponse`, com a chave ``estado``.
+        Estado atualizado da máquina, preservando crédito e contador.
 
     Raises:
-        EstadoInvalidoError: Se a transição não for permitida no estado atual.
-        NotImplementedError: Enquanto a regra de negócio não for implementada.
+        OperacaoInvalidaError: Se a ação for desconhecida.
+        EstadoInvalidoError: Se a transição não for permitida.
     """
-    raise NotImplementedError("operador_service.alterar_manutencao ainda não foi implementado.")
+    if acao not in ("ENTRAR", "SAIR"):
+        raise OperacaoInvalidaError("A ação deve ser ENTRAR ou SAIR.")
+    with transacao() as repositorio:
+        maquina = repositorio.obter_maquina()
+        if acao == "ENTRAR":
+            if maquina.estado not in (
+                EstadoMaquina.PRONTA,
+                EstadoMaquina.AGUARDANDO_LIMPEZA,
+            ):
+                raise EstadoInvalidoError("A máquina não pode entrar em manutenção agora.")
+            estado = EstadoMaquina.MANUTENCAO
+        else:
+            if maquina.estado != EstadoMaquina.MANUTENCAO:
+                raise EstadoInvalidoError("A máquina não está em manutenção.")
+            estado = (
+                EstadoMaquina.AGUARDANDO_LIMPEZA
+                if maquina.preparos_desde_limpeza >= 30
+                else EstadoMaquina.PRONTA
+            )
+        repositorio.atualizar_estado(estado)
+        return {"estado": estado}
 
 
-def registrar_limpeza() -> dict[str, Any]:
-    """Registra a limpeza da máquina e zera o contador de preparos.
+def registrar_limpeza() -> ResultadoLimpeza:
+    """Registra a limpeza e zera o contador de preparos em manutenção (RN07).
 
-    Regras envolvidas:
-        RN07 – a limpeza é permitida quando a máquina está
-        ``AGUARDANDO_LIMPEZA`` (ou em manutenção) e reinicia o contador de
-        preparos desde a última limpeza.
+    A máquina permanece em MANUTENCAO até a saída explícita desse modo.
+    O registro de limpeza e a atualização do contador são atômicos.
 
     Returns:
-        Dicionário no formato aceito por
-        :class:`app.schemas.operador.LimpezaResponse`, com as chaves
-        ``preparos_desde_limpeza`` e ``estado``.
+        Estado da máquina e contador zerado.
 
     Raises:
-        EstadoInvalidoError: Se a máquina não puder ser limpa no estado atual.
-        NotImplementedError: Enquanto a regra de negócio não for implementada.
+        EstadoInvalidoError: Se a máquina não estiver em manutenção.
     """
-    raise NotImplementedError("operador_service.registrar_limpeza ainda não foi implementado.")
+    with transacao() as repositorio:
+        maquina = repositorio.obter_maquina()
+        if maquina.estado != EstadoMaquina.MANUTENCAO:
+            raise EstadoInvalidoError("A limpeza exige a máquina em manutenção.")
+        repositorio.registrar_limpeza()
+        return {"estado": maquina.estado, "preparos_desde_limpeza": 0}
 
 
-__all__ = ["autenticar", "alterar_manutencao", "registrar_limpeza"]
+__all__ = ["alterar_manutencao", "autenticar", "registrar_limpeza"]

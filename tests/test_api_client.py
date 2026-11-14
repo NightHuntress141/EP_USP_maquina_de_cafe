@@ -11,8 +11,20 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 PRODUTOS = [
-    {"id": 1, "nome": "Café expresso", "preco": 4.00, "tempo_preparo": 8, "disponivel": True},
-    {"id": 4, "nome": "Cappuccino", "preco": 6.50, "tempo_preparo": 12, "disponivel": True},
+    {
+        "id": 1,
+        "nome": "Café expresso",
+        "preco": 4.00,
+        "tempo_preparo": 8,
+        "disponivel": True,
+    },
+    {
+        "id": 4,
+        "nome": "Cappuccino",
+        "preco": 6.50,
+        "tempo_preparo": 12,
+        "disponivel": True,
+    },
 ]
 
 PEDIDO = {
@@ -264,7 +276,9 @@ def test_cancelar_pedido_nao_cancelavel(mock_cancelar: object, client: TestClien
     """POST /pedidos/{id}/cancelar de pedido já concluído devolve 409 (RN05)."""
     from app.core.exceptions import PedidoNaoCancelavelError
 
-    mock_cancelar.side_effect = PedidoNaoCancelavelError("Apenas pedidos em preparo podem ser cancelados.")
+    mock_cancelar.side_effect = PedidoNaoCancelavelError(
+        "Apenas pedidos em preparo podem ser cancelados."
+    )
 
     response = client.post("/pedidos/1/cancelar")
 

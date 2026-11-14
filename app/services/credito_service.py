@@ -6,10 +6,11 @@ dos demais integrantes. Este módulo define apenas a interface consumida pela AP
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Any
 
 
-def adicionar_credito(valor: float) -> float:
+def adicionar_credito(valor: Decimal) -> float:
     """Insere um valor de crédito e devolve o crédito acumulado.
 
     Regras envolvidas:

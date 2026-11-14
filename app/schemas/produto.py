@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from decimal import Decimal
+
+from pydantic import BaseModel, Field, field_validator
+
+from app.core.valores import para_centavos
 
 
 class PrecoRequest(BaseModel):
@@ -12,7 +16,28 @@ class PrecoRequest(BaseModel):
         preco: Novo preço da bebida, em reais.
     """
 
-    preco: float = Field(..., gt=0, description="Novo preço em reais.", examples=[7.00])
+    preco: Decimal = Field(
+        ...,
+        gt=0,
+        le=Decimal("99999999.99"),
+        allow_inf_nan=False,
+        description="Preço em reais, com no máximo duas casas decimais.",
+        examples=[7.00],
+    )
+
+    @field_validator("preco")
+    @classmethod
+    def validar_preco(cls, preco: Decimal) -> Decimal:
+        """Recusa frações de centavo sem arredondar a entrada.
+
+        Args:
+            preco: Preço informado em reais.
+
+        Returns:
+            Valor validado.
+        """
+        para_centavos(preco)
+        return preco
 
 
 class ProdutoResponse(BaseModel):
@@ -31,7 +56,9 @@ class ProdutoResponse(BaseModel):
     preco: float = Field(..., description="Preço em reais.", examples=[6.50])
     tempo_preparo: int = Field(..., description="Tempo de preparo em segundos.", examples=[12])
     disponivel: bool = Field(
-        ..., description="Indica se há estoque suficiente para preparar a bebida agora.", examples=[True]
+        ...,
+        description="Indica se há estoque suficiente para preparar a bebida agora.",
+        examples=[True],
     )
 
 

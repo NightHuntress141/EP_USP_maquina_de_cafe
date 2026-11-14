@@ -2,18 +2,9 @@
 
 from __future__ import annotations
 
-from enum import Enum
-
 from pydantic import BaseModel, Field
 
-
-class EstadoMaquina(str, Enum):
-    """Estados possíveis da máquina de café."""
-
-    PRONTA = "PRONTA"
-    PREPARANDO = "PREPARANDO"
-    AGUARDANDO_LIMPEZA = "AGUARDANDO_LIMPEZA"
-    MANUTENCAO = "MANUTENCAO"
+from app.core.modelos import EstadoMaquina
 
 
 class StatusResponse(BaseModel):

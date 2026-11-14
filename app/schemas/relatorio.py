@@ -20,7 +20,9 @@ class VendaPorBebida(BaseModel):
     produto_id: int = Field(..., description="Identificador da bebida.", examples=[4])
     nome: str = Field(..., description="Nome da bebida.", examples=["Cappuccino"])
     quantidade: int = Field(..., description="Pedidos concluídos no período.", examples=[12])
-    faturamento: float = Field(..., description="Faturamento da bebida no período.", examples=[78.0])
+    faturamento: float = Field(
+        ..., description="Faturamento da bebida no período.", examples=[78.0]
+    )
 
 
 class RelatorioResponse(BaseModel):
@@ -34,11 +36,15 @@ class RelatorioResponse(BaseModel):
         por_bebida: Consolidado por bebida.
     """
 
-    inicio: datetime = Field(..., description="Início do período.", examples=["2026-03-01T00:00:00"])
+    inicio: datetime = Field(
+        ..., description="Início do período.", examples=["2026-03-01T00:00:00"]
+    )
     fim: datetime = Field(..., description="Fim do período.", examples=["2026-03-31T23:59:59"])
     total_pedidos: int = Field(..., description="Total de pedidos concluídos.", examples=[42])
-    faturamento_total: float = Field(..., description="Faturamento total do período.", examples=[273.0])
+    faturamento_total: float = Field(
+        ..., description="Faturamento total do período.", examples=[273.0]
+    )
     por_bebida: list[VendaPorBebida] = Field(..., description="Consolidado por bebida.")
 
 
-__all__ = ["VendaPorBebida", "RelatorioResponse"]
+__all__ = ["RelatorioResponse", "VendaPorBebida"]

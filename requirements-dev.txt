@@ -1,2 +1,8 @@
-# Ferramentas de desenvolvimento (não necessárias em runtime/CI de testes)
-pdoc>=15,<17
+-r requirements.txt
+
+# Testes, documentação e análise estática.
+pytest==9.0.3
+pdoc==16.0.0
+ruff==0.17.5
+pip-audit==2.10.1
+httpx2==2.16.0
