@@ -5,6 +5,16 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 
+class PrecoRequest(BaseModel):
+    """Corpo da requisição de alteração de preço (RN10).
+
+    Attributes:
+        preco: Novo preço da bebida, em reais.
+    """
+
+    preco: float = Field(..., gt=0, description="Novo preço em reais.", examples=[7.00])
+
+
 class ProdutoResponse(BaseModel):
     """Item do cardápio retornado pela API.
 
@@ -25,4 +35,4 @@ class ProdutoResponse(BaseModel):
     )
 
 
-__all__ = ["ProdutoResponse"]
+__all__ = ["PrecoRequest", "ProdutoResponse"]

@@ -27,6 +27,7 @@
   <ul>
     <li><a href="#arquitetura-em-camadas">Arquitetura em camadas</a></li>
     <li><a href="#endpoints-do-cliente-implementados">Endpoints do cliente (implementados)</a></li>
+    <li><a href="#endpoints-do-operador-implementados">Endpoints do operador (implementados)</a></li>
     <li><a href="#tratamento-padronizado-de-erros">Tratamento padronizado de erros</a></li>
     <li><a href="#como-rodar">Como rodar</a></li>
     <li><a href="#como-testar">Como testar</a></li>
@@ -77,12 +78,12 @@ A máquina física é apenas um cliente: toda a inteligência (cardápio, estoqu
 pagamento, preparo e manutenção) reside nesta API.</p>
 
 <blockquote>
-  <p><strong>Escopo atual desta entrega:</strong> camada de <strong>API (controllers)</strong> do fluxo do
-  <strong>cliente</strong>, com schemas Pydantic, tratamento padronizado de erros, testes,
-  documentação e a estrutura de pastas do projeto. As regras de negócio e a
-  persistência (camadas de serviço e repositório) são de responsabilidade dos
-  demais integrantes e estão representadas aqui por <em>stubs</em> com a assinatura dos
-  métodos.</p>
+  <p><strong>Escopo atual desta entrega:</strong> camada de <strong>API (controllers)</strong> dos fluxos do
+  <strong>cliente</strong> e do <strong>operador</strong>, com schemas Pydantic, autenticação Bearer,
+  tratamento padronizado de erros, testes, documentação e a estrutura de pastas
+  do projeto. As regras de negócio e a persistência (camadas de serviço e
+  repositório) são de responsabilidade dos demais integrantes e estão
+  representadas aqui por <em>stubs</em> com a assinatura dos métodos.</p>
 </blockquote>
 
 <h2 id="arquitetura-em-camadas">Arquitetura em camadas</h2>
@@ -91,23 +92,31 @@ pagamento, preparo e manutenção) reside nesta API.</p>
 ├── main.py            # FastAPI, CORS e handlers globais de erro
 ├── api/
 │   ├── deps.py        # Dependência de autenticação do operador (RN11)
-│   └── client.py      # Endpoints do fluxo do cliente
+│   ├── client.py      # Endpoints do fluxo do cliente
+│   └── operator.py    # Endpoints do fluxo do operador
 ├── schemas/           # DTOs Pydantic de entrada e saída
 │   ├── credito.py
 │   ├── erro.py
+│   ├── estoque.py
+│   ├── operador.py
 │   ├── pedido.py
 │   ├── produto.py
+│   ├── relatorio.py
 │   └── status.py
 ├── services/          # Contrato das regras de negócio (stubs)
 │   ├── credito_service.py
+│   ├── estoque_service.py
+│   ├── operador_service.py
 │   ├── pedido_service.py
 │   ├── produto_service.py
+│   ├── relatorio_service.py
 │   └── status_service.py
 └── core/
     └── exceptions.py  # Exceções de negócio customizadas
 tests/
 ├── conftest.py
-└── test_api_client.py
+├── test_api_client.py
+└── test_api_operator.py
 </code></pre>
 
 <p>A camada de <strong>API</strong> apenas valida entradas (Pydantic), delega aos <strong>serviços</strong> e
@@ -171,6 +180,76 @@ controllers.</p>
 </tbody>
 </table>
 
+<h2 id="endpoints-do-operador-implementados">Endpoints do operador (implementados)</h2>
+
+<p>Exceto o login, todas as rotas exigem <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Método</th>
+  <th>Rota</th>
+  <th>Autenticação</th>
+  <th>Descrição</th>
+  <th>Sucesso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>POST</td>
+  <td><code>/operador/login</code></td>
+  <td>pública</td>
+  <td>Autentica o operador e devolve o token (RN11)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>GET</td>
+  <td><code>/operador/estoque</code></td>
+  <td>Bearer</td>
+  <td>Consulta níveis e capacidades dos reservatórios (RN09)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>POST</td>
+  <td><code>/operador/estoque/reabastecer</code></td>
+  <td>Bearer</td>
+  <td>Reabastece um reservatório (RN09)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>PUT</td>
+  <td><code>/operador/produtos/{produto_id}/preco</code></td>
+  <td>Bearer</td>
+  <td>Altera o preço de uma bebida (RN10)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>POST</td>
+  <td><code>/operador/manutencao</code></td>
+  <td>Bearer</td>
+  <td>Entra ou sai do modo de manutenção (RN08)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>POST</td>
+  <td><code>/operador/limpeza</code></td>
+  <td>Bearer</td>
+  <td>Registra a limpeza e zera o contador (RN07)</td>
+  <td>200</td>
+</tr>
+<tr>
+  <td>GET</td>
+  <td><code>/operador/relatorio</code></td>
+  <td>Bearer</td>
+  <td>Relatório de vendas por período (RN12)</td>
+  <td>200</td>
+</tr>
+</tbody>
+</table>
+
+<p>O relatório recebe <code>inicio</code> e <code>fim</code> como <em>query parameters</em> no formato ISO 8601;
+períodos com <code>inicio &gt; fim</code> são recusados com HTTP 400.</p>
+
 <h2 id="tratamento-padronizado-de-erros">Tratamento padronizado de erros</h2>
 
 <p>O corpo de erro segue o formato <code>{"erro": SLUG, "mensagem": "..."}</code>:</p>
@@ -205,6 +284,16 @@ controllers.</p>
   <td><code>ESTOQUE_INSUFICIENTE</code> / <code>MAQUINA_OCUPADA</code></td>
 </tr>
 <tr>
+  <td>Pedido que não está mais em preparo</td>
+  <td>409</td>
+  <td><code>PEDIDO_NAO_CANCELAVEL</code></td>
+</tr>
+<tr>
+  <td>Operação incompatível com o estado da máquina</td>
+  <td>409</td>
+  <td><code>ESTADO_INVALIDO</code></td>
+</tr>
+<tr>
   <td>Reabastecimento acima da capacidade</td>
   <td>422</td>
   <td><code>CAPACIDADE_EXCEDIDA</code></td>
@@ -215,7 +304,7 @@ controllers.</p>
   <td><code>MAQUINA_INDISPONIVEL</code></td>
 </tr>
 <tr>
-  <td>Operador sem token válido</td>
+  <td>Operador sem token válido ou credenciais inválidas</td>
   <td>401</td>
   <td><code>NAO_AUTORIZADO</code></td>
 </tr>
@@ -311,16 +400,46 @@ README (via <code>.. include::</code> na docstring do pacote <code><a href="">ap
 
 <p>Depois, abra <a href="docs/index.html"><code>docs/index.html</code></a> no navegador.</p>
 
-<blockquote>
-  <p>O módulo <code>app.api.operator</code> será incluído automaticamente quando os endpoints
-  de operador forem implementados na próxima rodada.</p>
-</blockquote>
-
 <h2 id="autenticacao-do-operador-rn11">Autenticação do operador (RN11)</h2>
 
-<p>Os endpoints de operador usarão autenticação <code>Bearer</code>. O token é comparado com a
-variável de ambiente <code>OPERATOR_TOKEN</code> (padrão de desenvolvimento:
-<code>senha_padrao_para_dev</code>). A dependência já está pronta em <code>app/api/deps.py</code>.</p>
+<p>O <code>POST /operador/login</code> é <strong>público</strong>: recebe <code>usuario</code> e <code>senha</code>, compara com as
+variáveis de ambiente <code>OPERATOR_USER</code> e <code>OPERATOR_PASSWORD</code> e devolve o token de
+<code>OPERATOR_TOKEN</code> no corpo <code>{"token": "...", "tipo": "bearer"}</code>.</p>
+
+<p>Todos os demais endpoints de <code>/operador</code> são <strong>protegidos</strong> e exigem o cabeçalho:</p>
+
+<div class="pdoc-code codehilite">
+<pre><span></span><code><span class="err">Authorization: Bearer &lt;token&gt;</span>
+</code></pre>
+</div>
+
+<table>
+<thead>
+<tr>
+  <th>Variável</th>
+  <th>Padrão de desenvolvimento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>OPERATOR_USER</code></td>
+  <td><code>operador</code></td>
+</tr>
+<tr>
+  <td><code>OPERATOR_PASSWORD</code></td>
+  <td><code>senha_padrao_para_dev</code></td>
+</tr>
+<tr>
+  <td><code>OPERATOR_TOKEN</code></td>
+  <td><code>senha_padrao_para_dev</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>A validação do token é feita pela dependência <code>get_current_operator</code> em
+<code>app/api/deps.py</code>. No Swagger (<code>/docs</code>), use o botão <strong>Authorize</strong> e informe o
+token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
+retornam HTTP 401 com <code>erro = "NAO_AUTORIZADO"</code>.</p>
 
 <h2 id="decisoes-tecnicas">Decisões técnicas</h2>
 
@@ -349,12 +468,12 @@ deve ser alinhado antes de popular o cardápio.</p>
 
                         <label class="view-source-button" for="mod-app-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">"""API REST de uma Máquina de Café.</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a><span class="sd">&quot;&quot;&quot;API REST de uma Máquina de Café.</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">3</span></a><span class="sd">.. include:: ../README.md</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="sd">"""</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">4</span></a><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">"0.1.0"</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">6</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
 </span></pre></div>
 
 

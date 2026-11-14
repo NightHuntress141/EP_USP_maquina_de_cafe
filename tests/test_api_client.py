@@ -261,12 +261,12 @@ def test_cancelar_pedido_inexistente(mock_cancelar: object, client: TestClient) 
 
 @patch("app.services.pedido_service.cancelar_pedido")
 def test_cancelar_pedido_nao_cancelavel(mock_cancelar: object, client: TestClient) -> None:
-    """POST /pedidos/{id}/cancelar de pedido já concluído devolve 400 (RN05)."""
-    from app.core.exceptions import OperacaoInvalidaError
+    """POST /pedidos/{id}/cancelar de pedido já concluído devolve 409 (RN05)."""
+    from app.core.exceptions import PedidoNaoCancelavelError
 
-    mock_cancelar.side_effect = OperacaoInvalidaError("Apenas pedidos em preparo podem ser cancelados.")
+    mock_cancelar.side_effect = PedidoNaoCancelavelError("Apenas pedidos em preparo podem ser cancelados.")
 
     response = client.post("/pedidos/1/cancelar")
 
-    assert response.status_code == 400
-    assert response.json()["erro"] == "DADOS_INVALIDOS"
+    assert response.status_code == 409
+    assert response.json()["erro"] == "PEDIDO_NAO_CANCELAVEL"

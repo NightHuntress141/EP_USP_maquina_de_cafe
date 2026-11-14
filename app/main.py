@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.client import router as client_router
+from app.api.operator import router as operator_router
 from app.core.exceptions import BusinessError
 
 app = FastAPI(
@@ -22,7 +23,8 @@ app = FastAPI(
     description=(
         "Back-end de uma máquina de café automática. A máquina física é apenas "
         "um cliente; toda a inteligência (cardápio, estoque, pagamento, preparo "
-        "e manutenção) reside nesta API."
+        "e manutenção) reside nesta API. O fluxo do cliente é público; o do "
+        "operador exige autenticação Bearer, exceto o login."
     ),
 )
 
@@ -35,6 +37,7 @@ app.add_middleware(
 )
 
 app.include_router(client_router)
+app.include_router(operator_router)
 
 
 STATUS_PARA_ERRO: dict[int, str] = {
