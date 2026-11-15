@@ -6,12 +6,10 @@ Back-end de uma máquina de café automática desenvolvido em **Python + FastAPI
 A máquina física é apenas um cliente: toda a inteligência (cardápio, estoque,
 pagamento, preparo e manutenção) reside nesta API.
 
-> **Escopo atual desta entrega:** camada de **API (controllers)** dos fluxos do
-> **cliente** e do **operador**, com schemas Pydantic, autenticação Bearer,
-> tratamento padronizado de erros, testes, documentação e a estrutura de pastas
-> do projeto. As regras de negócio e a persistência (camadas de serviço e
-> repositório) são de responsabilidade dos demais integrantes e estão
-> representadas aqui por *stubs* com a assinatura dos métodos.
+> **Escopo atual:** controllers de cliente e operador, mais serviços reais de
+> alteração de preço, manutenção e limpeza com SQLite. Os demais serviços são
+> contratos (`NotImplementedError`) e suas rotas ainda não funcionam sem mocks.
+> A aplicação não deve ser apresentada como um backend completo.
 
 ## Arquitetura em camadas
 
@@ -31,7 +29,8 @@ app/
 │   ├── produto.py
 │   ├── relatorio.py
 │   └── status.py
-├── services/          # Contrato das regras de negócio (stubs)
+├── repositories/      # SQLite, unidade de trabalho e migração
+├── services/          # Regras implementadas e contratos pendentes
 │   ├── credito_service.py
 │   ├── estoque_service.py
 │   ├── operador_service.py
@@ -108,7 +107,11 @@ source .venv/bin/activate
 # 2. Instalar as dependências
 pip install -r requirements.txt
 
-# 3. Subir a API
+# 3. Configurar autenticação e inicializar um banco novo
+export OPERATOR_TOKEN="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
+python -m app.repositories.database init
+
+# 4. Subir a API
 uvicorn app.main:app --reload
 ```
 
@@ -119,6 +122,7 @@ uvicorn app.main:app --reload
 
 ```bash
 source .venv/bin/activate
+pip install -r requirements-dev.txt
 pytest -q
 ```
 
@@ -132,7 +136,8 @@ testes a cada **push na `main`** e a cada **pull request** direcionado à `main`
 Os passos executados são exatamente os mesmos do fluxo local:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
+ruff check app tests
 pytest -q
 ```
 
@@ -175,7 +180,7 @@ Depois, abra [`docs/index.html`](docs/index.html) no navegador.
 
 ## Autenticação do operador (RN11)
 
-O `POST /operador/login` é **público**: recebe `usuario` e `senha`, compara com as
+O contrato do `POST /operador/login` é **público**: recebe `usuario` e `senha`, deverá comparar com as
 variáveis de ambiente `OPERATOR_USER` e `OPERATOR_PASSWORD` e devolve o token de
 `OPERATOR_TOKEN` no corpo `{"token": "...", "tipo": "bearer"}`.
 
@@ -187,14 +192,16 @@ Authorization: Bearer <token>
 
 | Variável | Padrão de desenvolvimento |
 |---|---|
-| `OPERATOR_USER` | `operador` |
-| `OPERATOR_PASSWORD` | `senha_padrao_para_dev` |
-| `OPERATOR_TOKEN` | `senha_padrao_para_dev` |
+| `OPERATOR_USER` | definir ao implementar login |
+| `OPERATOR_PASSWORD` | definir ao implementar login, sem senha pública |
+| `OPERATOR_TOKEN` | obrigatório, sem padrão |
 
 A validação do token é feita pela dependência `get_current_operator` em
 `app/api/deps.py`. No Swagger (`/docs`), use o botão **Authorize** e informe o
 token para chamar as rotas protegidas. Credenciais inválidas ou token ausente
-retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`.
+retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`. A API recusa iniciar sem
+`OPERATOR_TOKEN` ou com banco não inicializado/migrado. O login ainda é um
+contrato pendente; por enquanto configure o Bearer diretamente.
 
 ## Decisões técnicas
 
@@ -205,8 +212,8 @@ retornam HTTP 401 com `erro = "NAO_AUTORIZADO"`.
   os controllers finos e sem `try/except` repetidos.
 - **Validação de entrada no Pydantic** (valores de crédito da RN01, açúcar de 0 a
   3) e HTTP 400 para dados inválidos (em vez do 422 padrão do FastAPI).
-- **Services como contrato** (`NotImplementedError`) para respeitar a divisão de
-  responsabilidades e permitir testar a API com serviços mockados.
+- **Serviços pendentes como contratos** (`NotImplementedError`); os três serviços
+  implementados têm testes de integração com persistência real.
 
 ## Observação para o grupo
 
@@ -215,3 +222,44 @@ requisição/resposta (Cappuccino aparece como R$ 6,00 na tabela, mas R$ 6,50 no
 exemplos; Chocolate quente, R$ 6,50 na tabela e R$ 7,00 nos exemplos). Como os
 preços são dados de domínio (camada de serviço), isso **não afeta a API**, mas
 deve ser alinhado antes de popular o cardápio.
+
+## Persistência e configuração
+
+Consulte [database/README.md](database/README.md) para inicialização e migração.
+Preço é validado em reais com Decimal e armazenado em centavos inteiros; o JSON
+continua usando reais. Não são aceitos frações de centavo, valores não finitos
+ou preços acima de R$ 99.999.999,99. Crédito só aceita as denominações exatas.
+
+Os serviços coordenam regras; somente os repositórios executam SQL. Uma unidade
+de trabalho mantém leitura, decisão e gravações na mesma transação. Erros de
+persistência são registrados no servidor e devolvidos sem SQL/caminhos internos.
+
+- `DATABASE_PATH`: caminho do banco (padrão: `maquina.db` na raiz do projeto).
+- `DATABASE_TIMEOUT_SECONDS`: espera por lock, entre 0 e 30 (padrão: 5).
+- `CORS_ORIGINS`: origens HTTP(S) explícitas separadas por vírgula, sem caminhos.
+  Por padrão nenhuma origem externa é permitida; cookies não são habilitados.
+- `OPERATOR_TOKEN`: segredo obrigatório, sem fallback. Gere um valor aleatório e
+  evite compartilhá-lo em código, logs ou URLs. Fora do desenvolvimento local,
+  exponha a API somente por HTTPS.
+
+A limpeza exige MANUTENCAO e mantém esse estado. SAIR devolve PRONTA se o contador
+for menor que 30; caso contrário, devolve AGUARDANDO_LIMPEZA. Reabastecimento de
+COPOS aceita somente unidades inteiras; os demais insumos preservam suas unidades.
+
+Os testes incluem HTTP com banco real, rollback de limpeza, concorrência,
+migração com referências e validação de configuração. Não substituem teste de
+implantação nem a implementação das regras de crédito, pedido e estoque pendentes.
+
+### Verificações de desenvolvimento
+
+```bash
+ruff check app tests
+ruff format --check app tests
+pytest -q
+pip-audit -r constraints.txt --no-deps --disable-pip
+```
+
+`requirements.txt` contém somente execução; `requirements-dev.txt` adiciona testes,
+documentação, lint e auditoria. `constraints.txt` registra as versões verificadas
+no Linux/WSL com Python 3.12. Atualizações devem passar pelos testes e pela auditoria.
+A auditoria consulta avisos conhecidos e não comprova ausência de vulnerabilidades.

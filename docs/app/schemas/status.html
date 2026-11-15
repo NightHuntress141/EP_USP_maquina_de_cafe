@@ -83,37 +83,28 @@
 
                         <label class="view-source-button" for="mod-status-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;DTO de estado da máquina (seção 2 do enunciado: Estados da máquina).&quot;&quot;&quot;</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">"""DTO de estado da máquina (seção 2 do enunciado: Estados da máquina)."""</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.modelos</span><span class="w"> </span><span class="kn">import</span> <span class="n">EstadoMaquina</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estados possíveis da máquina de café.&quot;&quot;&quot;</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="w">    </span><span class="sd">"""Estado atual da máquina e crédito disponível.</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">&quot;PRONTA&quot;</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">&quot;PREPARANDO&quot;</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">&quot;AGUARDANDO_LIMPEZA&quot;</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">&quot;MANUTENCAO&quot;</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">    Attributes:</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="sd">        estado: Estado operacional da máquina.</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">        credito: Crédito acumulado atual do cliente.</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">    """</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado atual da máquina e crédito disponível.</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Estado operacional atual."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"PRONTA"</span><span class="p">])</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>    <span class="n">credito</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Crédito acumulado atual."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.00</span><span class="p">])</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">    Attributes:</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">        estado: Estado operacional da máquina.</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">        credito: Crédito acumulado atual do cliente.</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Estado operacional atual.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PRONTA&quot;</span><span class="p">])</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="n">credito</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Crédito acumulado atual.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.00</span><span class="p">])</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;EstadoMaquina&quot;</span><span class="p">,</span> <span class="s2">&quot;StatusResponse&quot;</span><span class="p">]</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"EstadoMaquina"</span><span class="p">,</span> <span class="s2">"StatusResponse"</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -121,7 +112,7 @@
                 <section id="EstadoMaquina">
                             <input id="EstadoMaquina-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-            
+
     <span class="def">class</span>
     <span class="name">EstadoMaquina</span><wbr>(<span class="base">builtins.str</span>, <span class="base">enum.Enum</span>):
 
@@ -129,17 +120,17 @@
 
     </div>
     <a class="headerlink" href="#EstadoMaquina"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EstadoMaquina-11"><a href="#EstadoMaquina-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-</span><span id="EstadoMaquina-12"><a href="#EstadoMaquina-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estados possíveis da máquina de café.&quot;&quot;&quot;</span>
-</span><span id="EstadoMaquina-13"><a href="#EstadoMaquina-13"><span class="linenos">13</span></a>
-</span><span id="EstadoMaquina-14"><a href="#EstadoMaquina-14"><span class="linenos">14</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">&quot;PRONTA&quot;</span>
-</span><span id="EstadoMaquina-15"><a href="#EstadoMaquina-15"><span class="linenos">15</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">&quot;PREPARANDO&quot;</span>
-</span><span id="EstadoMaquina-16"><a href="#EstadoMaquina-16"><span class="linenos">16</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">&quot;AGUARDANDO_LIMPEZA&quot;</span>
-</span><span id="EstadoMaquina-17"><a href="#EstadoMaquina-17"><span class="linenos">17</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">&quot;MANUTENCAO&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EstadoMaquina-9"><a href="#EstadoMaquina-9"><span class="linenos"> 9</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EstadoMaquina</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+</span><span id="EstadoMaquina-10"><a href="#EstadoMaquina-10"><span class="linenos">10</span></a><span class="w">    </span><span class="sd">"""Estados operacionais permitidos para a máquina."""</span>
+</span><span id="EstadoMaquina-11"><a href="#EstadoMaquina-11"><span class="linenos">11</span></a>
+</span><span id="EstadoMaquina-12"><a href="#EstadoMaquina-12"><span class="linenos">12</span></a>    <span class="n">PRONTA</span> <span class="o">=</span> <span class="s2">"PRONTA"</span>
+</span><span id="EstadoMaquina-13"><a href="#EstadoMaquina-13"><span class="linenos">13</span></a>    <span class="n">PREPARANDO</span> <span class="o">=</span> <span class="s2">"PREPARANDO"</span>
+</span><span id="EstadoMaquina-14"><a href="#EstadoMaquina-14"><span class="linenos">14</span></a>    <span class="n">AGUARDANDO_LIMPEZA</span> <span class="o">=</span> <span class="s2">"AGUARDANDO_LIMPEZA"</span>
+</span><span id="EstadoMaquina-15"><a href="#EstadoMaquina-15"><span class="linenos">15</span></a>    <span class="n">MANUTENCAO</span> <span class="o">=</span> <span class="s2">"MANUTENCAO"</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Estados possíveis da máquina de café.</p>
+            <div class="docstring"><p>Estados operacionais permitidos para a máquina.</p>
 </div>
 
 
@@ -148,11 +139,11 @@
             <span class="name">PRONTA</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.PRONTA">EstadoMaquina.PRONTA</a>: &#39;PRONTA&#39;&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#EstadoMaquina.PRONTA"></a>
-    
-    
+
+
 
                             </div>
                             <div id="EstadoMaquina.PREPARANDO" class="classattr">
@@ -160,11 +151,11 @@
             <span class="name">PREPARANDO</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.PREPARANDO">EstadoMaquina.PREPARANDO</a>: &#39;PREPARANDO&#39;&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#EstadoMaquina.PREPARANDO"></a>
-    
-    
+
+
 
                             </div>
                             <div id="EstadoMaquina.AGUARDANDO_LIMPEZA" class="classattr">
@@ -172,11 +163,11 @@
             <span class="name">AGUARDANDO_LIMPEZA</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.AGUARDANDO_LIMPEZA">EstadoMaquina.AGUARDANDO_LIMPEZA</a>: &#39;AGUARDANDO_LIMPEZA&#39;&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#EstadoMaquina.AGUARDANDO_LIMPEZA"></a>
-    
-    
+
+
 
                             </div>
                             <div id="EstadoMaquina.MANUTENCAO" class="classattr">
@@ -184,18 +175,18 @@
             <span class="name">MANUTENCAO</span>        =
 <span class="default_value">&lt;<a href="#EstadoMaquina.MANUTENCAO">EstadoMaquina.MANUTENCAO</a>: &#39;MANUTENCAO&#39;&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#EstadoMaquina.MANUTENCAO"></a>
-    
-    
+
+
 
                             </div>
                 </section>
                 <section id="StatusResponse">
                             <input id="StatusResponse-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-            
+
     <span class="def">class</span>
     <span class="name">StatusResponse</span><wbr>(<span class="base">pydantic.main.BaseModel</span>):
 
@@ -203,16 +194,16 @@
 
     </div>
     <a class="headerlink" href="#StatusResponse"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StatusResponse-20"><a href="#StatusResponse-20"><span class="linenos">20</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-</span><span id="StatusResponse-21"><a href="#StatusResponse-21"><span class="linenos">21</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Estado atual da máquina e crédito disponível.</span>
-</span><span id="StatusResponse-22"><a href="#StatusResponse-22"><span class="linenos">22</span></a>
-</span><span id="StatusResponse-23"><a href="#StatusResponse-23"><span class="linenos">23</span></a><span class="sd">    Attributes:</span>
-</span><span id="StatusResponse-24"><a href="#StatusResponse-24"><span class="linenos">24</span></a><span class="sd">        estado: Estado operacional da máquina.</span>
-</span><span id="StatusResponse-25"><a href="#StatusResponse-25"><span class="linenos">25</span></a><span class="sd">        credito: Crédito acumulado atual do cliente.</span>
-</span><span id="StatusResponse-26"><a href="#StatusResponse-26"><span class="linenos">26</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="StatusResponse-27"><a href="#StatusResponse-27"><span class="linenos">27</span></a>
-</span><span id="StatusResponse-28"><a href="#StatusResponse-28"><span class="linenos">28</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Estado operacional atual.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PRONTA&quot;</span><span class="p">])</span>
-</span><span id="StatusResponse-29"><a href="#StatusResponse-29"><span class="linenos">29</span></a>    <span class="n">credito</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Crédito acumulado atual.&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.00</span><span class="p">])</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="StatusResponse-11"><a href="#StatusResponse-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StatusResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="StatusResponse-12"><a href="#StatusResponse-12"><span class="linenos">12</span></a><span class="w">    </span><span class="sd">"""Estado atual da máquina e crédito disponível.</span>
+</span><span id="StatusResponse-13"><a href="#StatusResponse-13"><span class="linenos">13</span></a>
+</span><span id="StatusResponse-14"><a href="#StatusResponse-14"><span class="linenos">14</span></a><span class="sd">    Attributes:</span>
+</span><span id="StatusResponse-15"><a href="#StatusResponse-15"><span class="linenos">15</span></a><span class="sd">        estado: Estado operacional da máquina.</span>
+</span><span id="StatusResponse-16"><a href="#StatusResponse-16"><span class="linenos">16</span></a><span class="sd">        credito: Crédito acumulado atual do cliente.</span>
+</span><span id="StatusResponse-17"><a href="#StatusResponse-17"><span class="linenos">17</span></a><span class="sd">    """</span>
+</span><span id="StatusResponse-18"><a href="#StatusResponse-18"><span class="linenos">18</span></a>
+</span><span id="StatusResponse-19"><a href="#StatusResponse-19"><span class="linenos">19</span></a>    <span class="n">estado</span><span class="p">:</span> <span class="n">EstadoMaquina</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Estado operacional atual."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"PRONTA"</span><span class="p">])</span>
+</span><span id="StatusResponse-20"><a href="#StatusResponse-20"><span class="linenos">20</span></a>    <span class="n">credito</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Crédito acumulado atual."</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="mf">10.00</span><span class="p">])</span>
 </span></pre></div>
 
 
@@ -232,10 +223,10 @@
             <span class="name">estado</span><span class="annotation">: <a href="#EstadoMaquina">EstadoMaquina</a></span>        =
 <span class="default_value">PydanticUndefined</span>
 
-        
+
     </div>
     <a class="headerlink" href="#StatusResponse.estado"></a>
-    
+
             <div class="docstring"><p>Estado operacional atual.</p>
 </div>
 
@@ -246,10 +237,10 @@
             <span class="name">credito</span><span class="annotation">: float</span>        =
 <span class="default_value">PydanticUndefined</span>
 
-        
+
     </div>
     <a class="headerlink" href="#StatusResponse.credito"></a>
-    
+
             <div class="docstring"><p>Crédito acumulado atual.</p>
 </div>
 

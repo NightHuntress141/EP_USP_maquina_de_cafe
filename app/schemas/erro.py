@@ -15,7 +15,9 @@ class ErroResponse(BaseModel):
 
     erro: str = Field(..., description="Identificador do erro.", examples=["MAQUINA_OCUPADA"])
     mensagem: str = Field(
-        ..., description="Descrição legível do erro.", examples=["A máquina está preparando outra bebida."]
+        ...,
+        description="Descrição legível do erro.",
+        examples=["A máquina está preparando outra bebida."],
     )
 
 

@@ -7,6 +7,9 @@ formato ``{"erro": SLUG, "mensagem": "..."}``.
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,9 +18,28 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.client import router as client_router
 from app.api.operator import router as operator_router
+from app.core.config import origens_cors, token_operador
 from app.core.exceptions import BusinessError
+from app.repositories.operador_repository import validar_banco
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Recusa iniciar com autenticação ausente ou banco não inicializado.
+
+    Args:
+        app: Aplicação FastAPI.
+
+    Returns:
+        Contexto de execução da API após validar a configuração.
+    """
+    token_operador()
+    validar_banco()
+    yield
+
 
 app = FastAPI(
+    lifespan=lifespan,
     title="API da Máquina de Café",
     version="0.1.0",
     description=(
@@ -30,10 +52,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origens_cors(),
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PUT"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 app.include_router(client_router)
@@ -133,9 +155,9 @@ async def http_error_handler(request: Request, exc: StarletteHTTPException) -> J
 
 
 __all__ = [
+    "STATUS_PARA_ERRO",
     "app",
     "business_error_handler",
-    "validation_error_handler",
     "http_error_handler",
-    "STATUS_PARA_ERRO",
+    "validation_error_handler",
 ]

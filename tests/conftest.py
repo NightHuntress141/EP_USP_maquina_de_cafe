@@ -12,3 +12,9 @@ from app.main import app
 def client() -> TestClient:
     """Fornece um cliente HTTP de teste para a aplicação FastAPI."""
     return TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def configurar_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Isola a configuração dos testes sem depender do ambiente do desenvolvedor."""
+    monkeypatch.setenv("OPERATOR_TOKEN", "test-token")

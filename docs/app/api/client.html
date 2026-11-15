@@ -31,7 +31,19 @@
             <h2>API Documentation</h2>
                 <ul class="memberlist">
             <li>
-                    <a class="variable" href="#router">router</a>
+                    <a class="function" href="#cancelar_pedido">cancelar_pedido</a>
+            </li>
+            <li>
+                    <a class="function" href="#consultar_pedido">consultar_pedido</a>
+            </li>
+            <li>
+                    <a class="function" href="#criar_pedido">criar_pedido</a>
+            </li>
+            <li>
+                    <a class="function" href="#devolver_troco">devolver_troco</a>
+            </li>
+            <li>
+                    <a class="function" href="#inserir_credito">inserir_credito</a>
             </li>
             <li>
                     <a class="function" href="#listar_produtos">listar_produtos</a>
@@ -40,19 +52,7 @@
                     <a class="function" href="#obter_status">obter_status</a>
             </li>
             <li>
-                    <a class="function" href="#inserir_credito">inserir_credito</a>
-            </li>
-            <li>
-                    <a class="function" href="#devolver_troco">devolver_troco</a>
-            </li>
-            <li>
-                    <a class="function" href="#criar_pedido">criar_pedido</a>
-            </li>
-            <li>
-                    <a class="function" href="#consultar_pedido">consultar_pedido</a>
-            </li>
-            <li>
-                    <a class="function" href="#cancelar_pedido">cancelar_pedido</a>
+                    <a class="variable" href="#router">router</a>
             </li>
     </ul>
 
@@ -82,232 +82,602 @@ handlers globais registrados em <code><a href="../main.html">app.main</a></code>
 
                         <label class="view-source-button" for="mod-client-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;Endpoints do fluxo do cliente (sem autenticação).</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">"""Endpoints do fluxo do cliente (sem autenticação).</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">Este módulo implementa apenas a camada de controller: valida a entrada via</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">Pydantic, delega a execução das regras de negócio aos serviços e devolve a</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="sd">resposta HTTP. As exceções de negócio são traduzidas para códigos HTTP pelos</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">handlers globais registrados em :mod:`app.main`.</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">"""</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Any</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">status</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.credito</span><span class="w"> </span><span class="kn">import</span> <span class="n">CreditoRequest</span><span class="p">,</span> <span class="n">CreditoResponse</span><span class="p">,</span> <span class="n">TrocoResponse</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.erro</span><span class="w"> </span><span class="kn">import</span> <span class="n">ErroResponse</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.pedido</span><span class="w"> </span><span class="kn">import</span> <span class="n">PedidoRequest</span><span class="p">,</span> <span class="n">PedidoResponse</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.produto</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProdutoResponse</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatusResponse</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">credito_service</span><span class="p">,</span> <span class="n">pedido_service</span><span class="p">,</span> <span class="n">produto_service</span><span class="p">,</span> <span class="n">status_service</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cliente&quot;</span><span class="p">])</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_erro</span><span class="p">(</span><span class="n">codigo</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">descricao</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exemplo_erro</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exemplo_mensagem</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Monta a documentação de uma resposta de erro para o Swagger.</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.api.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">_erro</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.core.valores</span><span class="w"> </span><span class="kn">import</span> <span class="n">ID_MAXIMO</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.credito</span><span class="w"> </span><span class="kn">import</span> <span class="n">CreditoRequest</span><span class="p">,</span> <span class="n">CreditoResponse</span><span class="p">,</span> <span class="n">TrocoResponse</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.pedido</span><span class="w"> </span><span class="kn">import</span> <span class="n">PedidoRequest</span><span class="p">,</span> <span class="n">PedidoResponse</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.produto</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProdutoResponse</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.schemas.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatusResponse</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">app.services</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="n">credito_service</span><span class="p">,</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="n">pedido_service</span><span class="p">,</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="n">produto_service</span><span class="p">,</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="n">status_service</span><span class="p">,</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="p">)</span>
 </span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">    Args:</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">        codigo: Código HTTP da resposta.</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a><span class="sd">        descricao: Descrição exibida na documentação.</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="sd">        exemplo_erro: Valor de exemplo para o campo ``erro``.</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        exemplo_mensagem: Valor de exemplo para o campo ``mensagem``.</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">    Returns:</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">        Dicionário no formato aceito pelo parâmetro ``responses`` do FastAPI.</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>        <span class="n">codigo</span><span class="p">:</span> <span class="p">{</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">ErroResponse</span><span class="p">,</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">descricao</span><span class="p">,</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;application/json&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;example&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;erro&quot;</span><span class="p">:</span> <span class="n">exemplo_erro</span><span class="p">,</span> <span class="s2">&quot;mensagem&quot;</span><span class="p">:</span> <span class="n">exemplo_mensagem</span><span class="p">}}},</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>        <span class="p">}</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>    <span class="p">}</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cliente"</span><span class="p">])</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="s2">"/produtos"</span><span class="p">,</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">ProdutoResponse</span><span class="p">],</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Lista o cardápio"</span><span class="p">,</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">"Requisição inválida."</span><span class="p">,</span> <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span> <span class="s2">"Requisição inválida."</span><span class="p">)},</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="p">)</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">    Delega a montagem do cardápio ao serviço de produtos.</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        - RN10: o cardápio informa se cada bebida está disponível (estoque</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">          suficiente para prepará-la agora).</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="s2">&quot;/produtos&quot;</span><span class="p">,</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">ProdutoResponse</span><span class="p">],</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Lista o cardápio&quot;</span><span class="p">,</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Requisição inválida.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Requisição inválida.&quot;</span><span class="p">)},</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="p">)</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio com preço, tempo de preparo e disponibilidade.</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">    Delega a montagem do cardápio ao serviço de produtos.</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        - RN10: o cardápio informa se cada bebida está disponível (estoque</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">          suficiente para prepará-la agora).</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">    Returns:</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        Lista de bebidas no formato :class:`app.schemas.produto.ProdutoResponse`.</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="k">return</span> <span class="n">produto_service</span><span class="o">.</span><span class="n">listar_produtos</span><span class="p">()</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">    Returns:</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        Lista de bebidas no formato :class:`app.schemas.produto.ProdutoResponse`.</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">    """</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="k">return</span> <span class="n">produto_service</span><span class="o">.</span><span class="n">listar_produtos</span><span class="p">()</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="s2">"/status"</span><span class="p">,</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Consulta o estado da máquina"</span><span class="p">,</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="p">)</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="k">def</span><span class="w"> </span><span class="nf">obter_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="w">    </span><span class="sd">"""Retorna o estado operacional atual da máquina e o crédito acumulado.</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">    Returns:</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Estado da máquina no formato :class:`app.schemas.status.StatusResponse`.</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">    """</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="k">return</span> <span class="n">status_service</span><span class="o">.</span><span class="n">obter_status</span><span class="p">()</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
 </span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="s2">&quot;/status&quot;</span><span class="p">,</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Consulta o estado da máquina&quot;</span><span class="p">,</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="p">)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="k">def</span><span class="w"> </span><span class="nf">obter_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o estado operacional atual da máquina e o crédito acumulado.</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">    Returns:</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        Estado da máquina no formato :class:`app.schemas.status.StatusResponse`.</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    <span class="k">return</span> <span class="n">status_service</span><span class="o">.</span><span class="n">obter_status</span><span class="p">()</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="s2">&quot;/credito&quot;</span><span class="p">,</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">CreditoResponse</span><span class="p">,</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Insere crédito na máquina&quot;</span><span class="p">,</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Valor de crédito não aceito.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Valor de crédito não aceito.&quot;</span><span class="p">)},</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="p">)</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="k">def</span><span class="w"> </span><span class="nf">inserir_credito</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">CreditoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Insere um valor de crédito na máquina.</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">    O valor é validado por :class:`app.schemas.credito.CreditoRequest` antes de</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">    chegar ao serviço.</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">          limite de crédito acumulado de R$ 50,00.</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">    Args:</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        payload: Valor a inserir.</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="sd">    Returns:</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        Crédito acumulado no formato :class:`app.schemas.credito.CreditoResponse`.</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>    <span class="n">novo_credito</span> <span class="o">=</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">adicionar_credito</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;credito&quot;</span><span class="p">:</span> <span class="n">novo_credito</span><span class="p">}</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="s2">"/credito"</span><span class="p">,</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">CreditoResponse</span><span class="p">,</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Insere crédito na máquina"</span><span class="p">,</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>            <span class="mi">400</span><span class="p">,</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>            <span class="s2">"Valor de crédito não aceito."</span><span class="p">,</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>            <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="s2">"Valor de crédito não aceito."</span><span class="p">,</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="p">)</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="p">},</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="p">)</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="k">def</span><span class="w"> </span><span class="nf">inserir_credito</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">CreditoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">    </span><span class="sd">"""Insere um valor de crédito na máquina.</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">    O valor é validado por :class:`app.schemas.credito.CreditoRequest` antes de</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">    chegar ao serviço.</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">          limite de crédito acumulado de R$ 50,00.</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">    Args:</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        payload: Valor a inserir.</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">    Returns:</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        Crédito acumulado no formato :class:`app.schemas.credito.CreditoResponse`.</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">    """</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>    <span class="n">novo_credito</span> <span class="o">=</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">adicionar_credito</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">"credito"</span><span class="p">:</span> <span class="n">novo_credito</span><span class="p">}</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>    <span class="s2">"/troco"</span><span class="p">,</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">TrocoResponse</span><span class="p">,</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Devolve todo o crédito restante"</span><span class="p">,</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="p">)</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="k">def</span><span class="w"> </span><span class="nf">devolver_troco</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="w">    </span><span class="sd">"""Devolve todo o crédito restante ao cliente e zera o saldo.</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>    <span class="s2">&quot;/troco&quot;</span><span class="p">,</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">TrocoResponse</span><span class="p">,</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Devolve todo o crédito restante&quot;</span><span class="p">,</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="p">)</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="k">def</span><span class="w"> </span><span class="nf">devolver_troco</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Devolve todo o crédito restante ao cliente e zera o saldo.</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        - RN06: a devolução zera o crédito acumulado.</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">    Returns:</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        Valor devolvido no formato :class:`app.schemas.credito.TrocoResponse`.</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    """</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="k">return</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">devolver_troco</span><span class="p">()</span>
 </span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        - RN06: a devolução zera o crédito acumulado.</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">    Returns:</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">        Valor devolvido no formato :class:`app.schemas.credito.TrocoResponse`.</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="k">return</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">devolver_troco</span><span class="p">()</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="s2">&quot;/pedidos&quot;</span><span class="p">,</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Cria um novo pedido&quot;</span><span class="p">,</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Dados do pedido inválidos.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Açúcar deve estar entre 0 e 3.&quot;</span><span class="p">),</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">402</span><span class="p">,</span> <span class="s2">&quot;Crédito insuficiente.&quot;</span><span class="p">,</span> <span class="s2">&quot;CREDITO_INSUFICIENTE&quot;</span><span class="p">,</span> <span class="s2">&quot;Crédito não cobre o preço da bebida.&quot;</span><span class="p">),</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Bebida inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;BEBIDA_NAO_ENCONTRADA&quot;</span><span class="p">,</span> <span class="s2">&quot;Bebida não encontrada no cardápio.&quot;</span><span class="p">),</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">&quot;Estoque insuficiente ou máquina ocupada.&quot;</span><span class="p">,</span> <span class="s2">&quot;MAQUINA_OCUPADA&quot;</span><span class="p">,</span> <span class="s2">&quot;A máquina está preparando outra bebida.&quot;</span><span class="p">),</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">503</span><span class="p">,</span> <span class="s2">&quot;Máquina indisponível.&quot;</span><span class="p">,</span> <span class="s2">&quot;MAQUINA_INDISPONIVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;A máquina está em manutenção.&quot;</span><span class="p">),</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>    <span class="p">},</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="p">)</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a><span class="k">def</span><span class="w"> </span><span class="nf">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cria um novo pedido de bebida.</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">    Regras de negócio acionadas (executadas pelo serviço de pedidos):</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">          açúcar e copo.</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        - RN03: cobrança do preço e desconto dos ingredientes.</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">    Args:</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">        pedido: Bebida desejada e porções de açúcar.</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">    Returns:</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        Pedido criado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">pedido</span><span class="o">.</span><span class="n">acucar</span><span class="p">)</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="s2">&quot;/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">&quot;</span><span class="p">,</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Consulta um pedido&quot;</span><span class="p">,</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Pedido inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_ENCONTRADO&quot;</span><span class="p">,</span> <span class="s2">&quot;Pedido não encontrado.&quot;</span><span class="p">)},</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="p">)</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consulta um pedido e seu status atual.</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a><span class="sd">        - RN04: o status é calculado na consulta (EM_PREPARO até o término</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">          previsto, depois CONCLUIDO), sem uso de timer.</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">    Args:</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="s2">"/pedidos"</span><span class="p">,</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Cria um novo pedido"</span><span class="p">,</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>            <span class="mi">400</span><span class="p">,</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>            <span class="s2">"Dados do pedido inválidos."</span><span class="p">,</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>            <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>            <span class="s2">"Açúcar deve estar entre 0 e 3."</span><span class="p">,</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="p">),</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>            <span class="mi">402</span><span class="p">,</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>            <span class="s2">"Crédito insuficiente."</span><span class="p">,</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>            <span class="s2">"CREDITO_INSUFICIENTE"</span><span class="p">,</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>            <span class="s2">"Crédito não cobre o preço da bebida."</span><span class="p">,</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="p">),</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>            <span class="s2">"Bebida inexistente."</span><span class="p">,</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>            <span class="s2">"BEBIDA_NAO_ENCONTRADA"</span><span class="p">,</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>            <span class="s2">"Bebida não encontrada no cardápio."</span><span class="p">,</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="p">),</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>            <span class="mi">409</span><span class="p">,</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>            <span class="s2">"Estoque insuficiente ou máquina ocupada."</span><span class="p">,</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>            <span class="s2">"MAQUINA_OCUPADA"</span><span class="p">,</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>            <span class="s2">"A máquina está preparando outra bebida."</span><span class="p">,</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        <span class="p">),</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>            <span class="mi">503</span><span class="p">,</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="s2">"Máquina indisponível."</span><span class="p">,</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>            <span class="s2">"MAQUINA_INDISPONIVEL"</span><span class="p">,</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>            <span class="s2">"A máquina está em manutenção."</span><span class="p">,</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="p">),</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="p">},</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="p">)</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="k">def</span><span class="w"> </span><span class="nf">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="w">    </span><span class="sd">"""Cria um novo pedido de bebida.</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a><span class="sd">    Regras de negócio acionadas (executadas pelo serviço de pedidos):</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a><span class="sd">        - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a><span class="sd">          açúcar e copo.</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a><span class="sd">        - RN03: cobrança do preço e desconto dos ingredientes.</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="sd">        - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="sd">    Args:</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="sd">        pedido: Bebida desejada e porções de açúcar.</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="sd">    Returns:</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="sd">        Pedido criado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a><span class="sd">    """</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">pedido</span><span class="o">.</span><span class="n">acucar</span><span class="p">)</span>
 </span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a><span class="sd">    Returns:</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        Pedido no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>    <span class="s2">&quot;/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">/cancelar&quot;</span><span class="p">,</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Cancela um pedido em preparo&quot;</span><span class="p">,</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Pedido inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_ENCONTRADO&quot;</span><span class="p">,</span> <span class="s2">&quot;Pedido não encontrado.&quot;</span><span class="p">),</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">&quot;Pedido não pode ser cancelado.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_CANCELAVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;Apenas pedidos em preparo podem ser cancelados.&quot;</span><span class="p">),</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>    <span class="p">},</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="p">)</span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancela um pedido que esteja EM_PREPARO.</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os</span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">          ingredientes já consumidos não retornam ao estoque e a máquina volta</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">          a PRONTA.</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="s2">"/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">"</span><span class="p">,</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Consulta um pedido"</span><span class="p">,</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>            <span class="s2">"Pedido inexistente."</span><span class="p">,</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>            <span class="s2">"PEDIDO_NAO_ENCONTRADO"</span><span class="p">,</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>            <span class="s2">"Pedido não encontrado."</span><span class="p">,</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>        <span class="p">)</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a>    <span class="p">},</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="p">)</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">)],</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="w">    </span><span class="sd">"""Consulta um pedido e seu status atual.</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">        - RN04: o status é calculado na consulta (EM_PREPARO até o término</span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">          previsto, depois CONCLUIDO), sem uso de timer.</span>
 </span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>
 </span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">    Args:</span>
 </span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
 </span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>
 </span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">    Returns:</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        Pedido cancelado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">        Pedido no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">    """</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
 </span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
 </span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="s2">&quot;router&quot;</span><span class="p">,</span>
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>    <span class="s2">&quot;listar_produtos&quot;</span><span class="p">,</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>    <span class="s2">&quot;obter_status&quot;</span><span class="p">,</span>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="s2">&quot;inserir_credito&quot;</span><span class="p">,</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>    <span class="s2">&quot;devolver_troco&quot;</span><span class="p">,</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>    <span class="s2">&quot;criar_pedido&quot;</span><span class="p">,</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>    <span class="s2">&quot;consultar_pedido&quot;</span><span class="p">,</span>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>    <span class="s2">&quot;cancelar_pedido&quot;</span><span class="p">,</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="p">]</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="s2">"/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">/cancelar"</span><span class="p">,</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Cancela um pedido em preparo"</span><span class="p">,</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>            <span class="s2">"Pedido inexistente."</span><span class="p">,</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>            <span class="s2">"PEDIDO_NAO_ENCONTRADO"</span><span class="p">,</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>            <span class="s2">"Pedido não encontrado."</span><span class="p">,</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>        <span class="p">),</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>            <span class="mi">409</span><span class="p">,</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>            <span class="s2">"Pedido não pode ser cancelado."</span><span class="p">,</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>            <span class="s2">"PEDIDO_NAO_CANCELAVEL"</span><span class="p">,</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>            <span class="s2">"Apenas pedidos em preparo podem ser cancelados."</span><span class="p">,</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>        <span class="p">),</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>    <span class="p">},</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a><span class="p">)</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">)],</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a><span class="w">    </span><span class="sd">"""Cancela um pedido que esteja EM_PREPARO.</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="sd">        - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a><span class="sd">          ingredientes já consumidos não retornam ao estoque e a máquina volta</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a><span class="sd">          a PRONTA.</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a><span class="sd">    Args:</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a><span class="sd">    Returns:</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a><span class="sd">        Pedido cancelado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a><span class="sd">    """</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>    <span class="s2">"cancelar_pedido"</span><span class="p">,</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>    <span class="s2">"consultar_pedido"</span><span class="p">,</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="s2">"criar_pedido"</span><span class="p">,</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>    <span class="s2">"devolver_troco"</span><span class="p">,</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>    <span class="s2">"inserir_credito"</span><span class="p">,</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>    <span class="s2">"listar_produtos"</span><span class="p">,</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>    <span class="s2">"obter_status"</span><span class="p">,</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>    <span class="s2">"router"</span><span class="p">,</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a><span class="p">]</span>
 </span></pre></div>
 
 
             </section>
-                <section id="router">
-                    <div class="attr variable">
-            <span class="name">router</span>        =
-<span class="default_value">&lt;fastapi.routing.APIRouter object&gt;</span>
+                <section id="cancelar_pedido">
+                            <input id="cancelar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-router.post">@router.post(&#39;/pedidos/{pedido_id}/cancelar&#39;, response_model=PedidoResponse, summary=&#39;Cancela um pedido em preparo&#39;, responses={**_erro(404, &#39;Pedido inexistente.&#39;, &#39;PEDIDO_NAO_ENCONTRADO&#39;, &#39;Pedido não encontrado.&#39;), **_erro(409, &#39;Pedido não pode ser cancelado.&#39;, &#39;PEDIDO_NAO_CANCELAVEL&#39;, &#39;Apenas pedidos em preparo podem ser cancelados.&#39;)})</div>
 
-        
+        <span class="def">def</span>
+        <span class="name">cancelar_pedido</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">PydanticUndefined</span><span class="p">)]</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="cancelar_pedido-view-source"><span>View Source</span></label>
+
     </div>
-    <a class="headerlink" href="#router"></a>
-    
-    
+    <a class="headerlink" href="#cancelar_pedido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="cancelar_pedido-204"><a href="#cancelar_pedido-204"><span class="linenos">204</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="cancelar_pedido-205"><a href="#cancelar_pedido-205"><span class="linenos">205</span></a>    <span class="s2">"/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">/cancelar"</span><span class="p">,</span>
+</span><span id="cancelar_pedido-206"><a href="#cancelar_pedido-206"><span class="linenos">206</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="cancelar_pedido-207"><a href="#cancelar_pedido-207"><span class="linenos">207</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Cancela um pedido em preparo"</span><span class="p">,</span>
+</span><span id="cancelar_pedido-208"><a href="#cancelar_pedido-208"><span class="linenos">208</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="cancelar_pedido-209"><a href="#cancelar_pedido-209"><span class="linenos">209</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="cancelar_pedido-210"><a href="#cancelar_pedido-210"><span class="linenos">210</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="cancelar_pedido-211"><a href="#cancelar_pedido-211"><span class="linenos">211</span></a>            <span class="s2">"Pedido inexistente."</span><span class="p">,</span>
+</span><span id="cancelar_pedido-212"><a href="#cancelar_pedido-212"><span class="linenos">212</span></a>            <span class="s2">"PEDIDO_NAO_ENCONTRADO"</span><span class="p">,</span>
+</span><span id="cancelar_pedido-213"><a href="#cancelar_pedido-213"><span class="linenos">213</span></a>            <span class="s2">"Pedido não encontrado."</span><span class="p">,</span>
+</span><span id="cancelar_pedido-214"><a href="#cancelar_pedido-214"><span class="linenos">214</span></a>        <span class="p">),</span>
+</span><span id="cancelar_pedido-215"><a href="#cancelar_pedido-215"><span class="linenos">215</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="cancelar_pedido-216"><a href="#cancelar_pedido-216"><span class="linenos">216</span></a>            <span class="mi">409</span><span class="p">,</span>
+</span><span id="cancelar_pedido-217"><a href="#cancelar_pedido-217"><span class="linenos">217</span></a>            <span class="s2">"Pedido não pode ser cancelado."</span><span class="p">,</span>
+</span><span id="cancelar_pedido-218"><a href="#cancelar_pedido-218"><span class="linenos">218</span></a>            <span class="s2">"PEDIDO_NAO_CANCELAVEL"</span><span class="p">,</span>
+</span><span id="cancelar_pedido-219"><a href="#cancelar_pedido-219"><span class="linenos">219</span></a>            <span class="s2">"Apenas pedidos em preparo podem ser cancelados."</span><span class="p">,</span>
+</span><span id="cancelar_pedido-220"><a href="#cancelar_pedido-220"><span class="linenos">220</span></a>        <span class="p">),</span>
+</span><span id="cancelar_pedido-221"><a href="#cancelar_pedido-221"><span class="linenos">221</span></a>    <span class="p">},</span>
+</span><span id="cancelar_pedido-222"><a href="#cancelar_pedido-222"><span class="linenos">222</span></a><span class="p">)</span>
+</span><span id="cancelar_pedido-223"><a href="#cancelar_pedido-223"><span class="linenos">223</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span>
+</span><span id="cancelar_pedido-224"><a href="#cancelar_pedido-224"><span class="linenos">224</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">)],</span>
+</span><span id="cancelar_pedido-225"><a href="#cancelar_pedido-225"><span class="linenos">225</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="cancelar_pedido-226"><a href="#cancelar_pedido-226"><span class="linenos">226</span></a><span class="w">    </span><span class="sd">"""Cancela um pedido que esteja EM_PREPARO.</span>
+</span><span id="cancelar_pedido-227"><a href="#cancelar_pedido-227"><span class="linenos">227</span></a>
+</span><span id="cancelar_pedido-228"><a href="#cancelar_pedido-228"><span class="linenos">228</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="cancelar_pedido-229"><a href="#cancelar_pedido-229"><span class="linenos">229</span></a><span class="sd">        - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os</span>
+</span><span id="cancelar_pedido-230"><a href="#cancelar_pedido-230"><span class="linenos">230</span></a><span class="sd">          ingredientes já consumidos não retornam ao estoque e a máquina volta</span>
+</span><span id="cancelar_pedido-231"><a href="#cancelar_pedido-231"><span class="linenos">231</span></a><span class="sd">          a PRONTA.</span>
+</span><span id="cancelar_pedido-232"><a href="#cancelar_pedido-232"><span class="linenos">232</span></a>
+</span><span id="cancelar_pedido-233"><a href="#cancelar_pedido-233"><span class="linenos">233</span></a><span class="sd">    Args:</span>
+</span><span id="cancelar_pedido-234"><a href="#cancelar_pedido-234"><span class="linenos">234</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="cancelar_pedido-235"><a href="#cancelar_pedido-235"><span class="linenos">235</span></a>
+</span><span id="cancelar_pedido-236"><a href="#cancelar_pedido-236"><span class="linenos">236</span></a><span class="sd">    Returns:</span>
+</span><span id="cancelar_pedido-237"><a href="#cancelar_pedido-237"><span class="linenos">237</span></a><span class="sd">        Pedido cancelado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="cancelar_pedido-238"><a href="#cancelar_pedido-238"><span class="linenos">238</span></a><span class="sd">    """</span>
+</span><span id="cancelar_pedido-239"><a href="#cancelar_pedido-239"><span class="linenos">239</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Cancela um pedido que esteja EM_PREPARO.</p>
+
+<p>Regras de negócio acionadas:
+    - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os
+      ingredientes já consumidos não retornam ao estoque e a máquina volta
+      a PRONTA.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Pedido cancelado no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
+</blockquote>
+</div>
+
+
+                </section>
+                <section id="consultar_pedido">
+                            <input id="consultar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-router.get">@router.get(&#39;/pedidos/{pedido_id}&#39;, response_model=PedidoResponse, summary=&#39;Consulta um pedido&#39;, responses={**_erro(404, &#39;Pedido inexistente.&#39;, &#39;PEDIDO_NAO_ENCONTRADO&#39;, &#39;Pedido não encontrado.&#39;)})</div>
+
+        <span class="def">def</span>
+        <span class="name">consultar_pedido</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">PydanticUndefined</span><span class="p">)]</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="consultar_pedido-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#consultar_pedido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="consultar_pedido-173"><a href="#consultar_pedido-173"><span class="linenos">173</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="consultar_pedido-174"><a href="#consultar_pedido-174"><span class="linenos">174</span></a>    <span class="s2">"/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">"</span><span class="p">,</span>
+</span><span id="consultar_pedido-175"><a href="#consultar_pedido-175"><span class="linenos">175</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="consultar_pedido-176"><a href="#consultar_pedido-176"><span class="linenos">176</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Consulta um pedido"</span><span class="p">,</span>
+</span><span id="consultar_pedido-177"><a href="#consultar_pedido-177"><span class="linenos">177</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="consultar_pedido-178"><a href="#consultar_pedido-178"><span class="linenos">178</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="consultar_pedido-179"><a href="#consultar_pedido-179"><span class="linenos">179</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="consultar_pedido-180"><a href="#consultar_pedido-180"><span class="linenos">180</span></a>            <span class="s2">"Pedido inexistente."</span><span class="p">,</span>
+</span><span id="consultar_pedido-181"><a href="#consultar_pedido-181"><span class="linenos">181</span></a>            <span class="s2">"PEDIDO_NAO_ENCONTRADO"</span><span class="p">,</span>
+</span><span id="consultar_pedido-182"><a href="#consultar_pedido-182"><span class="linenos">182</span></a>            <span class="s2">"Pedido não encontrado."</span><span class="p">,</span>
+</span><span id="consultar_pedido-183"><a href="#consultar_pedido-183"><span class="linenos">183</span></a>        <span class="p">)</span>
+</span><span id="consultar_pedido-184"><a href="#consultar_pedido-184"><span class="linenos">184</span></a>    <span class="p">},</span>
+</span><span id="consultar_pedido-185"><a href="#consultar_pedido-185"><span class="linenos">185</span></a><span class="p">)</span>
+</span><span id="consultar_pedido-186"><a href="#consultar_pedido-186"><span class="linenos">186</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span>
+</span><span id="consultar_pedido-187"><a href="#consultar_pedido-187"><span class="linenos">187</span></a>    <span class="n">pedido_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="n">ID_MAXIMO</span><span class="p">)],</span>
+</span><span id="consultar_pedido-188"><a href="#consultar_pedido-188"><span class="linenos">188</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="consultar_pedido-189"><a href="#consultar_pedido-189"><span class="linenos">189</span></a><span class="w">    </span><span class="sd">"""Consulta um pedido e seu status atual.</span>
+</span><span id="consultar_pedido-190"><a href="#consultar_pedido-190"><span class="linenos">190</span></a>
+</span><span id="consultar_pedido-191"><a href="#consultar_pedido-191"><span class="linenos">191</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="consultar_pedido-192"><a href="#consultar_pedido-192"><span class="linenos">192</span></a><span class="sd">        - RN04: o status é calculado na consulta (EM_PREPARO até o término</span>
+</span><span id="consultar_pedido-193"><a href="#consultar_pedido-193"><span class="linenos">193</span></a><span class="sd">          previsto, depois CONCLUIDO), sem uso de timer.</span>
+</span><span id="consultar_pedido-194"><a href="#consultar_pedido-194"><span class="linenos">194</span></a>
+</span><span id="consultar_pedido-195"><a href="#consultar_pedido-195"><span class="linenos">195</span></a><span class="sd">    Args:</span>
+</span><span id="consultar_pedido-196"><a href="#consultar_pedido-196"><span class="linenos">196</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
+</span><span id="consultar_pedido-197"><a href="#consultar_pedido-197"><span class="linenos">197</span></a>
+</span><span id="consultar_pedido-198"><a href="#consultar_pedido-198"><span class="linenos">198</span></a><span class="sd">    Returns:</span>
+</span><span id="consultar_pedido-199"><a href="#consultar_pedido-199"><span class="linenos">199</span></a><span class="sd">        Pedido no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="consultar_pedido-200"><a href="#consultar_pedido-200"><span class="linenos">200</span></a><span class="sd">    """</span>
+</span><span id="consultar_pedido-201"><a href="#consultar_pedido-201"><span class="linenos">201</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Consulta um pedido e seu status atual.</p>
+
+<p>Regras de negócio acionadas:
+    - RN04: o status é calculado na consulta (EM_PREPARO até o término
+      previsto, depois CONCLUIDO), sem uso de timer.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Pedido no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
+</blockquote>
+</div>
+
+
+                </section>
+                <section id="criar_pedido">
+                            <input id="criar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-router.post">@router.post(&#39;/pedidos&#39;, response_model=PedidoResponse, status_code=status.HTTP_201_CREATED, summary=&#39;Cria um novo pedido&#39;, responses={**_erro(400, &#39;Dados do pedido inválidos.&#39;, &#39;DADOS_INVALIDOS&#39;, &#39;Açúcar deve estar entre 0 e 3.&#39;), **_erro(402, &#39;Crédito insuficiente.&#39;, &#39;CREDITO_INSUFICIENTE&#39;, &#39;Crédito não cobre o preço da bebida.&#39;), **_erro(404, &#39;Bebida inexistente.&#39;, &#39;BEBIDA_NAO_ENCONTRADA&#39;, &#39;Bebida não encontrada no cardápio.&#39;), **_erro(409, &#39;Estoque insuficiente ou máquina ocupada.&#39;, &#39;MAQUINA_OCUPADA&#39;, &#39;A máquina está preparando outra bebida.&#39;), **_erro(503, &#39;Máquina indisponível.&#39;, &#39;MAQUINA_INDISPONIVEL&#39;, &#39;A máquina está em manutenção.&#39;)})</div>
+
+        <span class="def">def</span>
+        <span class="name">criar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido</span><span class="p">:</span> <span class="n"><a href="../schemas/pedido.html#PedidoRequest">app.schemas.pedido.PedidoRequest</a></span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="criar_pedido-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#criar_pedido"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="criar_pedido-117"><a href="#criar_pedido-117"><span class="linenos">117</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="criar_pedido-118"><a href="#criar_pedido-118"><span class="linenos">118</span></a>    <span class="s2">"/pedidos"</span><span class="p">,</span>
+</span><span id="criar_pedido-119"><a href="#criar_pedido-119"><span class="linenos">119</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
+</span><span id="criar_pedido-120"><a href="#criar_pedido-120"><span class="linenos">120</span></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+</span><span id="criar_pedido-121"><a href="#criar_pedido-121"><span class="linenos">121</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Cria um novo pedido"</span><span class="p">,</span>
+</span><span id="criar_pedido-122"><a href="#criar_pedido-122"><span class="linenos">122</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="criar_pedido-123"><a href="#criar_pedido-123"><span class="linenos">123</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="criar_pedido-124"><a href="#criar_pedido-124"><span class="linenos">124</span></a>            <span class="mi">400</span><span class="p">,</span>
+</span><span id="criar_pedido-125"><a href="#criar_pedido-125"><span class="linenos">125</span></a>            <span class="s2">"Dados do pedido inválidos."</span><span class="p">,</span>
+</span><span id="criar_pedido-126"><a href="#criar_pedido-126"><span class="linenos">126</span></a>            <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span>
+</span><span id="criar_pedido-127"><a href="#criar_pedido-127"><span class="linenos">127</span></a>            <span class="s2">"Açúcar deve estar entre 0 e 3."</span><span class="p">,</span>
+</span><span id="criar_pedido-128"><a href="#criar_pedido-128"><span class="linenos">128</span></a>        <span class="p">),</span>
+</span><span id="criar_pedido-129"><a href="#criar_pedido-129"><span class="linenos">129</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="criar_pedido-130"><a href="#criar_pedido-130"><span class="linenos">130</span></a>            <span class="mi">402</span><span class="p">,</span>
+</span><span id="criar_pedido-131"><a href="#criar_pedido-131"><span class="linenos">131</span></a>            <span class="s2">"Crédito insuficiente."</span><span class="p">,</span>
+</span><span id="criar_pedido-132"><a href="#criar_pedido-132"><span class="linenos">132</span></a>            <span class="s2">"CREDITO_INSUFICIENTE"</span><span class="p">,</span>
+</span><span id="criar_pedido-133"><a href="#criar_pedido-133"><span class="linenos">133</span></a>            <span class="s2">"Crédito não cobre o preço da bebida."</span><span class="p">,</span>
+</span><span id="criar_pedido-134"><a href="#criar_pedido-134"><span class="linenos">134</span></a>        <span class="p">),</span>
+</span><span id="criar_pedido-135"><a href="#criar_pedido-135"><span class="linenos">135</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="criar_pedido-136"><a href="#criar_pedido-136"><span class="linenos">136</span></a>            <span class="mi">404</span><span class="p">,</span>
+</span><span id="criar_pedido-137"><a href="#criar_pedido-137"><span class="linenos">137</span></a>            <span class="s2">"Bebida inexistente."</span><span class="p">,</span>
+</span><span id="criar_pedido-138"><a href="#criar_pedido-138"><span class="linenos">138</span></a>            <span class="s2">"BEBIDA_NAO_ENCONTRADA"</span><span class="p">,</span>
+</span><span id="criar_pedido-139"><a href="#criar_pedido-139"><span class="linenos">139</span></a>            <span class="s2">"Bebida não encontrada no cardápio."</span><span class="p">,</span>
+</span><span id="criar_pedido-140"><a href="#criar_pedido-140"><span class="linenos">140</span></a>        <span class="p">),</span>
+</span><span id="criar_pedido-141"><a href="#criar_pedido-141"><span class="linenos">141</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="criar_pedido-142"><a href="#criar_pedido-142"><span class="linenos">142</span></a>            <span class="mi">409</span><span class="p">,</span>
+</span><span id="criar_pedido-143"><a href="#criar_pedido-143"><span class="linenos">143</span></a>            <span class="s2">"Estoque insuficiente ou máquina ocupada."</span><span class="p">,</span>
+</span><span id="criar_pedido-144"><a href="#criar_pedido-144"><span class="linenos">144</span></a>            <span class="s2">"MAQUINA_OCUPADA"</span><span class="p">,</span>
+</span><span id="criar_pedido-145"><a href="#criar_pedido-145"><span class="linenos">145</span></a>            <span class="s2">"A máquina está preparando outra bebida."</span><span class="p">,</span>
+</span><span id="criar_pedido-146"><a href="#criar_pedido-146"><span class="linenos">146</span></a>        <span class="p">),</span>
+</span><span id="criar_pedido-147"><a href="#criar_pedido-147"><span class="linenos">147</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="criar_pedido-148"><a href="#criar_pedido-148"><span class="linenos">148</span></a>            <span class="mi">503</span><span class="p">,</span>
+</span><span id="criar_pedido-149"><a href="#criar_pedido-149"><span class="linenos">149</span></a>            <span class="s2">"Máquina indisponível."</span><span class="p">,</span>
+</span><span id="criar_pedido-150"><a href="#criar_pedido-150"><span class="linenos">150</span></a>            <span class="s2">"MAQUINA_INDISPONIVEL"</span><span class="p">,</span>
+</span><span id="criar_pedido-151"><a href="#criar_pedido-151"><span class="linenos">151</span></a>            <span class="s2">"A máquina está em manutenção."</span><span class="p">,</span>
+</span><span id="criar_pedido-152"><a href="#criar_pedido-152"><span class="linenos">152</span></a>        <span class="p">),</span>
+</span><span id="criar_pedido-153"><a href="#criar_pedido-153"><span class="linenos">153</span></a>    <span class="p">},</span>
+</span><span id="criar_pedido-154"><a href="#criar_pedido-154"><span class="linenos">154</span></a><span class="p">)</span>
+</span><span id="criar_pedido-155"><a href="#criar_pedido-155"><span class="linenos">155</span></a><span class="k">def</span><span class="w"> </span><span class="nf">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="criar_pedido-156"><a href="#criar_pedido-156"><span class="linenos">156</span></a><span class="w">    </span><span class="sd">"""Cria um novo pedido de bebida.</span>
+</span><span id="criar_pedido-157"><a href="#criar_pedido-157"><span class="linenos">157</span></a>
+</span><span id="criar_pedido-158"><a href="#criar_pedido-158"><span class="linenos">158</span></a><span class="sd">    Regras de negócio acionadas (executadas pelo serviço de pedidos):</span>
+</span><span id="criar_pedido-159"><a href="#criar_pedido-159"><span class="linenos">159</span></a><span class="sd">        - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,</span>
+</span><span id="criar_pedido-160"><a href="#criar_pedido-160"><span class="linenos">160</span></a><span class="sd">          açúcar e copo.</span>
+</span><span id="criar_pedido-161"><a href="#criar_pedido-161"><span class="linenos">161</span></a><span class="sd">        - RN03: cobrança do preço e desconto dos ingredientes.</span>
+</span><span id="criar_pedido-162"><a href="#criar_pedido-162"><span class="linenos">162</span></a><span class="sd">        - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</span>
+</span><span id="criar_pedido-163"><a href="#criar_pedido-163"><span class="linenos">163</span></a>
+</span><span id="criar_pedido-164"><a href="#criar_pedido-164"><span class="linenos">164</span></a><span class="sd">    Args:</span>
+</span><span id="criar_pedido-165"><a href="#criar_pedido-165"><span class="linenos">165</span></a><span class="sd">        pedido: Bebida desejada e porções de açúcar.</span>
+</span><span id="criar_pedido-166"><a href="#criar_pedido-166"><span class="linenos">166</span></a>
+</span><span id="criar_pedido-167"><a href="#criar_pedido-167"><span class="linenos">167</span></a><span class="sd">    Returns:</span>
+</span><span id="criar_pedido-168"><a href="#criar_pedido-168"><span class="linenos">168</span></a><span class="sd">        Pedido criado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
+</span><span id="criar_pedido-169"><a href="#criar_pedido-169"><span class="linenos">169</span></a><span class="sd">    """</span>
+</span><span id="criar_pedido-170"><a href="#criar_pedido-170"><span class="linenos">170</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">pedido</span><span class="o">.</span><span class="n">acucar</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Cria um novo pedido de bebida.</p>
+
+<p>Regras de negócio acionadas (executadas pelo serviço de pedidos):
+    - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,
+      açúcar e copo.
+    - RN03: cobrança do preço e desconto dos ingredientes.
+    - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>pedido:</strong>  Bebida desejada e porções de açúcar.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Pedido criado no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
+</blockquote>
+</div>
+
+
+                </section>
+                <section id="devolver_troco">
+                            <input id="devolver_troco-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-router.post">@router.post(&#39;/troco&#39;, response_model=TrocoResponse, summary=&#39;Devolve todo o crédito restante&#39;)</div>
+
+        <span class="def">def</span>
+        <span class="name">devolver_troco</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="devolver_troco-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#devolver_troco"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="devolver_troco-100"><a href="#devolver_troco-100"><span class="linenos">100</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="devolver_troco-101"><a href="#devolver_troco-101"><span class="linenos">101</span></a>    <span class="s2">"/troco"</span><span class="p">,</span>
+</span><span id="devolver_troco-102"><a href="#devolver_troco-102"><span class="linenos">102</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">TrocoResponse</span><span class="p">,</span>
+</span><span id="devolver_troco-103"><a href="#devolver_troco-103"><span class="linenos">103</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Devolve todo o crédito restante"</span><span class="p">,</span>
+</span><span id="devolver_troco-104"><a href="#devolver_troco-104"><span class="linenos">104</span></a><span class="p">)</span>
+</span><span id="devolver_troco-105"><a href="#devolver_troco-105"><span class="linenos">105</span></a><span class="k">def</span><span class="w"> </span><span class="nf">devolver_troco</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="devolver_troco-106"><a href="#devolver_troco-106"><span class="linenos">106</span></a><span class="w">    </span><span class="sd">"""Devolve todo o crédito restante ao cliente e zera o saldo.</span>
+</span><span id="devolver_troco-107"><a href="#devolver_troco-107"><span class="linenos">107</span></a>
+</span><span id="devolver_troco-108"><a href="#devolver_troco-108"><span class="linenos">108</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="devolver_troco-109"><a href="#devolver_troco-109"><span class="linenos">109</span></a><span class="sd">        - RN06: a devolução zera o crédito acumulado.</span>
+</span><span id="devolver_troco-110"><a href="#devolver_troco-110"><span class="linenos">110</span></a>
+</span><span id="devolver_troco-111"><a href="#devolver_troco-111"><span class="linenos">111</span></a><span class="sd">    Returns:</span>
+</span><span id="devolver_troco-112"><a href="#devolver_troco-112"><span class="linenos">112</span></a><span class="sd">        Valor devolvido no formato :class:`app.schemas.credito.TrocoResponse`.</span>
+</span><span id="devolver_troco-113"><a href="#devolver_troco-113"><span class="linenos">113</span></a><span class="sd">    """</span>
+</span><span id="devolver_troco-114"><a href="#devolver_troco-114"><span class="linenos">114</span></a>    <span class="k">return</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">devolver_troco</span><span class="p">()</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Devolve todo o crédito restante ao cliente e zera o saldo.</p>
+
+<p>Regras de negócio acionadas:
+    - RN06: a devolução zera o crédito acumulado.</p>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Valor devolvido no formato <code><a href="../schemas/credito.html#TrocoResponse">app.schemas.credito.TrocoResponse</a></code>.</p>
+</blockquote>
+</div>
+
+
+                </section>
+                <section id="inserir_credito">
+                            <input id="inserir_credito-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+                    <div class="decorator decorator-router.post">@router.post(&#39;/credito&#39;, response_model=CreditoResponse, summary=&#39;Insere crédito na máquina&#39;, responses={**_erro(400, &#39;Valor de crédito não aceito.&#39;, &#39;DADOS_INVALIDOS&#39;, &#39;Valor de crédito não aceito.&#39;)})</div>
+
+        <span class="def">def</span>
+        <span class="name">inserir_credito</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">payload</span><span class="p">:</span> <span class="n"><a href="../schemas/credito.html#CreditoRequest">app.schemas.credito.CreditoRequest</a></span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="inserir_credito-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#inserir_credito"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="inserir_credito-67"><a href="#inserir_credito-67"><span class="linenos">67</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span><span id="inserir_credito-68"><a href="#inserir_credito-68"><span class="linenos">68</span></a>    <span class="s2">"/credito"</span><span class="p">,</span>
+</span><span id="inserir_credito-69"><a href="#inserir_credito-69"><span class="linenos">69</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">CreditoResponse</span><span class="p">,</span>
+</span><span id="inserir_credito-70"><a href="#inserir_credito-70"><span class="linenos">70</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Insere crédito na máquina"</span><span class="p">,</span>
+</span><span id="inserir_credito-71"><a href="#inserir_credito-71"><span class="linenos">71</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
+</span><span id="inserir_credito-72"><a href="#inserir_credito-72"><span class="linenos">72</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span>
+</span><span id="inserir_credito-73"><a href="#inserir_credito-73"><span class="linenos">73</span></a>            <span class="mi">400</span><span class="p">,</span>
+</span><span id="inserir_credito-74"><a href="#inserir_credito-74"><span class="linenos">74</span></a>            <span class="s2">"Valor de crédito não aceito."</span><span class="p">,</span>
+</span><span id="inserir_credito-75"><a href="#inserir_credito-75"><span class="linenos">75</span></a>            <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span>
+</span><span id="inserir_credito-76"><a href="#inserir_credito-76"><span class="linenos">76</span></a>            <span class="s2">"Valor de crédito não aceito."</span><span class="p">,</span>
+</span><span id="inserir_credito-77"><a href="#inserir_credito-77"><span class="linenos">77</span></a>        <span class="p">)</span>
+</span><span id="inserir_credito-78"><a href="#inserir_credito-78"><span class="linenos">78</span></a>    <span class="p">},</span>
+</span><span id="inserir_credito-79"><a href="#inserir_credito-79"><span class="linenos">79</span></a><span class="p">)</span>
+</span><span id="inserir_credito-80"><a href="#inserir_credito-80"><span class="linenos">80</span></a><span class="k">def</span><span class="w"> </span><span class="nf">inserir_credito</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">CreditoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="inserir_credito-81"><a href="#inserir_credito-81"><span class="linenos">81</span></a><span class="w">    </span><span class="sd">"""Insere um valor de crédito na máquina.</span>
+</span><span id="inserir_credito-82"><a href="#inserir_credito-82"><span class="linenos">82</span></a>
+</span><span id="inserir_credito-83"><a href="#inserir_credito-83"><span class="linenos">83</span></a><span class="sd">    O valor é validado por :class:`app.schemas.credito.CreditoRequest` antes de</span>
+</span><span id="inserir_credito-84"><a href="#inserir_credito-84"><span class="linenos">84</span></a><span class="sd">    chegar ao serviço.</span>
+</span><span id="inserir_credito-85"><a href="#inserir_credito-85"><span class="linenos">85</span></a>
+</span><span id="inserir_credito-86"><a href="#inserir_credito-86"><span class="linenos">86</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="inserir_credito-87"><a href="#inserir_credito-87"><span class="linenos">87</span></a><span class="sd">        - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e</span>
+</span><span id="inserir_credito-88"><a href="#inserir_credito-88"><span class="linenos">88</span></a><span class="sd">          limite de crédito acumulado de R$ 50,00.</span>
+</span><span id="inserir_credito-89"><a href="#inserir_credito-89"><span class="linenos">89</span></a>
+</span><span id="inserir_credito-90"><a href="#inserir_credito-90"><span class="linenos">90</span></a><span class="sd">    Args:</span>
+</span><span id="inserir_credito-91"><a href="#inserir_credito-91"><span class="linenos">91</span></a><span class="sd">        payload: Valor a inserir.</span>
+</span><span id="inserir_credito-92"><a href="#inserir_credito-92"><span class="linenos">92</span></a>
+</span><span id="inserir_credito-93"><a href="#inserir_credito-93"><span class="linenos">93</span></a><span class="sd">    Returns:</span>
+</span><span id="inserir_credito-94"><a href="#inserir_credito-94"><span class="linenos">94</span></a><span class="sd">        Crédito acumulado no formato :class:`app.schemas.credito.CreditoResponse`.</span>
+</span><span id="inserir_credito-95"><a href="#inserir_credito-95"><span class="linenos">95</span></a><span class="sd">    """</span>
+</span><span id="inserir_credito-96"><a href="#inserir_credito-96"><span class="linenos">96</span></a>    <span class="n">novo_credito</span> <span class="o">=</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">adicionar_credito</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span>
+</span><span id="inserir_credito-97"><a href="#inserir_credito-97"><span class="linenos">97</span></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">"credito"</span><span class="p">:</span> <span class="n">novo_credito</span><span class="p">}</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Insere um valor de crédito na máquina.</p>
+
+<p>O valor é validado por <code><a href="../schemas/credito.html#CreditoRequest">app.schemas.credito.CreditoRequest</a></code> antes de
+chegar ao serviço.</p>
+
+<p>Regras de negócio acionadas:
+    - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e
+      limite de crédito acumulado de R$ 50,00.</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>payload:</strong>  Valor a inserir.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>Crédito acumulado no formato <code><a href="../schemas/credito.html#CreditoResponse">app.schemas.credito.CreditoResponse</a></code>.</p>
+</blockquote>
+</div>
+
 
                 </section>
                 <section id="listar_produtos">
@@ -322,25 +692,25 @@ handlers globais registrados em <code><a href="../main.html">app.main</a></code>
 
     </div>
     <a class="headerlink" href="#listar_produtos"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="listar_produtos-47"><a href="#listar_produtos-47"><span class="linenos">47</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="listar_produtos-48"><a href="#listar_produtos-48"><span class="linenos">48</span></a>    <span class="s2">&quot;/produtos&quot;</span><span class="p">,</span>
-</span><span id="listar_produtos-49"><a href="#listar_produtos-49"><span class="linenos">49</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">ProdutoResponse</span><span class="p">],</span>
-</span><span id="listar_produtos-50"><a href="#listar_produtos-50"><span class="linenos">50</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Lista o cardápio&quot;</span><span class="p">,</span>
-</span><span id="listar_produtos-51"><a href="#listar_produtos-51"><span class="linenos">51</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Requisição inválida.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Requisição inválida.&quot;</span><span class="p">)},</span>
-</span><span id="listar_produtos-52"><a href="#listar_produtos-52"><span class="linenos">52</span></a><span class="p">)</span>
-</span><span id="listar_produtos-53"><a href="#listar_produtos-53"><span class="linenos">53</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-</span><span id="listar_produtos-54"><a href="#listar_produtos-54"><span class="linenos">54</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o cardápio com preço, tempo de preparo e disponibilidade.</span>
-</span><span id="listar_produtos-55"><a href="#listar_produtos-55"><span class="linenos">55</span></a>
-</span><span id="listar_produtos-56"><a href="#listar_produtos-56"><span class="linenos">56</span></a><span class="sd">    Delega a montagem do cardápio ao serviço de produtos.</span>
-</span><span id="listar_produtos-57"><a href="#listar_produtos-57"><span class="linenos">57</span></a>
-</span><span id="listar_produtos-58"><a href="#listar_produtos-58"><span class="linenos">58</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="listar_produtos-59"><a href="#listar_produtos-59"><span class="linenos">59</span></a><span class="sd">        - RN10: o cardápio informa se cada bebida está disponível (estoque</span>
-</span><span id="listar_produtos-60"><a href="#listar_produtos-60"><span class="linenos">60</span></a><span class="sd">          suficiente para prepará-la agora).</span>
-</span><span id="listar_produtos-61"><a href="#listar_produtos-61"><span class="linenos">61</span></a>
-</span><span id="listar_produtos-62"><a href="#listar_produtos-62"><span class="linenos">62</span></a><span class="sd">    Returns:</span>
-</span><span id="listar_produtos-63"><a href="#listar_produtos-63"><span class="linenos">63</span></a><span class="sd">        Lista de bebidas no formato :class:`app.schemas.produto.ProdutoResponse`.</span>
-</span><span id="listar_produtos-64"><a href="#listar_produtos-64"><span class="linenos">64</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="listar_produtos-65"><a href="#listar_produtos-65"><span class="linenos">65</span></a>    <span class="k">return</span> <span class="n">produto_service</span><span class="o">.</span><span class="n">listar_produtos</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="listar_produtos-32"><a href="#listar_produtos-32"><span class="linenos">32</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="listar_produtos-33"><a href="#listar_produtos-33"><span class="linenos">33</span></a>    <span class="s2">"/produtos"</span><span class="p">,</span>
+</span><span id="listar_produtos-34"><a href="#listar_produtos-34"><span class="linenos">34</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">ProdutoResponse</span><span class="p">],</span>
+</span><span id="listar_produtos-35"><a href="#listar_produtos-35"><span class="linenos">35</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Lista o cardápio"</span><span class="p">,</span>
+</span><span id="listar_produtos-36"><a href="#listar_produtos-36"><span class="linenos">36</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">"Requisição inválida."</span><span class="p">,</span> <span class="s2">"DADOS_INVALIDOS"</span><span class="p">,</span> <span class="s2">"Requisição inválida."</span><span class="p">)},</span>
+</span><span id="listar_produtos-37"><a href="#listar_produtos-37"><span class="linenos">37</span></a><span class="p">)</span>
+</span><span id="listar_produtos-38"><a href="#listar_produtos-38"><span class="linenos">38</span></a><span class="k">def</span><span class="w"> </span><span class="nf">listar_produtos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+</span><span id="listar_produtos-39"><a href="#listar_produtos-39"><span class="linenos">39</span></a><span class="w">    </span><span class="sd">"""Retorna o cardápio com preço, tempo de preparo e disponibilidade.</span>
+</span><span id="listar_produtos-40"><a href="#listar_produtos-40"><span class="linenos">40</span></a>
+</span><span id="listar_produtos-41"><a href="#listar_produtos-41"><span class="linenos">41</span></a><span class="sd">    Delega a montagem do cardápio ao serviço de produtos.</span>
+</span><span id="listar_produtos-42"><a href="#listar_produtos-42"><span class="linenos">42</span></a>
+</span><span id="listar_produtos-43"><a href="#listar_produtos-43"><span class="linenos">43</span></a><span class="sd">    Regras de negócio acionadas:</span>
+</span><span id="listar_produtos-44"><a href="#listar_produtos-44"><span class="linenos">44</span></a><span class="sd">        - RN10: o cardápio informa se cada bebida está disponível (estoque</span>
+</span><span id="listar_produtos-45"><a href="#listar_produtos-45"><span class="linenos">45</span></a><span class="sd">          suficiente para prepará-la agora).</span>
+</span><span id="listar_produtos-46"><a href="#listar_produtos-46"><span class="linenos">46</span></a>
+</span><span id="listar_produtos-47"><a href="#listar_produtos-47"><span class="linenos">47</span></a><span class="sd">    Returns:</span>
+</span><span id="listar_produtos-48"><a href="#listar_produtos-48"><span class="linenos">48</span></a><span class="sd">        Lista de bebidas no formato :class:`app.schemas.produto.ProdutoResponse`.</span>
+</span><span id="listar_produtos-49"><a href="#listar_produtos-49"><span class="linenos">49</span></a><span class="sd">    """</span>
+</span><span id="listar_produtos-50"><a href="#listar_produtos-50"><span class="linenos">50</span></a>    <span class="k">return</span> <span class="n">produto_service</span><span class="o">.</span><span class="n">listar_produtos</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -373,18 +743,18 @@ handlers globais registrados em <code><a href="../main.html">app.main</a></code>
 
     </div>
     <a class="headerlink" href="#obter_status"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="obter_status-68"><a href="#obter_status-68"><span class="linenos">68</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="obter_status-69"><a href="#obter_status-69"><span class="linenos">69</span></a>    <span class="s2">&quot;/status&quot;</span><span class="p">,</span>
-</span><span id="obter_status-70"><a href="#obter_status-70"><span class="linenos">70</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
-</span><span id="obter_status-71"><a href="#obter_status-71"><span class="linenos">71</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Consulta o estado da máquina&quot;</span><span class="p">,</span>
-</span><span id="obter_status-72"><a href="#obter_status-72"><span class="linenos">72</span></a><span class="p">)</span>
-</span><span id="obter_status-73"><a href="#obter_status-73"><span class="linenos">73</span></a><span class="k">def</span><span class="w"> </span><span class="nf">obter_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="obter_status-74"><a href="#obter_status-74"><span class="linenos">74</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retorna o estado operacional atual da máquina e o crédito acumulado.</span>
-</span><span id="obter_status-75"><a href="#obter_status-75"><span class="linenos">75</span></a>
-</span><span id="obter_status-76"><a href="#obter_status-76"><span class="linenos">76</span></a><span class="sd">    Returns:</span>
-</span><span id="obter_status-77"><a href="#obter_status-77"><span class="linenos">77</span></a><span class="sd">        Estado da máquina no formato :class:`app.schemas.status.StatusResponse`.</span>
-</span><span id="obter_status-78"><a href="#obter_status-78"><span class="linenos">78</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="obter_status-79"><a href="#obter_status-79"><span class="linenos">79</span></a>    <span class="k">return</span> <span class="n">status_service</span><span class="o">.</span><span class="n">obter_status</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="obter_status-53"><a href="#obter_status-53"><span class="linenos">53</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="obter_status-54"><a href="#obter_status-54"><span class="linenos">54</span></a>    <span class="s2">"/status"</span><span class="p">,</span>
+</span><span id="obter_status-55"><a href="#obter_status-55"><span class="linenos">55</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+</span><span id="obter_status-56"><a href="#obter_status-56"><span class="linenos">56</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Consulta o estado da máquina"</span><span class="p">,</span>
+</span><span id="obter_status-57"><a href="#obter_status-57"><span class="linenos">57</span></a><span class="p">)</span>
+</span><span id="obter_status-58"><a href="#obter_status-58"><span class="linenos">58</span></a><span class="k">def</span><span class="w"> </span><span class="nf">obter_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="obter_status-59"><a href="#obter_status-59"><span class="linenos">59</span></a><span class="w">    </span><span class="sd">"""Retorna o estado operacional atual da máquina e o crédito acumulado.</span>
+</span><span id="obter_status-60"><a href="#obter_status-60"><span class="linenos">60</span></a>
+</span><span id="obter_status-61"><a href="#obter_status-61"><span class="linenos">61</span></a><span class="sd">    Returns:</span>
+</span><span id="obter_status-62"><a href="#obter_status-62"><span class="linenos">62</span></a><span class="sd">        Estado da máquina no formato :class:`app.schemas.status.StatusResponse`.</span>
+</span><span id="obter_status-63"><a href="#obter_status-63"><span class="linenos">63</span></a><span class="sd">    """</span>
+</span><span id="obter_status-64"><a href="#obter_status-64"><span class="linenos">64</span></a>    <span class="k">return</span> <span class="n">status_service</span><span class="o">.</span><span class="n">obter_status</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -399,294 +769,15 @@ handlers globais registrados em <code><a href="../main.html">app.main</a></code>
 
 
                 </section>
-                <section id="inserir_credito">
-                            <input id="inserir_credito-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-router.post">@router.post(&#39;/credito&#39;, response_model=CreditoResponse, summary=&#39;Insere crédito na máquina&#39;, responses={**_erro(400, &#39;Valor de crédito não aceito.&#39;, &#39;DADOS_INVALIDOS&#39;, &#39;Valor de crédito não aceito.&#39;)})</div>
+                <section id="router">
+                    <div class="attr variable">
+            <span class="name">router</span>        =
+<span class="default_value">&lt;fastapi.routing.APIRouter object&gt;</span>
 
-        <span class="def">def</span>
-        <span class="name">inserir_credito</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">payload</span><span class="p">:</span> <span class="n"><a href="../schemas/credito.html#CreditoRequest">app.schemas.credito.CreditoRequest</a></span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="inserir_credito-view-source"><span>View Source</span></label>
 
     </div>
-    <a class="headerlink" href="#inserir_credito"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="inserir_credito-82"><a href="#inserir_credito-82"><span class="linenos"> 82</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="inserir_credito-83"><a href="#inserir_credito-83"><span class="linenos"> 83</span></a>    <span class="s2">&quot;/credito&quot;</span><span class="p">,</span>
-</span><span id="inserir_credito-84"><a href="#inserir_credito-84"><span class="linenos"> 84</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">CreditoResponse</span><span class="p">,</span>
-</span><span id="inserir_credito-85"><a href="#inserir_credito-85"><span class="linenos"> 85</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Insere crédito na máquina&quot;</span><span class="p">,</span>
-</span><span id="inserir_credito-86"><a href="#inserir_credito-86"><span class="linenos"> 86</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Valor de crédito não aceito.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Valor de crédito não aceito.&quot;</span><span class="p">)},</span>
-</span><span id="inserir_credito-87"><a href="#inserir_credito-87"><span class="linenos"> 87</span></a><span class="p">)</span>
-</span><span id="inserir_credito-88"><a href="#inserir_credito-88"><span class="linenos"> 88</span></a><span class="k">def</span><span class="w"> </span><span class="nf">inserir_credito</span><span class="p">(</span><span class="n">payload</span><span class="p">:</span> <span class="n">CreditoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="inserir_credito-89"><a href="#inserir_credito-89"><span class="linenos"> 89</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Insere um valor de crédito na máquina.</span>
-</span><span id="inserir_credito-90"><a href="#inserir_credito-90"><span class="linenos"> 90</span></a>
-</span><span id="inserir_credito-91"><a href="#inserir_credito-91"><span class="linenos"> 91</span></a><span class="sd">    O valor é validado por :class:`app.schemas.credito.CreditoRequest` antes de</span>
-</span><span id="inserir_credito-92"><a href="#inserir_credito-92"><span class="linenos"> 92</span></a><span class="sd">    chegar ao serviço.</span>
-</span><span id="inserir_credito-93"><a href="#inserir_credito-93"><span class="linenos"> 93</span></a>
-</span><span id="inserir_credito-94"><a href="#inserir_credito-94"><span class="linenos"> 94</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="inserir_credito-95"><a href="#inserir_credito-95"><span class="linenos"> 95</span></a><span class="sd">        - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e</span>
-</span><span id="inserir_credito-96"><a href="#inserir_credito-96"><span class="linenos"> 96</span></a><span class="sd">          limite de crédito acumulado de R$ 50,00.</span>
-</span><span id="inserir_credito-97"><a href="#inserir_credito-97"><span class="linenos"> 97</span></a>
-</span><span id="inserir_credito-98"><a href="#inserir_credito-98"><span class="linenos"> 98</span></a><span class="sd">    Args:</span>
-</span><span id="inserir_credito-99"><a href="#inserir_credito-99"><span class="linenos"> 99</span></a><span class="sd">        payload: Valor a inserir.</span>
-</span><span id="inserir_credito-100"><a href="#inserir_credito-100"><span class="linenos">100</span></a>
-</span><span id="inserir_credito-101"><a href="#inserir_credito-101"><span class="linenos">101</span></a><span class="sd">    Returns:</span>
-</span><span id="inserir_credito-102"><a href="#inserir_credito-102"><span class="linenos">102</span></a><span class="sd">        Crédito acumulado no formato :class:`app.schemas.credito.CreditoResponse`.</span>
-</span><span id="inserir_credito-103"><a href="#inserir_credito-103"><span class="linenos">103</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="inserir_credito-104"><a href="#inserir_credito-104"><span class="linenos">104</span></a>    <span class="n">novo_credito</span> <span class="o">=</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">adicionar_credito</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">valor</span><span class="p">)</span>
-</span><span id="inserir_credito-105"><a href="#inserir_credito-105"><span class="linenos">105</span></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;credito&quot;</span><span class="p">:</span> <span class="n">novo_credito</span><span class="p">}</span>
-</span></pre></div>
+    <a class="headerlink" href="#router"></a>
 
-
-            <div class="docstring"><p>Insere um valor de crédito na máquina.</p>
-
-<p>O valor é validado por <code><a href="../schemas/credito.html#CreditoRequest">app.schemas.credito.CreditoRequest</a></code> antes de
-chegar ao serviço.</p>
-
-<p>Regras de negócio acionadas:
-    - RN01: valores aceitos (0,50 / 1,00 / 2,00 / 5,00 / 10,00 / 20,00) e
-      limite de crédito acumulado de R$ 50,00.</p>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>payload:</strong>  Valor a inserir.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Crédito acumulado no formato <code><a href="../schemas/credito.html#CreditoResponse">app.schemas.credito.CreditoResponse</a></code>.</p>
-</blockquote>
-</div>
-
-
-                </section>
-                <section id="devolver_troco">
-                            <input id="devolver_troco-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-router.post">@router.post(&#39;/troco&#39;, response_model=TrocoResponse, summary=&#39;Devolve todo o crédito restante&#39;)</div>
-
-        <span class="def">def</span>
-        <span class="name">devolver_troco</span><span class="signature pdoc-code condensed">(<span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="devolver_troco-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#devolver_troco"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="devolver_troco-108"><a href="#devolver_troco-108"><span class="linenos">108</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="devolver_troco-109"><a href="#devolver_troco-109"><span class="linenos">109</span></a>    <span class="s2">&quot;/troco&quot;</span><span class="p">,</span>
-</span><span id="devolver_troco-110"><a href="#devolver_troco-110"><span class="linenos">110</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">TrocoResponse</span><span class="p">,</span>
-</span><span id="devolver_troco-111"><a href="#devolver_troco-111"><span class="linenos">111</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Devolve todo o crédito restante&quot;</span><span class="p">,</span>
-</span><span id="devolver_troco-112"><a href="#devolver_troco-112"><span class="linenos">112</span></a><span class="p">)</span>
-</span><span id="devolver_troco-113"><a href="#devolver_troco-113"><span class="linenos">113</span></a><span class="k">def</span><span class="w"> </span><span class="nf">devolver_troco</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="devolver_troco-114"><a href="#devolver_troco-114"><span class="linenos">114</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Devolve todo o crédito restante ao cliente e zera o saldo.</span>
-</span><span id="devolver_troco-115"><a href="#devolver_troco-115"><span class="linenos">115</span></a>
-</span><span id="devolver_troco-116"><a href="#devolver_troco-116"><span class="linenos">116</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="devolver_troco-117"><a href="#devolver_troco-117"><span class="linenos">117</span></a><span class="sd">        - RN06: a devolução zera o crédito acumulado.</span>
-</span><span id="devolver_troco-118"><a href="#devolver_troco-118"><span class="linenos">118</span></a>
-</span><span id="devolver_troco-119"><a href="#devolver_troco-119"><span class="linenos">119</span></a><span class="sd">    Returns:</span>
-</span><span id="devolver_troco-120"><a href="#devolver_troco-120"><span class="linenos">120</span></a><span class="sd">        Valor devolvido no formato :class:`app.schemas.credito.TrocoResponse`.</span>
-</span><span id="devolver_troco-121"><a href="#devolver_troco-121"><span class="linenos">121</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="devolver_troco-122"><a href="#devolver_troco-122"><span class="linenos">122</span></a>    <span class="k">return</span> <span class="n">credito_service</span><span class="o">.</span><span class="n">devolver_troco</span><span class="p">()</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Devolve todo o crédito restante ao cliente e zera o saldo.</p>
-
-<p>Regras de negócio acionadas:
-    - RN06: a devolução zera o crédito acumulado.</p>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Valor devolvido no formato <code><a href="../schemas/credito.html#TrocoResponse">app.schemas.credito.TrocoResponse</a></code>.</p>
-</blockquote>
-</div>
-
-
-                </section>
-                <section id="criar_pedido">
-                            <input id="criar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-router.post">@router.post(&#39;/pedidos&#39;, response_model=PedidoResponse, status_code=status.HTTP_201_CREATED, summary=&#39;Cria um novo pedido&#39;, responses={**_erro(400, &#39;Dados do pedido inválidos.&#39;, &#39;DADOS_INVALIDOS&#39;, &#39;Açúcar deve estar entre 0 e 3.&#39;), **_erro(402, &#39;Crédito insuficiente.&#39;, &#39;CREDITO_INSUFICIENTE&#39;, &#39;Crédito não cobre o preço da bebida.&#39;), **_erro(404, &#39;Bebida inexistente.&#39;, &#39;BEBIDA_NAO_ENCONTRADA&#39;, &#39;Bebida não encontrada no cardápio.&#39;), **_erro(409, &#39;Estoque insuficiente ou máquina ocupada.&#39;, &#39;MAQUINA_OCUPADA&#39;, &#39;A máquina está preparando outra bebida.&#39;), **_erro(503, &#39;Máquina indisponível.&#39;, &#39;MAQUINA_INDISPONIVEL&#39;, &#39;A máquina está em manutenção.&#39;)})</div>
-
-        <span class="def">def</span>
-        <span class="name">criar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido</span><span class="p">:</span> <span class="n"><a href="../schemas/pedido.html#PedidoRequest">app.schemas.pedido.PedidoRequest</a></span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="criar_pedido-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#criar_pedido"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="criar_pedido-125"><a href="#criar_pedido-125"><span class="linenos">125</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="criar_pedido-126"><a href="#criar_pedido-126"><span class="linenos">126</span></a>    <span class="s2">&quot;/pedidos&quot;</span><span class="p">,</span>
-</span><span id="criar_pedido-127"><a href="#criar_pedido-127"><span class="linenos">127</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="criar_pedido-128"><a href="#criar_pedido-128"><span class="linenos">128</span></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
-</span><span id="criar_pedido-129"><a href="#criar_pedido-129"><span class="linenos">129</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Cria um novo pedido&quot;</span><span class="p">,</span>
-</span><span id="criar_pedido-130"><a href="#criar_pedido-130"><span class="linenos">130</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
-</span><span id="criar_pedido-131"><a href="#criar_pedido-131"><span class="linenos">131</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Dados do pedido inválidos.&quot;</span><span class="p">,</span> <span class="s2">&quot;DADOS_INVALIDOS&quot;</span><span class="p">,</span> <span class="s2">&quot;Açúcar deve estar entre 0 e 3.&quot;</span><span class="p">),</span>
-</span><span id="criar_pedido-132"><a href="#criar_pedido-132"><span class="linenos">132</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">402</span><span class="p">,</span> <span class="s2">&quot;Crédito insuficiente.&quot;</span><span class="p">,</span> <span class="s2">&quot;CREDITO_INSUFICIENTE&quot;</span><span class="p">,</span> <span class="s2">&quot;Crédito não cobre o preço da bebida.&quot;</span><span class="p">),</span>
-</span><span id="criar_pedido-133"><a href="#criar_pedido-133"><span class="linenos">133</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Bebida inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;BEBIDA_NAO_ENCONTRADA&quot;</span><span class="p">,</span> <span class="s2">&quot;Bebida não encontrada no cardápio.&quot;</span><span class="p">),</span>
-</span><span id="criar_pedido-134"><a href="#criar_pedido-134"><span class="linenos">134</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">&quot;Estoque insuficiente ou máquina ocupada.&quot;</span><span class="p">,</span> <span class="s2">&quot;MAQUINA_OCUPADA&quot;</span><span class="p">,</span> <span class="s2">&quot;A máquina está preparando outra bebida.&quot;</span><span class="p">),</span>
-</span><span id="criar_pedido-135"><a href="#criar_pedido-135"><span class="linenos">135</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">503</span><span class="p">,</span> <span class="s2">&quot;Máquina indisponível.&quot;</span><span class="p">,</span> <span class="s2">&quot;MAQUINA_INDISPONIVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;A máquina está em manutenção.&quot;</span><span class="p">),</span>
-</span><span id="criar_pedido-136"><a href="#criar_pedido-136"><span class="linenos">136</span></a>    <span class="p">},</span>
-</span><span id="criar_pedido-137"><a href="#criar_pedido-137"><span class="linenos">137</span></a><span class="p">)</span>
-</span><span id="criar_pedido-138"><a href="#criar_pedido-138"><span class="linenos">138</span></a><span class="k">def</span><span class="w"> </span><span class="nf">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="p">:</span> <span class="n">PedidoRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="criar_pedido-139"><a href="#criar_pedido-139"><span class="linenos">139</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cria um novo pedido de bebida.</span>
-</span><span id="criar_pedido-140"><a href="#criar_pedido-140"><span class="linenos">140</span></a>
-</span><span id="criar_pedido-141"><a href="#criar_pedido-141"><span class="linenos">141</span></a><span class="sd">    Regras de negócio acionadas (executadas pelo serviço de pedidos):</span>
-</span><span id="criar_pedido-142"><a href="#criar_pedido-142"><span class="linenos">142</span></a><span class="sd">        - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,</span>
-</span><span id="criar_pedido-143"><a href="#criar_pedido-143"><span class="linenos">143</span></a><span class="sd">          açúcar e copo.</span>
-</span><span id="criar_pedido-144"><a href="#criar_pedido-144"><span class="linenos">144</span></a><span class="sd">        - RN03: cobrança do preço e desconto dos ingredientes.</span>
-</span><span id="criar_pedido-145"><a href="#criar_pedido-145"><span class="linenos">145</span></a><span class="sd">        - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</span>
-</span><span id="criar_pedido-146"><a href="#criar_pedido-146"><span class="linenos">146</span></a>
-</span><span id="criar_pedido-147"><a href="#criar_pedido-147"><span class="linenos">147</span></a><span class="sd">    Args:</span>
-</span><span id="criar_pedido-148"><a href="#criar_pedido-148"><span class="linenos">148</span></a><span class="sd">        pedido: Bebida desejada e porções de açúcar.</span>
-</span><span id="criar_pedido-149"><a href="#criar_pedido-149"><span class="linenos">149</span></a>
-</span><span id="criar_pedido-150"><a href="#criar_pedido-150"><span class="linenos">150</span></a><span class="sd">    Returns:</span>
-</span><span id="criar_pedido-151"><a href="#criar_pedido-151"><span class="linenos">151</span></a><span class="sd">        Pedido criado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="criar_pedido-152"><a href="#criar_pedido-152"><span class="linenos">152</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="criar_pedido-153"><a href="#criar_pedido-153"><span class="linenos">153</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">criar_pedido</span><span class="p">(</span><span class="n">pedido</span><span class="o">.</span><span class="n">produto_id</span><span class="p">,</span> <span class="n">pedido</span><span class="o">.</span><span class="n">acucar</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Cria um novo pedido de bebida.</p>
-
-<p>Regras de negócio acionadas (executadas pelo serviço de pedidos):
-    - RN02: máquina PRONTA, crédito suficiente e estoque de ingredientes,
-      açúcar e copo.
-    - RN03: cobrança do preço e desconto dos ingredientes.
-    - RN04: pedido nasce EM_PREPARO e a máquina passa a PREPARANDO.</p>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>pedido:</strong>  Bebida desejada e porções de açúcar.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Pedido criado no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
-</blockquote>
-</div>
-
-
-                </section>
-                <section id="consultar_pedido">
-                            <input id="consultar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-router.get">@router.get(&#39;/pedidos/{pedido_id}&#39;, response_model=PedidoResponse, summary=&#39;Consulta um pedido&#39;, responses={**_erro(404, &#39;Pedido inexistente.&#39;, &#39;PEDIDO_NAO_ENCONTRADO&#39;, &#39;Pedido não encontrado.&#39;)})</div>
-
-        <span class="def">def</span>
-        <span class="name">consultar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="consultar_pedido-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#consultar_pedido"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="consultar_pedido-156"><a href="#consultar_pedido-156"><span class="linenos">156</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span id="consultar_pedido-157"><a href="#consultar_pedido-157"><span class="linenos">157</span></a>    <span class="s2">&quot;/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">&quot;</span><span class="p">,</span>
-</span><span id="consultar_pedido-158"><a href="#consultar_pedido-158"><span class="linenos">158</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="consultar_pedido-159"><a href="#consultar_pedido-159"><span class="linenos">159</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Consulta um pedido&quot;</span><span class="p">,</span>
-</span><span id="consultar_pedido-160"><a href="#consultar_pedido-160"><span class="linenos">160</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Pedido inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_ENCONTRADO&quot;</span><span class="p">,</span> <span class="s2">&quot;Pedido não encontrado.&quot;</span><span class="p">)},</span>
-</span><span id="consultar_pedido-161"><a href="#consultar_pedido-161"><span class="linenos">161</span></a><span class="p">)</span>
-</span><span id="consultar_pedido-162"><a href="#consultar_pedido-162"><span class="linenos">162</span></a><span class="k">def</span><span class="w"> </span><span class="nf">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="consultar_pedido-163"><a href="#consultar_pedido-163"><span class="linenos">163</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Consulta um pedido e seu status atual.</span>
-</span><span id="consultar_pedido-164"><a href="#consultar_pedido-164"><span class="linenos">164</span></a>
-</span><span id="consultar_pedido-165"><a href="#consultar_pedido-165"><span class="linenos">165</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="consultar_pedido-166"><a href="#consultar_pedido-166"><span class="linenos">166</span></a><span class="sd">        - RN04: o status é calculado na consulta (EM_PREPARO até o término</span>
-</span><span id="consultar_pedido-167"><a href="#consultar_pedido-167"><span class="linenos">167</span></a><span class="sd">          previsto, depois CONCLUIDO), sem uso de timer.</span>
-</span><span id="consultar_pedido-168"><a href="#consultar_pedido-168"><span class="linenos">168</span></a>
-</span><span id="consultar_pedido-169"><a href="#consultar_pedido-169"><span class="linenos">169</span></a><span class="sd">    Args:</span>
-</span><span id="consultar_pedido-170"><a href="#consultar_pedido-170"><span class="linenos">170</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
-</span><span id="consultar_pedido-171"><a href="#consultar_pedido-171"><span class="linenos">171</span></a>
-</span><span id="consultar_pedido-172"><a href="#consultar_pedido-172"><span class="linenos">172</span></a><span class="sd">    Returns:</span>
-</span><span id="consultar_pedido-173"><a href="#consultar_pedido-173"><span class="linenos">173</span></a><span class="sd">        Pedido no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="consultar_pedido-174"><a href="#consultar_pedido-174"><span class="linenos">174</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="consultar_pedido-175"><a href="#consultar_pedido-175"><span class="linenos">175</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">consultar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Consulta um pedido e seu status atual.</p>
-
-<p>Regras de negócio acionadas:
-    - RN04: o status é calculado na consulta (EM_PREPARO até o término
-      previsto, depois CONCLUIDO), sem uso de timer.</p>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Pedido no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
-</blockquote>
-</div>
-
-
-                </section>
-                <section id="cancelar_pedido">
-                            <input id="cancelar_pedido-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-router.post">@router.post(&#39;/pedidos/{pedido_id}/cancelar&#39;, response_model=PedidoResponse, summary=&#39;Cancela um pedido em preparo&#39;, responses={**_erro(404, &#39;Pedido inexistente.&#39;, &#39;PEDIDO_NAO_ENCONTRADO&#39;, &#39;Pedido não encontrado.&#39;), **_erro(409, &#39;Pedido não pode ser cancelado.&#39;, &#39;PEDIDO_NAO_CANCELAVEL&#39;, &#39;Apenas pedidos em preparo podem ser cancelados.&#39;)})</div>
-
-        <span class="def">def</span>
-        <span class="name">cancelar_pedido</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="cancelar_pedido-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#cancelar_pedido"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="cancelar_pedido-178"><a href="#cancelar_pedido-178"><span class="linenos">178</span></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-</span><span id="cancelar_pedido-179"><a href="#cancelar_pedido-179"><span class="linenos">179</span></a>    <span class="s2">&quot;/pedidos/</span><span class="si">{pedido_id}</span><span class="s2">/cancelar&quot;</span><span class="p">,</span>
-</span><span id="cancelar_pedido-180"><a href="#cancelar_pedido-180"><span class="linenos">180</span></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">PedidoResponse</span><span class="p">,</span>
-</span><span id="cancelar_pedido-181"><a href="#cancelar_pedido-181"><span class="linenos">181</span></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">&quot;Cancela um pedido em preparo&quot;</span><span class="p">,</span>
-</span><span id="cancelar_pedido-182"><a href="#cancelar_pedido-182"><span class="linenos">182</span></a>    <span class="n">responses</span><span class="o">=</span><span class="p">{</span>
-</span><span id="cancelar_pedido-183"><a href="#cancelar_pedido-183"><span class="linenos">183</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Pedido inexistente.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_ENCONTRADO&quot;</span><span class="p">,</span> <span class="s2">&quot;Pedido não encontrado.&quot;</span><span class="p">),</span>
-</span><span id="cancelar_pedido-184"><a href="#cancelar_pedido-184"><span class="linenos">184</span></a>        <span class="o">**</span><span class="n">_erro</span><span class="p">(</span><span class="mi">409</span><span class="p">,</span> <span class="s2">&quot;Pedido não pode ser cancelado.&quot;</span><span class="p">,</span> <span class="s2">&quot;PEDIDO_NAO_CANCELAVEL&quot;</span><span class="p">,</span> <span class="s2">&quot;Apenas pedidos em preparo podem ser cancelados.&quot;</span><span class="p">),</span>
-</span><span id="cancelar_pedido-185"><a href="#cancelar_pedido-185"><span class="linenos">185</span></a>    <span class="p">},</span>
-</span><span id="cancelar_pedido-186"><a href="#cancelar_pedido-186"><span class="linenos">186</span></a><span class="p">)</span>
-</span><span id="cancelar_pedido-187"><a href="#cancelar_pedido-187"><span class="linenos">187</span></a><span class="k">def</span><span class="w"> </span><span class="nf">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="cancelar_pedido-188"><a href="#cancelar_pedido-188"><span class="linenos">188</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Cancela um pedido que esteja EM_PREPARO.</span>
-</span><span id="cancelar_pedido-189"><a href="#cancelar_pedido-189"><span class="linenos">189</span></a>
-</span><span id="cancelar_pedido-190"><a href="#cancelar_pedido-190"><span class="linenos">190</span></a><span class="sd">    Regras de negócio acionadas:</span>
-</span><span id="cancelar_pedido-191"><a href="#cancelar_pedido-191"><span class="linenos">191</span></a><span class="sd">        - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os</span>
-</span><span id="cancelar_pedido-192"><a href="#cancelar_pedido-192"><span class="linenos">192</span></a><span class="sd">          ingredientes já consumidos não retornam ao estoque e a máquina volta</span>
-</span><span id="cancelar_pedido-193"><a href="#cancelar_pedido-193"><span class="linenos">193</span></a><span class="sd">          a PRONTA.</span>
-</span><span id="cancelar_pedido-194"><a href="#cancelar_pedido-194"><span class="linenos">194</span></a>
-</span><span id="cancelar_pedido-195"><a href="#cancelar_pedido-195"><span class="linenos">195</span></a><span class="sd">    Args:</span>
-</span><span id="cancelar_pedido-196"><a href="#cancelar_pedido-196"><span class="linenos">196</span></a><span class="sd">        pedido_id: Identificador do pedido.</span>
-</span><span id="cancelar_pedido-197"><a href="#cancelar_pedido-197"><span class="linenos">197</span></a>
-</span><span id="cancelar_pedido-198"><a href="#cancelar_pedido-198"><span class="linenos">198</span></a><span class="sd">    Returns:</span>
-</span><span id="cancelar_pedido-199"><a href="#cancelar_pedido-199"><span class="linenos">199</span></a><span class="sd">        Pedido cancelado no formato :class:`app.schemas.pedido.PedidoResponse`.</span>
-</span><span id="cancelar_pedido-200"><a href="#cancelar_pedido-200"><span class="linenos">200</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="cancelar_pedido-201"><a href="#cancelar_pedido-201"><span class="linenos">201</span></a>    <span class="k">return</span> <span class="n">pedido_service</span><span class="o">.</span><span class="n">cancelar_pedido</span><span class="p">(</span><span class="n">pedido_id</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Cancela um pedido que esteja EM_PREPARO.</p>
-
-<p>Regras de negócio acionadas:
-    - RN05: apenas pedidos EM_PREPARO; o valor é devolvido ao crédito, os
-      ingredientes já consumidos não retornam ao estoque e a máquina volta
-      a PRONTA.</p>
-
-<h6 id="arguments">Arguments:</h6>
-
-<ul>
-<li><strong>pedido_id:</strong>  Identificador do pedido.</li>
-</ul>
-
-<h6 id="returns">Returns:</h6>
-
-<blockquote>
-  <p>Pedido cancelado no formato <code><a href="../schemas/pedido.html#PedidoResponse">app.schemas.pedido.PedidoResponse</a></code>.</p>
-</blockquote>
-</div>
 
 
                 </section>

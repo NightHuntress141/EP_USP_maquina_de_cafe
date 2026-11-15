@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class ItemReservatorio(str, Enum):
@@ -31,7 +31,9 @@ class ItemEstoque(BaseModel):
     item: ItemReservatorio = Field(..., description="Reservatório ou insumo.", examples=["leite"])
     atual: float = Field(..., description="Quantidade disponível.", examples=[2.5])
     capacidade: float = Field(..., description="Capacidade máxima.", examples=[10.0])
-    nivel_baixo: bool = Field(..., description="Indica nível abaixo do limite de alerta.", examples=[True])
+    nivel_baixo: bool = Field(
+        ..., description="Indica nível abaixo do limite de alerta.", examples=[True]
+    )
 
 
 class EstoqueResponse(BaseModel):
@@ -52,8 +54,30 @@ class ReabastecimentoRequest(BaseModel):
         quantidade: Quantidade a adicionar, em unidades do insumo.
     """
 
-    item: ItemReservatorio = Field(..., description="Reservatório a reabastecer.", examples=["agua"])
-    quantidade: float = Field(..., gt=0, description="Quantidade a adicionar.", examples=[1.5])
+    item: ItemReservatorio = Field(
+        ..., description="Reservatório a reabastecer.", examples=["agua"]
+    )
+    quantidade: float = Field(
+        ...,
+        gt=0,
+        allow_inf_nan=False,
+        description="Quantidade a adicionar.",
+        examples=[1.5],
+    )
+
+    @model_validator(mode="after")
+    def validar_copos(self) -> ReabastecimentoRequest:
+        """Exige unidades inteiras quando o insumo é COPOS.
+
+        Returns:
+            Requisição validada, preservando as unidades dos demais insumos.
+
+        Raises:
+            ValueError: Se a quantidade de copos for fracionária.
+        """
+        if self.item == ItemReservatorio.COPOS and not self.quantidade.is_integer():
+            raise ValueError("A quantidade de copos deve ser inteira.")
+        return self
 
 
 class ReabastecimentoResponse(BaseModel):
@@ -67,9 +91,9 @@ class ReabastecimentoResponse(BaseModel):
 
 
 __all__ = [
-    "ItemReservatorio",
-    "ItemEstoque",
     "EstoqueResponse",
+    "ItemEstoque",
+    "ItemReservatorio",
     "ReabastecimentoRequest",
     "ReabastecimentoResponse",
 ]

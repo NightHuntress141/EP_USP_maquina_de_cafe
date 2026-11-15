@@ -12,12 +12,14 @@ cabeçalho ``Authorization: Bearer <token>`` (RN11).
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Path, Query
 
 from app.api.deps import get_current_operator
-from app.schemas.erro import ErroResponse
+from app.api.responses import _erro
+from app.core.exceptions import OperacaoInvalidaError
+from app.core.valores import ID_MAXIMO
 from app.schemas.estoque import (
     EstoqueResponse,
     ReabastecimentoRequest,
@@ -32,34 +34,19 @@ from app.schemas.operador import (
 )
 from app.schemas.produto import PrecoRequest, ProdutoResponse
 from app.schemas.relatorio import RelatorioResponse
-from app.core.exceptions import OperacaoInvalidaError
-from app.services import estoque_service, operador_service, produto_service, relatorio_service
+from app.services import (
+    estoque_service,
+    operador_service,
+    produto_service,
+    relatorio_service,
+)
 
 router = APIRouter(prefix="/operador", tags=["Operador"])
 
 
-def _erro(codigo: int, descricao: str, exemplo_erro: str, exemplo_mensagem: str) -> dict[int, dict[str, Any]]:
-    """Monta a documentação de uma resposta de erro para o Swagger.
-
-    Args:
-        codigo: Código HTTP da resposta.
-        descricao: Descrição exibida na documentação.
-        exemplo_erro: Valor de exemplo para o campo ``erro``.
-        exemplo_mensagem: Valor de exemplo para o campo ``mensagem``.
-
-    Returns:
-        Dicionário no formato aceito pelo parâmetro ``responses`` do FastAPI.
-    """
-    return {
-        codigo: {
-            "model": ErroResponse,
-            "description": descricao,
-            "content": {"application/json": {"example": {"erro": exemplo_erro, "mensagem": exemplo_mensagem}}},
-        }
-    }
-
-
-_ERRO_NAO_AUTORIZADO = _erro(401, "Token ausente ou inválido.", "NAO_AUTORIZADO", "Token ausente ou inválido.")
+_ERRO_NAO_AUTORIZADO = _erro(
+    401, "Token ausente ou inválido.", "NAO_AUTORIZADO", "Token ausente ou inválido."
+)
 """Documentação padronizada da resposta 401 das rotas protegidas."""
 
 
@@ -68,7 +55,12 @@ _ERRO_NAO_AUTORIZADO = _erro(401, "Token ausente ou inválido.", "NAO_AUTORIZADO
     response_model=LoginResponse,
     summary="Autentica o operador",
     responses={
-        **_erro(401, "Credenciais inválidas.", "NAO_AUTORIZADO", "Usuário ou senha inválidos."),
+        **_erro(
+            401,
+            "Credenciais inválidas.",
+            "NAO_AUTORIZADO",
+            "Usuário ou senha inválidos.",
+        ),
     },
 )
 def login(payload: LoginRequest) -> dict[str, Any]:
@@ -115,10 +107,25 @@ def consultar_estoque() -> dict[str, Any]:
     summary="Reabastece um reservatório",
     dependencies=[Depends(get_current_operator)],
     responses={
-        **_erro(400, "Quantidade inválida.", "DADOS_INVALIDOS", "A quantidade deve ser maior que zero."),
+        **_erro(
+            400,
+            "Quantidade inválida.",
+            "DADOS_INVALIDOS",
+            "A quantidade deve ser maior que zero.",
+        ),
         **_ERRO_NAO_AUTORIZADO,
-        **_erro(409, "Máquina não está em manutenção.", "ESTADO_INVALIDO", "A máquina não está em manutenção."),
-        **_erro(422, "Capacidade excedida.", "CAPACIDADE_EXCEDIDA", "A quantidade excede a capacidade do reservatório."),
+        **_erro(
+            409,
+            "Máquina não está em manutenção.",
+            "ESTADO_INVALIDO",
+            "A máquina não está em manutenção.",
+        ),
+        **_erro(
+            422,
+            "Capacidade excedida.",
+            "CAPACIDADE_EXCEDIDA",
+            "A quantidade excede a capacidade do reservatório.",
+        ),
     },
 )
 def reabastecer(payload: ReabastecimentoRequest) -> dict[str, Any]:
@@ -144,12 +151,24 @@ def reabastecer(payload: ReabastecimentoRequest) -> dict[str, Any]:
     summary="Altera o preço de uma bebida",
     dependencies=[Depends(get_current_operator)],
     responses={
-        **_erro(400, "Preço inválido.", "DADOS_INVALIDOS", "O preço deve ser maior que zero."),
+        **_erro(
+            400,
+            "Preço inválido.",
+            "DADOS_INVALIDOS",
+            "O preço deve ser maior que zero.",
+        ),
         **_ERRO_NAO_AUTORIZADO,
-        **_erro(404, "Bebida inexistente.", "BEBIDA_NAO_ENCONTRADA", "Bebida não encontrada no cardápio."),
+        **_erro(
+            404,
+            "Bebida inexistente.",
+            "BEBIDA_NAO_ENCONTRADA",
+            "Bebida não encontrada no cardápio.",
+        ),
     },
 )
-def alterar_preco(produto_id: int, payload: PrecoRequest) -> dict[str, Any]:
+def alterar_preco(
+    produto_id: Annotated[int, Path(ge=1, le=ID_MAXIMO)], payload: PrecoRequest
+) -> dict[str, Any]:
     """Atualiza o preço de uma bebida do cardápio.
 
     Regras de negócio acionadas:
@@ -173,9 +192,19 @@ def alterar_preco(produto_id: int, payload: PrecoRequest) -> dict[str, Any]:
     summary="Entra ou sai da manutenção",
     dependencies=[Depends(get_current_operator)],
     responses={
-        **_erro(400, "Ação de manutenção inválida.", "DADOS_INVALIDOS", "A ação deve ser ENTRAR ou SAIR."),
+        **_erro(
+            400,
+            "Ação de manutenção inválida.",
+            "DADOS_INVALIDOS",
+            "A ação deve ser ENTRAR ou SAIR.",
+        ),
         **_ERRO_NAO_AUTORIZADO,
-        **_erro(409, "Transição de manutenção inválida.", "ESTADO_INVALIDO", "A máquina não pode entrar em manutenção agora."),
+        **_erro(
+            409,
+            "Transição de manutenção inválida.",
+            "ESTADO_INVALIDO",
+            "A máquina não pode entrar em manutenção agora.",
+        ),
     },
 )
 def alterar_manutencao(payload: ManutencaoRequest) -> dict[str, Any]:
@@ -202,15 +231,21 @@ def alterar_manutencao(payload: ManutencaoRequest) -> dict[str, Any]:
     dependencies=[Depends(get_current_operator)],
     responses={
         **_ERRO_NAO_AUTORIZADO,
-        **_erro(409, "Limpeza não permitida no estado atual.", "ESTADO_INVALIDO", "A máquina não está aguardando limpeza."),
+        **_erro(
+            409,
+            "Limpeza não permitida no estado atual.",
+            "ESTADO_INVALIDO",
+            "A máquina não está em manutenção.",
+        ),
     },
 )
 def registrar_limpeza() -> dict[str, Any]:
     """Registra a limpeza e zera o contador de preparos desde a última limpeza.
 
     Regras de negócio acionadas:
-        - RN07: a máquina passa para ``AGUARDANDO_LIMPEZA`` após o número
-          configurado de preparos e só volta a ``PRONTA`` após a limpeza.
+        - RN07: exige ``MANUTENCAO``, registra a limpeza e zera o contador
+          de preparos. A máquina permanece em manutenção até a saída explícita
+          desse modo (RN08).
 
     Returns:
         Contador e estado no formato
@@ -225,13 +260,23 @@ def registrar_limpeza() -> dict[str, Any]:
     summary="Gera o relatório de vendas do período",
     dependencies=[Depends(get_current_operator)],
     responses={
-        **_erro(400, "Período inválido.", "DADOS_INVALIDOS", "O início do período deve ser anterior ao fim."),
+        **_erro(
+            400,
+            "Período inválido.",
+            "DADOS_INVALIDOS",
+            "O início do período deve ser anterior ao fim.",
+        ),
         **_ERRO_NAO_AUTORIZADO,
     },
 )
 def gerar_relatorio(
-    inicio: datetime = Query(..., description="Início do período (ISO 8601).", examples=["2026-03-01T00:00:00"]),
-    fim: datetime = Query(..., description="Fim do período (ISO 8601).", examples=["2026-03-31T23:59:59"]),
+    inicio: Annotated[
+        datetime,
+        Query(description="Início do período (ISO 8601).", examples=["2026-03-01T00:00:00"]),
+    ],
+    fim: Annotated[
+        datetime, Query(description="Fim do período (ISO 8601).", examples=["2026-03-31T23:59:59"])
+    ],
 ) -> dict[str, Any]:
     """Gera o relatório consolidado de vendas do período.
 
@@ -259,12 +304,12 @@ def gerar_relatorio(
 
 
 __all__ = [
-    "router",
-    "login",
-    "consultar_estoque",
-    "reabastecer",
-    "alterar_preco",
     "alterar_manutencao",
-    "registrar_limpeza",
+    "alterar_preco",
+    "consultar_estoque",
     "gerar_relatorio",
+    "login",
+    "reabastecer",
+    "registrar_limpeza",
+    "router",
 ]

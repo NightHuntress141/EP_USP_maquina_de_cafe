@@ -1,6 +1,6 @@
-"""Camada de serviços (regras de negócio).
+"""Camada de serviços e regras de negócio.
 
-Nesta entrega os módulos contêm apenas o contrato (assinaturas) das operações
-consumidas pela camada de API. A implementação das regras de negócio é de
-responsabilidade dos demais integrantes do grupo.
+Preço, manutenção e limpeza estão implementados com persistência SQLite.
+Crédito, pedidos, consulta de produtos/status, autenticação por credenciais,
+estoque e relatório permanecem como contratos para as próximas entregas.
 """

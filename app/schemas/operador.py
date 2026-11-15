@@ -17,8 +17,15 @@ class LoginRequest(BaseModel):
         senha: Senha do operador.
     """
 
-    usuario: str = Field(..., min_length=1, description="Usuário do operador.", examples=["operador"])
-    senha: str = Field(..., min_length=1, description="Senha do operador.", examples=["senha_padrao_para_dev"])
+    usuario: str = Field(
+        ..., min_length=1, description="Usuário do operador.", examples=["operador"]
+    )
+    senha: str = Field(
+        ...,
+        min_length=1,
+        description="Senha do operador.",
+        examples=["segredo-configurado-no-ambiente"],
+    )
 
 
 class LoginResponse(BaseModel):
@@ -29,7 +36,11 @@ class LoginResponse(BaseModel):
         tipo: Esquema de autenticação, sempre ``bearer``.
     """
 
-    token: str = Field(..., description="Token de acesso do operador.", examples=["senha_padrao_para_dev"])
+    token: str = Field(
+        ...,
+        description="Token de acesso do operador.",
+        examples=["segredo-configurado-no-ambiente"],
+    )
     tipo: str = Field("bearer", description="Tipo do token.", examples=["bearer"])
 
 
@@ -57,7 +68,9 @@ class ManutencaoResponse(BaseModel):
         estado: Estado operacional atual da máquina.
     """
 
-    estado: EstadoMaquina = Field(..., description="Estado atual da máquina.", examples=["MANUTENCAO"])
+    estado: EstadoMaquina = Field(
+        ..., description="Estado atual da máquina.", examples=["MANUTENCAO"]
+    )
 
 
 class LimpezaResponse(BaseModel):
@@ -68,15 +81,19 @@ class LimpezaResponse(BaseModel):
         estado: Estado da máquina após a limpeza.
     """
 
-    preparos_desde_limpeza: int = Field(..., description="Preparos desde a última limpeza.", examples=[0])
-    estado: EstadoMaquina = Field(..., description="Estado atual da máquina.", examples=["PRONTA"])
+    preparos_desde_limpeza: int = Field(
+        ..., description="Preparos desde a última limpeza.", examples=[0]
+    )
+    estado: EstadoMaquina = Field(
+        ..., description="Estado após a limpeza (MANUTENCAO).", examples=["MANUTENCAO"]
+    )
 
 
 __all__ = [
+    "AcaoManutencao",
+    "LimpezaResponse",
     "LoginRequest",
     "LoginResponse",
-    "AcaoManutencao",
     "ManutencaoRequest",
     "ManutencaoResponse",
-    "LimpezaResponse",
 ]
